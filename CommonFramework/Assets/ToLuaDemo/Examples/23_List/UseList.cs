@@ -142,7 +142,10 @@ public class UseList : LuaClient
     }
 
     //屏蔽，例子不需要运行
-    protected override void CallMain() { }
+    protected override void CallMain() 
+	{ 
+		base.CallMain ();
+	}
 
     protected override void OnLoadFinished()
     {        

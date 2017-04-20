@@ -525,7 +525,7 @@ namespace LuaInterface
 //                int end = LuaConst.toluaDir.LastIndexOf("/Lua");
 //                string dir = LuaConst.toluaDir.Substring(start, end - start);
 //                dir += "/Core/ToLua.cs";
-				string dir = "Assets/CSharpScript/ToLua/Core/ToLua.cs";
+				string dir = "Assets/CScripts/ToLua/Core/ToLua.cs";
                 _instanceID = AssetDatabase.LoadAssetAtPath(dir, typeof(MonoScript)).GetInstanceID();//"Assets/ToLua/Core/ToLua.cs"
             }
         }

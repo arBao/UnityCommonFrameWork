@@ -8,8 +8,8 @@ using System.Reflection;
 
 public static class CustomSettings
 {
-	public static string saveDir = Application.dataPath + "/CSharpScript/ToLua/Source/Generate/";    
-	public static string toluaBaseType = Application.dataPath + "/CSharpScript/ToLua/Source/BaseType/";    
+	public static string saveDir = Application.dataPath + "/CScripts/ToLua/Source/Generate/";    
+	public static string toluaBaseType = Application.dataPath + "/CScripts/ToLua/Source/BaseType/";    
 
     //导出时强制做为静态类的类型(注意customTypeList 还要添加这个类型才能导出)
     //unity 有些类作为sealed class, 其实完全等价于静态类

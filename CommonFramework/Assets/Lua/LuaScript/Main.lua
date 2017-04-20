@@ -1,3 +1,5 @@
+require 'Framework/TestRequire'
+
 --主入口函数。从这里开始lua逻辑
 function Main()					
 	 TestFunc()		
@@ -10,6 +12,6 @@ function OnLevelWasLoaded(level)
 end
 
 function TestFunc()
-	print('TestFunc')
+	print('TestFunc 2222222222321321321313131321')
 end
 
