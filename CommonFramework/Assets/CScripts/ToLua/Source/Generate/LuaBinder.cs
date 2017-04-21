@@ -10,6 +10,7 @@ public static class LuaBinder
 		float t = Time.realtimeSinceStartup;
 		L.BeginModule(null);
 		LuaInterface_DebuggerWrap.Register(L);
+		LuaComponentWrap.Register(L);
 		L.BeginModule("UnityEngine");
 		UnityEngine_ComponentWrap.Register(L);
 		UnityEngine_TransformWrap.Register(L);

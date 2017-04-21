@@ -968,7 +968,7 @@ public static class ToLuaMenu
     }
 
 
-    [MenuItem("Lua/Copy Lua  files to Resources", false, 51)]
+    //[MenuItem("Lua/Copy Lua  files to Resources", false, 51)]
     public static void CopyLuaFilesToRes()
     {
         ClearAllLuaFiles();
@@ -979,7 +979,7 @@ public static class ToLuaMenu
         Debug.Log("Copy lua files over");
     }
 
-    [MenuItem("Lua/Copy Lua  files to Persistent", false, 52)]
+    //[MenuItem("Lua/Copy Lua  files to Persistent", false, 52)]
     public static void CopyLuaFilesToPersistent()
     {
         ClearAllLuaFiles();
@@ -1015,7 +1015,7 @@ public static class ToLuaMenu
         }        
     }
 
-    [MenuItem("Lua/Build Lua files to Resources (PC)", false, 53)]
+    //[MenuItem("Lua/Build Lua files to Resources (PC)", false, 53)]
     public static void BuildLuaToResources()
     {
         ClearAllLuaFiles();
@@ -1035,7 +1035,7 @@ public static class ToLuaMenu
         AssetDatabase.Refresh();
     }
 
-    [MenuItem("Lua/Build Lua files to Persistent (PC)", false, 54)]
+    //[MenuItem("Lua/Build Lua files to Persistent (PC)", false, 54)]
     public static void BuildLuaToPersistent()
     {
         ClearAllLuaFiles();
@@ -1067,7 +1067,7 @@ public static class ToLuaMenu
         AssetDatabase.Refresh();
     }
 
-    [MenuItem("Lua/Build bundle files not jit", false, 55)]
+    //[MenuItem("Lua/Build bundle files not jit", false, 55)]
     public static void BuildNotJitBundles()
     {
         ClearAllLuaFiles();
@@ -1117,7 +1117,7 @@ public static class ToLuaMenu
         AssetDatabase.Refresh();
     }
 
-    [MenuItem("Lua/Build Luajit bundle files   (PC)", false, 56)]
+    //[MenuItem("Lua/Build Luajit bundle files   (PC)", false, 56)]
     public static void BuildLuaBundles()
     {
         ClearAllLuaFiles();                
@@ -1174,14 +1174,14 @@ public static class ToLuaMenu
         AssetDatabase.Refresh();
     }
 
-    [MenuItem("Lua/Clear all Lua files", false, 57)]
+    //[MenuItem("Lua/Clear all Lua files", false, 57)]
     public static void ClearLuaFiles()
     {
         ClearAllLuaFiles();
     }
 
 
-    [MenuItem("Lua/Gen BaseType Wrap", false, 101)]
+    //[MenuItem("Lua/Gen BaseType Wrap", false, 101)]
     static void GenBaseTypeLuaWrap()
     {
         if (!beAutoGen && EditorApplication.isCompiling)
@@ -1249,7 +1249,7 @@ public static class ToLuaMenu
         }
     }
     
-    [MenuItem("Lua/Clear BaseType Wrap", false, 102)]
+    //[MenuItem("Lua/Clear BaseType Wrap", false, 102)]
     static void ClearBaseTypeLuaWrap()
     {
         CreateDefaultWrapFile(CustomSettings.toluaBaseType, "System_ObjectWrap");

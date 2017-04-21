@@ -140,6 +140,8 @@ public static class CustomSettings
         _GT(typeof(BlendWeights)),           
         _GT(typeof(RenderTexture)),
         _GT(typeof(Resources)),
+
+		_GT(typeof(LuaComponent)),
     };
 
     public static List<Type> dynamicList = new List<Type>()

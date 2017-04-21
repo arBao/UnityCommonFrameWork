@@ -45,6 +45,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\CScripts\LuaTools\LuaComponent.cs" />
+     <Compile Include="Assets\CScripts\LuaTools\LuaManager.cs" />
      <Compile Include="Assets\CScripts\ToLua\Core\LuaAttributes.cs" />
      <Compile Include="Assets\CScripts\ToLua\Core\LuaBaseRef.cs" />
      <Compile Include="Assets\CScripts\ToLua\Core\LuaBeatEvent.cs" />
@@ -111,6 +113,7 @@
      <Compile Include="Assets\CScripts\ToLua\Source\BaseType\UnityEngine_ObjectWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\DelegateFactory.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\LuaBinder.cs" />
+     <Compile Include="Assets\CScripts\ToLua\Source\Generate\LuaComponentWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\LuaInterface_DebuggerWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_AnimationBlendModeWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_AnimationClipWrap.cs" />

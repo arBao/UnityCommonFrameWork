@@ -1,14 +1,19 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Editor/ToLua/ToLuaExport.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Editor/ToLua/ToLuaMenu.cs">
     <Files>
-      <File FileName="Assets/CScripts/ToLua/Core/LuaAttributes.cs" Line="18" Column="78" />
-      <File FileName="Assets/Editor/ToLua/ToLuaMenu.cs" Line="1" Column="1" />
-      <File FileName="Assets/Editor/ToLua/Custom/CustomSettings.cs" Line="12" Column="64" />
-      <File FileName="Assets/Editor/ToLua/ToLuaExport.cs" Line="3679" Column="14" />
+      <File FileName="Assets/ToLuaDemo/Examples/01_HelloWorld/HelloWorld.cs" Line="1" Column="1" />
+      <File FileName="Assets/CScripts/LuaTools/LuaComponent.cs" Line="41" Column="38" />
+      <File FileName="Assets/CScripts/ToLua/Core/LuaAttributes.cs" Line="1" Column="1" />
+      <File FileName="Assets/Editor/ToLua/ToLuaMenu.cs" Line="1143" Column="55" />
+      <File FileName="Assets/Editor/ToLua/Custom/CustomSettings.cs" Line="1" Column="1" />
+      <File FileName="Assets/Editor/ToLua/ToLuaExport.cs" Line="1" Column="1" />
       <File FileName="Assets/Editor/ToLua/ToLuaTree.cs" Line="1" Column="1" />
       <File FileName="Assets/ToLuaDemo/Examples/23_List/UseList.cs" Line="1" Column="1" />
-      <File FileName="Assets/CScripts/ToLua/Core/ToLua.cs" Line="528" Column="34" />
+      <File FileName="Assets/CScripts/ToLua/Core/ToLua.cs" Line="1" Column="1" />
+      <File FileName="Assets/ToLuaDemo/Examples/21_String/TestString.cs" Line="28" Column="6" />
+      <File FileName="Assets/CScripts/ToLua/Misc/LuaClient.cs" Line="32" Column="1" />
+      <File FileName="Assets/CScripts/ToLua/Source/LuaConst.cs" Line="6" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
