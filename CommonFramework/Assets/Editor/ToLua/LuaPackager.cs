@@ -164,23 +164,23 @@ public class LuaPackger
 		string exeDir = string.Empty;
 		if (Application.platform == RuntimePlatform.WindowsEditor)
 		{
-			exeDir = ProjectPath + "LuaJitFiles/Windows/";
+			exeDir = Application.dataPath + "/LuaJitFiles/Windows/";
 		}
 		else
 		{
 			switch (target)
 			{
 			case BuildTarget.Android:
-				exeDir = ProjectPath + "LuaJitFiles/Android/";
+				exeDir = Application.dataPath + "/LuaJitFiles/Android/";
 				break;
 			case BuildTarget.iOS:
 				if (cpuType == ECpuType.Cpu_32)
-					exeDir = ProjectPath + "LuaJitFiles/iOS/x86/";
+					exeDir = Application.dataPath + "/LuaJitFiles/iOS/x86/";
 				else
-					exeDir = ProjectPath + "LuaJitFiles/iOS/x86_64/";
+					exeDir = Application.dataPath + "/LuaJitFiles/iOS/x86_64/";
 				break;
 			case BuildTarget.StandaloneWindows:
-				exeDir = ProjectPath + "LuaJitFiles/luavm/";
+				exeDir = Application.dataPath + "/LuaJitFiles/luavm/";
 				break;
 			}
 		}
