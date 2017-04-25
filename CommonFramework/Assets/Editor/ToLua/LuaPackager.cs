@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using System.IO;
 using System.Diagnostics;
@@ -16,6 +17,8 @@ public class LuaPackger
 	private static string ProjectDataPath = Application.dataPath + "/";
 	private static string ProjectPath = ProjectDataPath.Replace("Assets/", "");
 	private static string LuaSourcePath = Application.dataPath + "/Lua";
+	private static string LuaLibsPath = LuaSourcePath + "/LuaLibs";
+	private static string LuaScriptPath = LuaSourcePath + "/LuaScript";
 
 	[MenuItem("Resource/构建 32位 iOS 素材资源", false, 100)]
 	public static void BuildiOS32Resource()
@@ -118,40 +121,41 @@ public class LuaPackger
 		//ClearAllResource();
 		CreateStreamDir("Lua/");
 		string[] files = Directory.GetFiles(LuaSourcePath, "*.lua", SearchOption.AllDirectories);
-		for (int i = 0; i < files.Length; i++)
-		{
-			UnityEngine.Debug.LogError ("files  " + files [i]);
-		}
-		string exeDir = GetByteCodeExecutorPath(target);
-		for (int i = 0; i < files.Length; i++)
-		{
-			string str = files[i].Remove(0, len);
-			if (str.Contains("._"))
-				continue;
-			string dest = destDir + str;
-			if (appendext)
-				dest += ".bytes";
-			string dir = Path.GetDirectoryName(dest);
-			Directory.CreateDirectory(dir);
+		string luajitDir = GetLuaJitPath (target);
+		string exeDir = GetByteCodeExecutorPath (target);
 
-			if (AppConst.LuaByteMode)
+		for (int i = 0; i < files.Length; i++)
+		{
+			int len = 0;
+			string filePath = files [i];
+			UnityEngine.Debug.LogError ("files  " + filePath);
+
+			if (filePath.Contains (LuaScriptPath)) 
 			{
-				EncodeLuaFile(files[i], dest, exeDir, target);
-			}
-			else
+				len = LuaScriptPath.Length;
+			} 
+			else 
 			{
-				File.Copy(files[i], dest, true);
+				len = LuaLibsPath.Length;
 			}
+
+			UnityEngine.Debug.LogError ("(files [i].Contains (LuaScriptPath)) ");
+			string str = filePath.Remove(0, len);
+			string[] strs = str.Split ('/');
+			string filename = strs [strs.Length - 1];
+			string dir = str.Remove (str.Length - filename.Length);
+			UnityEngine.Debug.LogError ("filename  " + filename);
+			UnityEngine.Debug.LogError ("dir  " + dir);
+			string destDir = luajitDir + dir;
+			if (!Directory.Exists (destDir)) 
+			{
+				Directory.CreateDirectory (destDir);
+			}
+			string dest = destDir + filename;
+			EncodeLuaFile(filePath, dest, exeDir, target);
+
 		}
-//		if (AppConst.LuaBundleMode)
-//		{
-//			HandleBundle(target);
-//		}
-//		else
-//		{
-//			HandleLuaFile(target);
-//		}
-//		BuildFileIndex();
+
 		AssetDatabase.Refresh();
 	}
 
