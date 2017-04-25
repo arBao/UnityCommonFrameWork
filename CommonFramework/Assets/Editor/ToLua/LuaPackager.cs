@@ -128,7 +128,7 @@ public class LuaPackger
 		{
 			int len = 0;
 			string filePath = files [i];
-			UnityEngine.Debug.LogError ("files  " + filePath);
+//			UnityEngine.Debug.LogError ("files  " + filePath);
 
 			if (filePath.Contains (LuaScriptPath)) 
 			{
@@ -139,13 +139,13 @@ public class LuaPackger
 				len = LuaLibsPath.Length;
 			}
 
-			UnityEngine.Debug.LogError ("(files [i].Contains (LuaScriptPath)) ");
+//			UnityEngine.Debug.LogError ("(files [i].Contains (LuaScriptPath)) ");
 			string str = filePath.Remove(0, len);
 			string[] strs = str.Split ('/');
 			string filename = strs [strs.Length - 1];
 			string dir = str.Remove (str.Length - filename.Length);
-			UnityEngine.Debug.LogError ("filename  " + filename);
-			UnityEngine.Debug.LogError ("dir  " + dir);
+//			UnityEngine.Debug.LogError ("filename  " + filename);
+//			UnityEngine.Debug.LogError ("dir  " + dir);
 			string destDir = luajitDir + dir;
 			if (!Directory.Exists (destDir)) 
 			{

@@ -7,15 +7,14 @@ using System.Text;
 
 public class LuaManager : LuaClient
 {
-
-	protected override LuaFileUtils InitLoader()
+	protected override void OnLuaStateCreate ()
 	{
-		return new LuaResLoader();
-	}
+		base.OnLuaStateCreate ();
+		#if UNITY_EDITOR
+		luaState.AddSearchPath(LuaConst.luaDir);
+		luaState.AddSearchPath(LuaConst.toluaDir);
+		#else
 
-	protected override void OnLoadFinished()
-	{
-		base.OnLoadFinished();
-
+		#endif
 	}
 }
