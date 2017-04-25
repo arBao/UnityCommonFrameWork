@@ -175,9 +175,9 @@ public class LuaPackger
 				break;
 			case BuildTarget.iOS:
 				if (cpuType == ECpuType.Cpu_32)
-					exeDir = Application.dataPath + "/LuaJitFiles/iOS/x86/";
+					exeDir = Application.dataPath + "/LuaJitFiles/iOS/cpu_32/";
 				else
-					exeDir = Application.dataPath + "/LuaJitFiles/iOS/x86_64/";
+					exeDir = Application.dataPath + "/LuaJitFiles/iOS/cpu_64/";
 				break;
 			case BuildTarget.StandaloneWindows:
 				exeDir = Application.dataPath + "/LuaJitFiles/luavm/";
