@@ -34,7 +34,7 @@ public class ResourcesExport
 		Debug.LogError ("path  " + path);
 		AssetDatabase.Refresh();
 		BuildPipeline.BuildAssetBundles(path, BuildAssetBundleOptions.ChunkBasedCompression, target);
-
+		CleanManifestFiles ();
 		AssetDatabase.Refresh();
 	}
 
