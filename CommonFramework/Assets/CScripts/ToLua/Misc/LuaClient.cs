@@ -163,6 +163,7 @@ public class LuaClient : MonoBehaviour
     protected void Init()
     {        
         InitLoader();
+		OnLuaLoaderCreate ();
         luaState = new LuaState();
 		OnLuaStateCreate ();
         OpenLibs();
@@ -173,6 +174,11 @@ public class LuaClient : MonoBehaviour
 	protected virtual void OnLuaStateCreate()
 	{
 		
+	}
+
+	protected virtual void OnLuaLoaderCreate()
+	{
+
 	}
 
     protected void Awake()

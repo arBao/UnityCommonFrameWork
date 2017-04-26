@@ -45,6 +45,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Editor\ResourcesTool\ResourcesExport.cs" />
+     <Compile Include="Assets\Editor\ResourcesTool\ResourcesFilter.cs" />
      <Compile Include="Assets\Editor\ToLua\Custom\CustomSettings.cs" />
      <Compile Include="Assets\Editor\ToLua\LuaPackager.cs" />
      <Compile Include="Assets\Editor\ToLua\ToLuaExport.cs" />

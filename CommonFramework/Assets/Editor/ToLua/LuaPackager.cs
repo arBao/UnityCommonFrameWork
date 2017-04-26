@@ -151,7 +151,7 @@ public class LuaPackger
 			{
 				Directory.CreateDirectory (destDir);
 			}
-			string dest = destDir + filename;
+			string dest = destDir + filename + ".bytes";
 			EncodeLuaFile(filePath, dest, exeDir, target);
 
 		}
