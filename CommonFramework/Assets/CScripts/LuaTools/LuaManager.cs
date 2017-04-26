@@ -20,16 +20,17 @@ public class LuaManager : LuaClient
 
 	protected override LuaFileUtils InitLoader ()
 	{
-		if (LuaFileUtilsCustom.Instance != null)
-		{
-			return LuaFileUtilsCustom.Instance;
-		}
+		Debug.LogError ("LuaManager  InitLoader");
+
 		LuaFileUtilsCustom lfu = new LuaFileUtilsCustom ();
 		Debug.LogError ("Application.platform  ---------> " + Application.platform);
 		if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer) 
 		{
 			lfu.beZip = true;
 		}
+		lfu.beZip = true;
+
+
 		return lfu as LuaFileUtils;	
 	}
 		

@@ -7,7 +7,7 @@ namespace LuaInterface
 	{
 		public LuaFileUtilsCustom():base()
 		{
-			
+			instance = this;
 		}
 
 		public override byte[] ReadFile (string fileName)
@@ -36,9 +36,13 @@ namespace LuaInterface
 
 		private byte[] ReadZipFile(string fileName)
 		{
-			
+			Debug.LogError ("LuaFileUtilsCustom  ReadZipFile  " + fileName);
+
 			return new byte[0];
 		}
+
+
+
 
 	}
 }

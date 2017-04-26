@@ -6,8 +6,8 @@ using System.IO;
 
 public class ResourcesExport  
 {
-	[MenuItem("Assets/AssetBundle/BuildBundles")]
-	public static void BuildBundles()
+	[MenuItem("Assets/AssetBundle/BuildLuaBundles")]
+	public static void BuildLuaBundles()
 	{
 		List<string> listPackagerFiles = ResourcesFilter.GetAllPackagerFiles ();
 		for (int i = 0; i < listPackagerFiles.Count; i++) 
