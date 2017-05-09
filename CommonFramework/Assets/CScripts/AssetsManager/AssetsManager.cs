@@ -2,10 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public enum ECpuType
+{
+	Cpu_32,
+	Cpu_64,
+};
+
 public class AssetsManager 
 {
 	private Dictionary<string,AssetBundle> dicBundlesCache = new Dictionary<string, AssetBundle> ();
-	private AssetsManager m_Instance = null;
+	private static AssetsManager m_Instance = null;
 	public static AssetsManager Instance
 	{
 		get 
@@ -37,15 +43,21 @@ public class AssetsManager
 
 		if (Application.platform == RuntimePlatform.IPhonePlayer)
 		{
-
+			ECpuType cpuType = ECpuType.Cpu_64;
+			if (cpuType == ECpuType.Cpu_32)
+				abPath = Application.streamingAssetsPath + "/luajitfiles/ios/cpu_32/" + fileName + ".bytes";
+			else
+				abPath = Application.streamingAssetsPath + "/luajitfiles/ios/cpu_64/"+ fileName+ ".bytes";
 		}
 		else if (Application.platform == RuntimePlatform.Android)
 		{
-
+			abPath = Application.streamingAssetsPath + "/luajitfiles/android/"+ fileName + ".bytes";
 		}
 		else 
 		{
 
 		}
+
+		return abPath;
 	}
 }

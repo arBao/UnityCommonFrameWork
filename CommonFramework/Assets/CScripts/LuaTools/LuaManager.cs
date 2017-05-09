@@ -30,7 +30,6 @@ public class LuaManager : LuaClient
 		}
 		lfu.beZip = true;
 
-
 		return lfu as LuaFileUtils;	
 	}
 		

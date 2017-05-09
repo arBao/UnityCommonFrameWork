@@ -5,14 +5,15 @@ using UnityEditor;
 using System.IO;
 using System.Diagnostics;
 
+public enum ECpuType
+{
+	Cpu_32,
+	Cpu_64,
+};
+
 public class LuaPackger 
 {
-	public enum ECpuType
-	{
-		Cpu_32,
-		Cpu_64,
-	};
-
+	
 	private static ECpuType cpuType;
 	private static string ProjectDataPath = Application.dataPath + "/";
 	private static string ProjectPath = ProjectDataPath.Replace("Assets/", "");
