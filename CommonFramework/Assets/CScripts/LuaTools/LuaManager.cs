@@ -28,7 +28,7 @@ public class LuaManager : LuaClient
 		{
 			lfu.beZip = true;
 		}
-		lfu.beZip = true;
+//		lfu.beZip = true;
 
 		return lfu as LuaFileUtils;	
 	}

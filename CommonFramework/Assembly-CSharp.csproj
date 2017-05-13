@@ -49,6 +49,7 @@
      <Compile Include="Assets\CScripts\LuaTools\LuaComponent.cs" />
      <Compile Include="Assets\CScripts\LuaTools\LuaFileUtilsCustom.cs" />
      <Compile Include="Assets\CScripts\LuaTools\LuaManager.cs" />
+     <Compile Include="Assets\CScripts\LuaTools\LuaReflectionTool.cs" />
      <Compile Include="Assets\CScripts\ToLua\Core\LuaAttributes.cs" />
      <Compile Include="Assets\CScripts\ToLua\Core\LuaBaseRef.cs" />
      <Compile Include="Assets\CScripts\ToLua\Core\LuaBeatEvent.cs" />

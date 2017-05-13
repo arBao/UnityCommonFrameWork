@@ -132,7 +132,7 @@ namespace LuaInterface
 
         public string FindFile(string fileName)
         {
-			Debug.LogError ("FindFile  " + fileName);
+//			Debug.LogError ("FindFile  " + fileName);
             if (fileName == string.Empty)
             {
                 return string.Empty;

@@ -621,7 +621,7 @@ namespace LuaInterface
                 {
                     string path = paths[i].Replace('\\', '/');
                     LuaFileUtils.Instance.AddSearchPath(path);
-					Debug.LogError ("LuaFileUtils.Instance.AddSearchPath(path);  " + path);
+//					Debug.LogError ("LuaFileUtils.Instance.AddSearchPath(path);  " + path);
                 }
             }
 

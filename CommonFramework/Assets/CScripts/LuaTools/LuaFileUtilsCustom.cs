@@ -12,7 +12,7 @@ namespace LuaInterface
 
 		public override byte[] ReadFile (string fileName)
 		{
-			Debug.LogError ("fileName  " + fileName);
+//			Debug.LogError ("fileName  " + fileName);
 			if (!beZip)
 			{
 				string path = FindFile(fileName);
@@ -37,7 +37,7 @@ namespace LuaInterface
 
 		private byte[] ReadZipFile(string fileName)
 		{
-			Debug.LogError ("LuaFileUtilsCustom  ReadZipFile  " + fileName);
+//			Debug.LogError ("LuaFileUtilsCustom  ReadZipFile  " + fileName);
 			byte[] buffer = new byte[0];
 
 			AssetBundle ab = AssetsManager.Instance.GetLuaBundle (fileName);
