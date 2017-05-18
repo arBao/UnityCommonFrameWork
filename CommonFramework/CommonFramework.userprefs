@@ -1,13 +1,13 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/CScripts/LuaTools/LuaFileUtilsCustom.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/CScripts/ToLua/Core/LuaState.cs">
     <Files>
-      <File FileName="Assets/CScripts/LuaTools/LuaFileUtilsCustom.cs" Line="40" Column="1" />
+      <File FileName="Assets/CScripts/LuaTools/LuaFileUtilsCustom.cs" Line="40" Column="35" />
       <File FileName="Assets/CScripts/AssetsManager/AssetsManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Editor/ToLua/LuaPackager.cs" Line="7" Column="1" />
+      <File FileName="Assets/Editor/ToLua/LuaPackager.cs" Line="1" Column="1" />
       <File FileName="Assets/CScripts/LuaTools/LuaManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Editor/ResourcesTool/ResourcesExport.cs" Line="1" Column="1" />
-      <File FileName="Assets/CScripts/ToLua/Core/LuaFileUtils.cs" Line="1" Column="1" />
+      <File FileName="Assets/CScripts/ToLua/Core/LuaFileUtils.cs" Line="135" Column="3" />
       <File FileName="Assets/ToLuaDemo/Examples/01_HelloWorld/HelloWorld.cs" Line="1" Column="1" />
       <File FileName="Assets/CScripts/LuaTools/LuaComponent.cs" Line="1" Column="1" />
       <File FileName="Assets/Editor/ToLua/Custom/CustomSettings.cs" Line="1" Column="1" />
@@ -15,7 +15,7 @@
       <File FileName="Assets/CScripts/ToLua/Misc/LuaClient.cs" Line="1" Column="1" />
       <File FileName="Assets/CScripts/ToLua/Source/LuaConst.cs" Line="1" Column="1" />
       <File FileName="Assets/Editor/ResourcesTool/ResourcesFilter.cs" Line="1" Column="1" />
-      <File FileName="Assets/CScripts/ToLua/Core/LuaState.cs" Line="1" Column="1" />
+      <File FileName="Assets/CScripts/ToLua/Core/LuaState.cs" Line="643" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

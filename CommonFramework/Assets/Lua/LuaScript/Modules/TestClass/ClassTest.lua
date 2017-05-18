@@ -7,6 +7,7 @@ end
 function ClassFather:show()
     print('ClassFather show')
 end
+--########
 
 ClassSon1 = class(ClassFather)
 function ClassSon1:ctor(val)
@@ -18,13 +19,22 @@ function ClassSon1:show()
     print('ClassSon1 show')
 end
 
-function ClassSon1:bake()
-    print('ClassSon1 bake')
+--########
+ClassSon2 = class(ClassSon1)
+function ClassSon2:bake( ... )
+	print('ClassSon2 bake')
 end
+
+
+--########
 
 local o = ClassSon1.new(5)
 print(o.count)
 o:show()
+
+o = ClassSon2.new()
+o:show()
+
 
 --以上是封装继承多态
 
