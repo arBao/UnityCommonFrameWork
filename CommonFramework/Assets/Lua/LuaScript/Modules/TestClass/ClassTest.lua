@@ -7,6 +7,10 @@ end
 function ClassFather:show()
     print('ClassFather show')
 end
+
+function ClassFather:showNoOverload()
+    print('ClassFather showNoOverload')
+end
 --########
 
 ClassSon1 = class(ClassFather)
@@ -16,6 +20,7 @@ end
 
 function ClassSon1:show()
     self:super('show')
+    self:showNoOverload()
     print('ClassSon1 show')
 end
 
