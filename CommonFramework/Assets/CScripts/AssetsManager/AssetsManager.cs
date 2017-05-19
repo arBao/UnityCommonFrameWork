@@ -23,6 +23,7 @@ public class AssetsManager
 			return m_Instance;
 		}
 	}
+	#region lua相关
 
 	public AssetBundle GetLuaBundle(string fileName)
 	{
@@ -60,4 +61,19 @@ public class AssetsManager
 
 		return abPath;
 	}
+
+	#endregion
+
+	#region 资源相关
+	public object GetAsset (string path, System.Type type, bool isGetAsset)
+	{
+		#if UNITY_EDITOR
+		 UnityEditor.AssetDatabase.LoadAssetAtPath(path,type);
+		#else
+				
+		#endif
+		
+	}
+	#endregion
+	
 }
