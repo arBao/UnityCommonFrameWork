@@ -27,13 +27,15 @@ end
 function ViewManager.GetView(viewName)
 	Debugger.LogError('ViewManager.GetView ' .. viewName)
 	
-	table.insert(uiobjsCache,uiGameObj)
+	
 	local view = dicViews[viewName].new()
-	view.uiobj = uiGameObj
+	
 	local function showFunc()
 		local uidata = CSVParser.LoadCsv(CSVPaths.UIConfig,viewName)
 		local uiGameObj = AssetsManager.Instance:GetAsset(uidata.path,typeof(UnityEngine.GameObject))
 		uiGameObj.name = viewName
+		view.uiobj = uiGameObj
+		table.insert(uiobjsCache,uiGameObj)
 		if uidata.layer == '1' then
 			uiGameObj.transform.parent = UINormal.transform
 		elseif uidata.layer == '2' then
@@ -44,8 +46,10 @@ function ViewManager.GetView(viewName)
 		uiGameObj.transform.localPosition = Vector3.zero
 		uiGameObj.transform.localScale = Vector3.one
 		uiGameObj.transform.localRotation = Quaternion.identity
-		local recttransform = uiGameObj.GetComponent('UnityEngine.RectTransform')
+		local recttransform = uiGameObj:GetComponent('RectTransform')
 		recttransform:SetAsLastSibling()
+
+
 		
 	end
 	view.showCallback = showFunc
@@ -57,3 +61,6 @@ function ViewManager.GetView(viewName)
 
 	return view
 end
+
+
+

@@ -1,3 +1,6 @@
+require 'Framework/MVCFramework/Controller'
+require 'Framework/MVCFramework/Model'
+require 'Framework/MVCFramework/View'
 require 'Framework/MVCFramework/ControllerManager'
 require 'Framework/MVCFramework/ModelManager'
 require 'Framework/MVCFramework/ViewManager'

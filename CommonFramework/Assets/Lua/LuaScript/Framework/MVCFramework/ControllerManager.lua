@@ -18,6 +18,16 @@ function ControllerManager.RegisterControllers(controllers)
 				MessageCenter.SendMsg(msg,msgBody)
 			end
 			controller.sendMsgCallBack = SendMsg
+
+			local function GetView(viewName)
+				return ViewManager.GetView(viewName)
+			end
+			controller.getViewCallback = GetView
+
+			local function GetModel(modelName)
+				return ModelManager.GetModel(modelName)
+			end
+			controller.getModelCallback = GetModel
 		end
 		dicControllers[controllerName] = controller
 

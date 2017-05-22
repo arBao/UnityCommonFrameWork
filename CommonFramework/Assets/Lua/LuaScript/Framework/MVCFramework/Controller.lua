@@ -1,6 +1,7 @@
 Controller = class()
 
 function Controller:ctor()
+	Debugger.LogError('Controller:ctor')
 	self.sendMsgCallBack = nil
 	self.removeMsgListeningCallBack = nil
 	self.getViewCallback = nil
@@ -23,9 +24,9 @@ function Controller:SendMessage(msg,msgBody)
 end
 
 function Controller:GetView(viewName)
-	self.getViewCallback(viewName)
+	return self.getViewCallback(viewName)
 end
 
 function Controller:GetModel(modelName)
-	self.getModelCallback(modelName)
+	return self.getModelCallback(modelName)
 end
