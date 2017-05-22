@@ -11,6 +11,7 @@ public enum ECpuType
 public class AssetsManager 
 {
 	private Dictionary<string,AssetBundle> dicBundlesCache = new Dictionary<string, AssetBundle> ();
+	private Dictionary<string,Object> dicObjectCache = new Dictionary<string, Object>();
 	private static AssetsManager m_Instance = null;
 	public static AssetsManager Instance
 	{
@@ -65,14 +66,32 @@ public class AssetsManager
 	#endregion
 
 	#region 资源相关
-	public object GetAsset (string path, System.Type type, bool isGetAsset)
+	public object GetAsset (string path, System.Type type)
 	{
 		#if UNITY_EDITOR
-		 UnityEditor.AssetDatabase.LoadAssetAtPath(path,type);
+		
+		Object ret = null;
+		if(!dicObjectCache.ContainsKey(path))
+		{
+			ret = UnityEditor.AssetDatabase.LoadAssetAtPath(path,type);
+			dicObjectCache[path] = ret;
+		}
+		if(type == typeof(GameObject))
+		{
+			return GameObject.Instantiate(dicObjectCache[path]);
+		}
+		else
+		{
+			return dicObjectCache[path];
+		}
 		#else
 				
 		#endif
 		
+	}
+	public void ClearAssetsCache()
+	{
+		dicObjectCache.Clear();
 	}
 	#endregion
 	

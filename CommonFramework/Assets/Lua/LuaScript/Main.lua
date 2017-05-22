@@ -3,6 +3,11 @@ require 'Tools/Class'
 require 'Modules/TestModule/LuaComponentTest'
 require 'Framework/MVCFramework/MessageCenter'
 require 'Framework/MVCFramework/MVCFrameWork'
+require 'Tools/Functions'
+require 'Const/CSVPaths'
+require 'Tools/CSVParser'
+require 'Tools/PrintTable'
+
 
 --主入口函数。从这里开始lua逻辑
 function Main()	
@@ -14,11 +19,14 @@ function Main()
 	MessageCenter.RemoveListener('MsgTest',MsgTest1)
 	MessageCenter.RemoveListener('MsgTest',MsgTest2)
 	TestFunc()		
-	local gameobj = UnityEngine.GameObject.Find('UILogin')
+	--local gameobj = UnityEngine.GameObject.Find('UILogin')
 	--LuaComponent.Add(gameobj,LuaComponentTest)
 	MVCFrameWork.Init()
 
 	MessageCenter.SendMessage('ControllerMsgTest',122)
+	--local obj = AssetsManager.Instance:GetAsset('Assets/Res/UIPrefab/UILogin.prefab',typeof(UnityEngine.GameObject))
+	--local uidata = CSVParser.LoadCsv(CSVPaths.UIConfig,'UILogin')
+	--Debugger.LogError('uidata.path  ' .. uidata.path)
 end
 
 function MsgTest(msg,msgBody)

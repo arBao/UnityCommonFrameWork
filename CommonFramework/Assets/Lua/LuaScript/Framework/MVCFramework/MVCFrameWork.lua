@@ -32,6 +32,7 @@ end
 
 local function RegisterViews()
 	Debugger.LogError('RegisterViews')
+	ViewManager.Init()
 	ViewManager.RegisterViews(views)
 end
 

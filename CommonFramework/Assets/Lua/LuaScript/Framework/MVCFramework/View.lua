@@ -3,6 +3,7 @@ View = class()
 function View:cotr()
 	self.showCallback = nil
 	self.hideCallback = nil
+	self.uiobj = null
 end
 
 function View:SetViewData(viewDataParm)

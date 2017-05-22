@@ -50,8 +50,12 @@ public static class CustomSettings
         //_GT(typeof(TestExport.Space)),
         //-------------------------------------------------------------------        
                 
+		
         _GT(typeof(Debugger)).SetNameSpace(null),        
-
+		_GT(typeof(AssetsManager)),
+		_GT(typeof(TextAsset)),
+		_GT(typeof(CSharpTransfer)),
+		
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),
         _GT(typeof(DG.Tweening.Tween)).SetBaseType(typeof(System.Object)).AddExtendType(typeof(DG.Tweening.TweenExtensions)),

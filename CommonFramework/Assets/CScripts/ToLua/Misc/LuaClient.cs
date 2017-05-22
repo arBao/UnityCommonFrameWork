@@ -159,9 +159,14 @@ public class LuaClient : MonoBehaviour
         LuaBinder.Bind(luaState);
         LuaCoroutine.Register(luaState, this);
     }
-
+	
+	protected virtual void OnInit()
+	{
+		
+	}
     protected void Init()
-    {        
+    {    
+		OnInit();    
         InitLoader();
 		OnLuaLoaderCreate ();
         luaState = new LuaState();

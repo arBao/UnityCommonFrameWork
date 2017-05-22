@@ -18,6 +18,11 @@ public class LuaManager : LuaClient
 		#endif
 	}
 
+	protected override void OnInit ()
+	{
+		base.OnInit ();
+		gameObject.AddComponent<CSharpTransfer>();
+	}
 	protected override LuaFileUtils InitLoader ()
 	{
 		Debug.LogError ("LuaManager  InitLoader");

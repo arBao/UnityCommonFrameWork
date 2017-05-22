@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\CScripts\AssetsManager\AssetsManager.cs" />
+     <Compile Include="Assets\CScripts\LuaTools\CSharpTransfer.cs" />
      <Compile Include="Assets\CScripts\LuaTools\LuaComponent.cs" />
      <Compile Include="Assets\CScripts\LuaTools\LuaFileUtilsCustom.cs" />
      <Compile Include="Assets\CScripts\LuaTools\LuaManager.cs" />
@@ -114,6 +115,8 @@
      <Compile Include="Assets\CScripts\ToLua\Source\BaseType\System_TypeWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\BaseType\UnityEngine_CoroutineWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\BaseType\UnityEngine_ObjectWrap.cs" />
+     <Compile Include="Assets\CScripts\ToLua\Source\Generate\AssetsManagerWrap.cs" />
+     <Compile Include="Assets\CScripts\ToLua\Source\Generate\CSharpTransferWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\DelegateFactory.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\LuaBinder.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\LuaComponentWrap.cs" />
@@ -163,6 +166,7 @@
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_SleepTimeoutWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_SpaceWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_SphereColliderWrap.cs" />
+     <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_TextAssetWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_Texture2DWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_TextureWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_TimeWrap.cs" />
