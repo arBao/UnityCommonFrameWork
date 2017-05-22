@@ -1,4 +1,5 @@
 MessageNames = 
 {
-	
+	--ControllerLogin
+	OpenUILogin = 'OpenUILogin',
 }

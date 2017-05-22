@@ -155,6 +155,7 @@
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_PlayModeWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_QualitySettingsWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_QueueModeWrap.cs" />
+     <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_RectTransformWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_RenderSettingsWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_RenderTextureWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_RendererWrap.cs" />

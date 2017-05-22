@@ -5,6 +5,7 @@ require 'Framework/MVCFramework/MessageCenter'
 require 'Framework/MVCFramework/MVCFrameWork'
 require 'Tools/Functions'
 require 'Const/CSVPaths'
+require 'Const/MessageNames'
 require 'Tools/CSVParser'
 require 'Tools/PrintTable'
 
@@ -24,6 +25,7 @@ function Main()
 	MVCFrameWork.Init()
 
 	MessageCenter.SendMessage('ControllerMsgTest',122)
+	MessageCenter.SendMessage('MessageNames.OpenUILogin','')
 	--local obj = AssetsManager.Instance:GetAsset('Assets/Res/UIPrefab/UILogin.prefab',typeof(UnityEngine.GameObject))
 	--local uidata = CSVParser.LoadCsv(CSVPaths.UIConfig,'UILogin')
 	--Debugger.LogError('uidata.path  ' .. uidata.path)

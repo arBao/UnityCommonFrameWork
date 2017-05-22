@@ -55,6 +55,7 @@ public static class CustomSettings
 		_GT(typeof(AssetsManager)),
 		_GT(typeof(TextAsset)),
 		_GT(typeof(CSharpTransfer)),
+		_GT(typeof(RectTransform)),
 		
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),

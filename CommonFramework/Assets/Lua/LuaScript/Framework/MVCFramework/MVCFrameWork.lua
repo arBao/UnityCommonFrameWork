@@ -8,16 +8,19 @@ MVCFrameWork = class()
 local controllers = 
 {
 	['ControllerTest'] = require 'Modules/Controllers/ControllerTest',
+	['ControllerLogin'] = require 'Modules/Controllers/ControllerLogin',
 }
 
 local models = 
 {
 	['ModelTest'] = require 'Modules/Models/ModelTest',
+	['ModelLogin'] = require 'Modules/Models/ModelLogin',
 }
 
 local views = 
 {
 	['ViewTest'] = require 'Modules/Views/ViewTest',
+	['ViewUILogin'] = require 'Modules/Views/ViewUILogin',
 }
 
 local function RegisterControllers()
