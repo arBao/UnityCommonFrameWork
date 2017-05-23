@@ -1,2 +1,2 @@
-key,Remarks,layer,path
-ViewUILogin,,1,Assets/Res/UIPrefab/UILogin.prefab
+key,Remarks,layer,instack,path
+ViewUILogin,,1,1,Assets/Res/UIPrefab/UILogin.prefab

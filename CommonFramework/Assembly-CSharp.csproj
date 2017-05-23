@@ -136,6 +136,7 @@
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_BoxColliderWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_CameraClearFlagsWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_CameraWrap.cs" />
+     <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_CanvasWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_CapsuleColliderWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_CharacterControllerWrap.cs" />
      <Compile Include="Assets\CScripts\ToLua\Source\Generate\UnityEngine_ColliderWrap.cs" />

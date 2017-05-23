@@ -5,6 +5,7 @@ require 'Framework/MVCFramework/ControllerManager'
 require 'Framework/MVCFramework/ModelManager'
 require 'Framework/MVCFramework/ViewManager'
 require 'Framework/MVCFramework/MessageCenter'
+require 'Framework/MVCFramework/BaseComponent/UIDepthLua'
 
 MVCFrameWork = class()
 

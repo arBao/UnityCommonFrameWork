@@ -4,11 +4,13 @@ LuaComponentTest =
 	att = 50,
 	name = 'LuaComponentTest',
 	MonoComponent = nil,
+	gameObject = nil,
 }
 
-function LuaComponentTest:Awake(obj)
-	Debugger.LogError('Awake = '..self.name..'  obj  '..obj.name);
-	self.MonoComponent = obj
+function LuaComponentTest:Awake(monobehaviour)
+	Debugger.LogError('Awake = '..self.name..'  monobehaviour  '..monobehaviour.name);
+	self.MonoComponent = monobehaviour
+	self.gameObject = self.MonoComponent.gameObject
 end
 
 function LuaComponentTest:Start()

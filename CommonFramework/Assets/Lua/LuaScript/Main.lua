@@ -1,6 +1,6 @@
 require 'Framework/TestRequire'
 require 'Tools/Class'
-require 'Modules/TestModule/LuaComponentTest'
+require 'TestModule/LuaComponentTest'
 require 'Framework/MVCFramework/MessageCenter'
 require 'Framework/MVCFramework/MVCFrameWork'
 require 'Tools/Functions'
@@ -51,7 +51,7 @@ end
 
 function TestFunc()
 	print('TestFunc 2222222222321321321313131321')
-	require 'Modules/TestClass/ClassTest'
+	require 'TestClass/ClassTest'
 	MessageCenter.SendMessage('MsgTest',1)
 end
 

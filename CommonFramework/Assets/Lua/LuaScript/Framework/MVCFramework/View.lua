@@ -3,7 +3,9 @@ View = class()
 function View:cotr()
 	self.showCallback = nil
 	self.hideCallback = nil
-	self.uiobj = null
+	self.gameObject = null
+	self.isShow = false
+
 end
 
 function View:SetViewData(viewDataParm)
@@ -22,3 +24,28 @@ end
 function View:Hide()
 	self.hideCallback()
 end
+
+function View:OnAwake()
+	
+end
+
+function View:OnShowView()
+	
+end
+
+function View:OnHideView()
+	
+end
+
+function View:OnActive()
+	
+end
+
+function View:OnDeactive()
+	
+end
+
+function View:OnDestroy()
+	
+end
+
