@@ -14,17 +14,18 @@ function CSVParser.LoadCsv(path,key)
 		local csvLines = string.split(textAsset.text,'\n')
 		local headers = {}
 		for i = 1, #csvLines do
-			local csvLine = v
+			local csvLine = csvLines[i]
 			local csvData = string.split(csvLines[i],',')
+			local keyStr = csvData[1]
 			if i == 1 then
 				headers = csvData
 				csvHeaderCache[path] = csvLine
 			else
-				if csvDataCache[path][key] == nil then
-					csvDataCache[path][key] = {}
+				if csvDataCache[path][keyStr] == nil then
+					csvDataCache[path][keyStr] = {}
 				end
 				for j = 1,#headers do
-					csvDataCache[path][key][headers[j]] = csvData[j]
+					csvDataCache[path][keyStr][headers[j]] = csvData[j]
 				end
 			end
 		end

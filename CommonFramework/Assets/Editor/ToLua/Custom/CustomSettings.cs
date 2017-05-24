@@ -57,6 +57,8 @@ public static class CustomSettings
 		_GT(typeof(CSharpTransfer)),
 		_GT(typeof(RectTransform)),
 		_GT(typeof(Canvas)),
+		_GT(typeof(UnityEngine.UI.GraphicRaycaster)),
+		_GT(typeof(ButtonCustom)),
 		
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),

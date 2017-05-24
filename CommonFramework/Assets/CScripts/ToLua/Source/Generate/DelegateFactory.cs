@@ -24,6 +24,7 @@ public static class DelegateFactory
 		dict.Add(typeof(System.Comparison<int>), System_Comparison_int);
 		dict.Add(typeof(UnityEngine.RectTransform.ReapplyDrivenProperties), UnityEngine_RectTransform_ReapplyDrivenProperties);
 		dict.Add(typeof(UnityEngine.Canvas.WillRenderCanvases), UnityEngine_Canvas_WillRenderCanvases);
+		dict.Add(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.GameObject>), System_Action_LuaInterface_LuaTable_UnityEngine_GameObject);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.Application.LogCallback), UnityEngine_Application_LogCallback);
 		dict.Add(typeof(UnityEngine.Application.AdvertisingIdentifierCallback), UnityEngine_Application_AdvertisingIdentifierCallback);
@@ -466,6 +467,55 @@ public static class DelegateFactory
 		{
 			UnityEngine_Canvas_WillRenderCanvases_Event target = new UnityEngine_Canvas_WillRenderCanvases_Event(func, self);
 			UnityEngine.Canvas.WillRenderCanvases d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	class System_Action_LuaInterface_LuaTable_UnityEngine_GameObject_Event : LuaDelegate
+	{
+		public System_Action_LuaInterface_LuaTable_UnityEngine_GameObject_Event(LuaFunction func) : base(func) { }
+		public System_Action_LuaInterface_LuaTable_UnityEngine_GameObject_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(LuaInterface.LuaTable param0, UnityEngine.GameObject param1)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.Push(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(LuaInterface.LuaTable param0, UnityEngine.GameObject param1)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.Push(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public static Delegate System_Action_LuaInterface_LuaTable_UnityEngine_GameObject(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<LuaInterface.LuaTable,UnityEngine.GameObject> fn = delegate(LuaInterface.LuaTable param0, UnityEngine.GameObject param1) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_LuaInterface_LuaTable_UnityEngine_GameObject_Event target = new System_Action_LuaInterface_LuaTable_UnityEngine_GameObject_Event(func);
+			System.Action<LuaInterface.LuaTable,UnityEngine.GameObject> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_LuaInterface_LuaTable_UnityEngine_GameObject_Event target = new System_Action_LuaInterface_LuaTable_UnityEngine_GameObject_Event(func, self);
+			System.Action<LuaInterface.LuaTable,UnityEngine.GameObject> d = target.CallWithSelf;
 			target.method = d.Method;
 			return d;
 		}

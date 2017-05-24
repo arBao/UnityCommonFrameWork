@@ -15,7 +15,7 @@ function ControllerManager.RegisterControllers(controllers)
 			MessageCenter.AddListener(msgListening[i],MsgRegister)
 
 			local function SendMsg(msg,msgBody)
-				MessageCenter.SendMsg(msg,msgBody)
+				MessageCenter.SendMessage(msg,msgBody)
 			end
 			controller.sendMsgCallBack = SendMsg
 

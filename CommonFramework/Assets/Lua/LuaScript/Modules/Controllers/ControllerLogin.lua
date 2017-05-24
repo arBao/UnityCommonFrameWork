@@ -22,8 +22,13 @@ function ControllerLogin:OnReciveMessage(msg,msgBody)
 end
 
 function ControllerLogin:ShowUILogin()
-	self.loginView = self:GetView('ViewUILogin')
+	if self.loginView == nil then
+		self.loginView = self:GetView('ViewUILogin')
+	end
 	self.loginView:Show()
+	self.loginView.OnClickButtonLoginCallback = function ( )
+		self:SendMessage(MessageNames.OpenUISelectServer,nil)
+	end
 end
 
 return ControllerLogin

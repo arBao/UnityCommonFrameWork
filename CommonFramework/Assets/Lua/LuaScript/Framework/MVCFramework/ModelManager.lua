@@ -6,7 +6,7 @@ function ModelManager.RegisterModels(models)
 		Debugger.LogError(modelClass)
 		local model = modelClass.new()
 		local function SendMsg(msg,msgBody)
-			MessageCenter.SendMsg(msg,msgBody)
+			MessageCenter.SendMessage(msg,msgBody)
 		end
 		model.sendMsgCallBack = SendMsg
 		dicModels[modelName] = model

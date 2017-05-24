@@ -5,7 +5,8 @@ function View:cotr()
 	self.hideCallback = nil
 	self.gameObject = null
 	self.isShow = false
-
+	self.findTransformCallback = nil
+	self.transformCache = nil
 end
 
 function View:SetViewData(viewDataParm)
@@ -23,6 +24,10 @@ end
 
 function View:Hide()
 	self.hideCallback()
+end
+
+function View:FindTransform(name)
+	return self.findTransformCallback(name)
 end
 
 function View:OnAwake()

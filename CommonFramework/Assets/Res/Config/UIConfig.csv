@@ -1,3 +1,5 @@
 key,Remarks,layer,path
 ViewUILogin,,1,Assets/Res/UIPrefab/UILogin.prefab
 ViewUISelectServer,,1,Assets/Res/UIPrefab/UISelectServer.prefab
+ViewUIPopUp1,,2,Assets/Res/UIPrefab/UIPopUp1.prefab
+ViewUITop1,,3,Assets/Res/UIPrefab/UITop1.prefab

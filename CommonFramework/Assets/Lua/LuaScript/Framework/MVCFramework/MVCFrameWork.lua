@@ -6,41 +6,24 @@ require 'Framework/MVCFramework/ModelManager'
 require 'Framework/MVCFramework/ViewManager'
 require 'Framework/MVCFramework/MessageCenter'
 require 'Framework/MVCFramework/BaseComponent/UIDepthLua'
+require 'Modules/MVCRegister'
 
 MVCFrameWork = class()
 
-local controllers = 
-{
-	['ControllerTest'] = require 'Modules/Controllers/ControllerTest',
-	['ControllerLogin'] = require 'Modules/Controllers/ControllerLogin',
-}
-
-local models = 
-{
-	['ModelTest'] = require 'Modules/Models/ModelTest',
-	['ModelLogin'] = require 'Modules/Models/ModelLogin',
-}
-
-local views = 
-{
-	['ViewTest'] = require 'Modules/Views/ViewTest',
-	['ViewUILogin'] = require 'Modules/Views/ViewUILogin',
-}
-
 local function RegisterControllers()
-	Debugger.LogError('RegisterControllers')
-	ControllerManager.RegisterControllers(controllers)
+	-- Debugger.LogError('RegisterControllers')
+	ControllerManager.RegisterControllers(MVCRegister.Controllers)
 end
 
 local function RegisterModels()
-	Debugger.LogError('RegisterModels')
-	ModelManager.RegisterModels(models)
+	-- Debugger.LogError('RegisterModels')
+	ModelManager.RegisterModels(MVCRegister.Models)
 end
 
 local function RegisterViews()
-	Debugger.LogError('RegisterViews')
+	-- Debugger.LogError('RegisterViews')
 	ViewManager.Init()
-	ViewManager.RegisterViews(views)
+	ViewManager.RegisterViews(MVCRegister.Views)
 end
 
 function MVCFrameWork.Init()

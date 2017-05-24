@@ -38,6 +38,13 @@ function ViewManager.Init()
 	CSharpTransfer.Instance:DontDestroyObj(UIRoot)
 end
 
+local function SetTransformDic(transform,dicTransforms)
+    dicTransforms[transform.name] = transform
+    for i = 0,transform.childCount - 1,1 do
+     	SetTransformDic(transform:GetChild(i),dicTransforms)
+    end
+end 
+
 function ViewManager.GetView(viewName)
 	Debugger.LogError('ViewManager.GetView ' .. viewName)
 	local view = viewClassCacheDic[viewName].new()
@@ -52,6 +59,8 @@ function ViewManager.GetView(viewName)
 			local uiGameObj = AssetsManager.Instance:GetAsset(uidata.path,typeof(UnityEngine.GameObject))
 			uiGameObj.name = viewName
 			view.gameObject = uiGameObj
+			view.transformCache = {}
+			SetTransformDic(view.gameObject.transform,view.transformCache)
 
 			local sortLayerName = ''
 
@@ -68,11 +77,14 @@ function ViewManager.GetView(viewName)
 			uiGameObj.transform.localPosition = Vector3.zero
 			uiGameObj.transform.localScale = Vector3.one
 			uiGameObj.transform.localRotation = Quaternion.identity
+
 			local recttransform = uiGameObj:GetComponent('RectTransform')
 			recttransform:SetAsLastSibling()
 
 			local uidepth = LuaComponent.Add(uiGameObj,UIDepthLua)
 			uidepth:SetLayerData(true,sortLayerName,1)
+
+			uiGameObj:AddComponent(typeof(UnityEngine.UI.GraphicRaycaster))
 
 			view:OnAwake()
 
@@ -85,7 +97,7 @@ function ViewManager.GetView(viewName)
 		elseif uidata.layer == LayerOrderNum.UITop then
 
 		end
-		
+
 		table.insert(viewStackArray,view)
 	
 	end
@@ -95,6 +107,15 @@ function ViewManager.GetView(viewName)
 		
 	end
 	view.Hide = hideFunc
+
+	local function findTransform(name)
+		local transform = view.transformCache[name]
+     	if transform == nil then
+     		Debugger.LogError('name transform not found ' .. name .. '  view  ' .. viewName)
+     	end
+     	return transform
+	end
+	view.findTransformCallback = findTransform
 
 	return view
 end
