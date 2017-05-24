@@ -24,11 +24,12 @@ end
 function ControllerLogin:ShowUILogin()
 	if self.loginView == nil then
 		self.loginView = self:GetView('ViewUILogin')
+		self.loginView.OnClickButtonLoginCallback = function ( )
+			self:SendMessage(MessageNames.OpenUISelectServer,nil)
+		end
 	end
 	self.loginView:Show()
-	self.loginView.OnClickButtonLoginCallback = function ( )
-		self:SendMessage(MessageNames.OpenUISelectServer,nil)
-	end
+	
 end
 
 return ControllerLogin

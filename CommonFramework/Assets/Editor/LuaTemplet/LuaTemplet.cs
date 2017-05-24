@@ -44,7 +44,8 @@ public class LuaTemplet
 			File.Delete (savePath);
 		string luaTemplet = File.ReadAllText (templetPath);
 		luaTemplet = luaTemplet.Replace (relpaceName, fileName);
-		File.WriteAllText (savePath, luaTemplet,System.Text.Encoding.UTF8);
+		System.Text.UTF8Encoding utf8 = new System.Text.UTF8Encoding(false);
+		File.WriteAllText (savePath, luaTemplet,utf8);
 
 		AssetDatabase.Refresh();
 	}
