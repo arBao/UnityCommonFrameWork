@@ -25,7 +25,7 @@ function UIDepthLua:SetLayerData(isUIParm,sortinglayerParm,sortingOrderParm)
 	self.sortinglayer = sortinglayerParm
 	self.sortingOrder = sortingOrderParm
 	if isUIParm then
-		local canvas = self.gameObject:GetComponent('UnityEngine.Canvas')
+		local canvas = self.gameObject:GetComponent('Canvas')
 		if canvas == nil then
 			canvas = self.gameObject:AddComponent(typeof(UnityEngine.Canvas))
 		end
@@ -37,8 +37,31 @@ function UIDepthLua:SetLayerData(isUIParm,sortinglayerParm,sortingOrderParm)
 		for i = 1,#renders do
 			local render = renders[i]
 			render.sortingOrder = sortingOrderParm
-			canvas.sortingLayerName = sortinglayerParm
+			render.sortingLayerName = sortinglayerParm
 		end
 	end
 
 end
+
+function UIDepthLua:SetLayerOrderNum(orderNum)
+	self.sortingOrder = orderNum
+	if self.isUI then
+		local canvas = self.gameObject:GetComponent('Canvas')
+		canvas.sortingOrder = orderNum
+	else
+		local renders = self.gameObject:GetComponentsInChildren('Renderer')
+		for i = 1,#renders do
+			local render = renders[i]
+			render.sortingOrder = orderNum
+		end
+	end
+
+end
+
+
+
+
+
+
+
+

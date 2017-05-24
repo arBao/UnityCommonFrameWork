@@ -45,23 +45,38 @@ local function SetTransformDic(transform,dicTransforms)
     end
 end 
 
+local function SetHideView(view)
+	view.gameObject:SetActive(false)
+	view.isShow = false
+	view:OnDeactive()
+	view:OnHideView()
+end
+
+local function SetShowView(view)
+	view.gameObject:SetActive(true)
+	view.isShow = true
+	view:OnShowView()
+	view:OnActive()
+end
+
 function ViewManager.GetView(viewName)
 	Debugger.LogError('ViewManager.GetView ' .. viewName)
 	local view = viewClassCacheDic[viewName].new()
+	view.name = viewName
 
 	local function showFunc()
-
-		local uidata = CSVParser.LoadCsv(CSVPaths.UIConfig,viewName)
 
 		if view.gameObject ~= nil then
 
 		else
+			local uidata = CSVParser.LoadCsv(CSVPaths.UIConfig,viewName)
 			local uiGameObj = AssetsManager.Instance:GetAsset(uidata.path,typeof(UnityEngine.GameObject))
 			uiGameObj.name = viewName
 			view.gameObject = uiGameObj
 			view.transformCache = {}
 			SetTransformDic(view.gameObject.transform,view.transformCache)
 
+			view.layer = uidata.layer
 			local sortLayerName = ''
 
 			if uidata.layer == LayerOrderNum.UINormal then
@@ -74,6 +89,7 @@ function ViewManager.GetView(viewName)
 				uiGameObj.transform.parent = UITop.transform
 				sortLayerName = LayerOrderName.UITop
 			end
+
 			uiGameObj.transform.localPosition = Vector3.zero
 			uiGameObj.transform.localScale = Vector3.one
 			uiGameObj.transform.localRotation = Quaternion.identity
@@ -87,24 +103,56 @@ function ViewManager.GetView(viewName)
 			uiGameObj:AddComponent(typeof(UnityEngine.UI.GraphicRaycaster))
 
 			view:OnAwake()
-
+			SetShowView(view)
 		end
-		--隐藏栈里面的已界面显示
-		if uidata.layer == LayerOrderNum.UINormal then
-
-		elseif uidata.layer == LayerOrderNum.UIPopup then
-
-		elseif uidata.layer == LayerOrderNum.UITop then
-
+		--如果是normal层的界面，就要隐藏栈里面的已界面显示
+		if view.layer == LayerOrderNum.UINormal then
+			Debugger.LogError('if view.layer == LayerOrderName.UINormal then')
+			for i = #viewStackArray, 1, -1 do
+				local viewInStack = viewStackArray[i]
+			
+				if viewInStack.isShow == true then
+					SetHideView(viewInStack)
+				end
+			end
 		end
+		--设置SortingOrder
+		local normalOrderCnt = 1
+		local popupOrderCnt = 1
+		local topOrderCnt = 1
 
+		for i = 1,#viewStackArray do
+			if view.layer == LayerOrderNum.UINormal then
+				if view.isShow == true then
+					local uidepth = LuaComponent.Get(view.gameObject,UIDepthLua)
+					uidepth:SetLayerOrderNum(normalOrderCnt)
+					normalOrderCnt = normalOrderCnt + 1
+				end
+			elseif view.layer == LayerOrderNum.UIPopup then
+				if view.isShow == true then
+					local uidepth = LuaComponent.Get(view.gameObject,UIDepthLua)
+					uidepth:SetLayerOrderNum(popupOrderCnt)
+					popupOrderCnt = popupOrderCnt + 1
+				end
+			else
+				if view.isShow == true then
+					local uidepth = LuaComponent.Get(view.gameObject,UIDepthLua)
+					uidepth:SetLayerOrderNum(topOrderCnt)
+					topOrderCnt = topOrderCnt + 1
+				end
+			end
+		end
+		
+		--入栈
 		table.insert(viewStackArray,view)
 	
 	end
 	view.showCallback = showFunc
 
 	local function hideFunc()
-		
+		view.gameObject:SetActive(false)
+		view:OnDeactive()
+		view:OnHideView()
 	end
 	view.Hide = hideFunc
 

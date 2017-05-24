@@ -5,6 +5,17 @@ using UnityEditor;
 
 public class LuaTemplet 
 {
+
+	[MenuItem("Assets/Lua模板/创建Model类")]
+	public static void CreateModelClass()
+	{
+		string defaultPath = Application.dataPath + "/Lua/LuaScript/Modules/Models";
+		string savePath = EditorUtility.SaveFilePanel ("请输入Model类名", defaultPath, "Model", "lua");
+		string templetPath = Application.dataPath.Remove (Application.dataPath.Length - 6, 6) + "LuaTemplet/ModelTemplet.lua";
+
+		CreateFile (savePath, templetPath,"ModelTemplet");
+	}
+
 	[MenuItem("Assets/Lua模板/创建View类")]
 	public static void CreateViewClass()
 	{
@@ -23,16 +34,6 @@ public class LuaTemplet
 		string templetPath = Application.dataPath.Remove (Application.dataPath.Length - 6, 6) + "LuaTemplet/ControllerTemplet.lua";
 
 		CreateFile (savePath, templetPath,"ControllerTemplet");
-	}
-
-	[MenuItem("Assets/Lua模板/创建Model类")]
-	public static void CreateModelClass()
-	{
-		string defaultPath = Application.dataPath + "/Lua/LuaScript/Modules/Models";
-		string savePath = EditorUtility.SaveFilePanel ("请输入Model类名", defaultPath, "Model", "lua");
-		string templetPath = Application.dataPath.Remove (Application.dataPath.Length - 6, 6) + "LuaTemplet/ModelTemplet.lua";
-
-		CreateFile (savePath, templetPath,"ModelTemplet");
 	}
 
 	private static void CreateFile(string savePath,string templetPath,string relpaceName)
