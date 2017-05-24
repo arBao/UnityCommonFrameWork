@@ -22,7 +22,7 @@ function ControllerSelectServer:ShowSelectServerView()
 	if self.selectServerView == nil then
 		self.selectServerView = self:GetView('ViewUISelectServer')
 		self.selectServerView.onclickBtnConfirmCallback = function ( )
-			self:SendMessage(MessageNames.OpenUIPopUp1,nil)
+			self:SendMessage(MessageNames.OpenUIPopUp3,nil)
 		end
 	end
 		

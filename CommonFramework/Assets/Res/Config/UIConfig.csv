@@ -3,5 +3,7 @@ ViewUILogin,,1,Assets/Res/UIPrefab/UILogin.prefab
 ViewUISelectServer,,1,Assets/Res/UIPrefab/UISelectServer.prefab
 ViewUIPopUp1,,2,Assets/Res/UIPrefab/UIPopUp1.prefab
 ViewUIPopUp2,,2,Assets/Res/UIPrefab/UIPopUp2.prefab
+ViewUIPopUp3,,2,Assets/Res/UIPrefab/UIPopUp3.prefab
+ViewUIPopUp4,,2,Assets/Res/UIPrefab/UIPopUp4.prefab
 ViewUITop1,,3,Assets/Res/UIPrefab/UITop1.prefab
 ViewUITop2,,3,Assets/Res/UIPrefab/UITop2.prefab
