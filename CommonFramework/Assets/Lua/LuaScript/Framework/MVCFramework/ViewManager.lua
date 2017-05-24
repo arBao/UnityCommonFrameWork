@@ -1,24 +1,30 @@
 ViewManager = class()
-local dicViewClassCache = {}
+local viewClassCacheDic = {}--view类
+local viewInstanceCache = {}--实例化后的view
+local viewStackArray = {}--view栈
 local UIRoot = nil
 local UINormal = nil
 local UIPopup = nil
 local UITop = nil
-local normalViewCache = {}
-local popupViewCache = {}
-local topViewCache = {}
-
+--UI节点上的gameobject名称
 local LayerOrderName = {
 	UINormal = 'UINormal',
 	UIPopup = 'UIPopup',
 	UITop = 'UITop',
 }
 
+--表数据里面的layer字段值
+local LayerOrderNum = {
+	UINormal = '1',
+	UIPopup = '2',
+	UITop = '3',
+}
+
 function ViewManager.RegisterViews(views)
 	for viewName,viewClass in pairs(views) do
 		Debugger.LogError("viewName " .. viewName)
 		Debugger.LogError(viewClass)
-		dicViewClassCache[viewName] = viewClass
+		viewClassCacheDic[viewName] = viewClass
 	end
 end
 
@@ -34,7 +40,8 @@ end
 
 function ViewManager.GetView(viewName)
 	Debugger.LogError('ViewManager.GetView ' .. viewName)
-	local view = dicViewClassCache[viewName].new()
+	local view = viewClassCacheDic[viewName].new()
+
 	local function showFunc()
 
 		local uidata = CSVParser.LoadCsv(CSVPaths.UIConfig,viewName)
@@ -48,13 +55,13 @@ function ViewManager.GetView(viewName)
 
 			local sortLayerName = ''
 
-			if uidata.layer == '1' then
+			if uidata.layer == LayerOrderNum.UINormal then
 				uiGameObj.transform.parent = UINormal.transform
 				sortLayerName = LayerOrderName.UINormal
-			elseif uidata.layer == '2' then
+			elseif uidata.layer == LayerOrderNum.UIPopup then
 				uiGameObj.transform.parent = UIPopup.transform
 				sortLayerName = LayerOrderName.UIPopup
-			elseif uidata.layer == '3' then
+			elseif uidata.layer == LayerOrderNum.UITop then
 				uiGameObj.transform.parent = UITop.transform
 				sortLayerName = LayerOrderName.UITop
 			end
@@ -67,17 +74,19 @@ function ViewManager.GetView(viewName)
 			local uidepth = LuaComponent.Add(uiGameObj,UIDepthLua)
 			uidepth:SetLayerData(true,sortLayerName,1)
 
+			view:OnAwake()
+
 		end
+		--隐藏栈里面的已界面显示
+		if uidata.layer == LayerOrderNum.UINormal then
 
-		if uidata.layer == '1' then
-			viewShow = normalViewCache[viewName]
-		elseif uidata.layer == '2' then
-			viewShow = popupViewCache[viewName]
-		elseif uidata.layer == '3' then
-			viewShow = topViewCache[viewName]
+		elseif uidata.layer == LayerOrderNum.UIPopup then
+
+		elseif uidata.layer == LayerOrderNum.UITop then
+
 		end
-
-
+		
+		table.insert(viewStackArray,view)
 	
 	end
 	view.showCallback = showFunc
