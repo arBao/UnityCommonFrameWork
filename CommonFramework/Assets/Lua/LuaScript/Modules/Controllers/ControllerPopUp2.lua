@@ -7,17 +7,25 @@ end
 function ControllerPopUp2:MessagesListening()
 	local messages = 
 	{
-		--MessageNames.OpenUILogin,
+		MessageNames.OpenUIPopUp2,
 	}
 	return messages
 end
 
 function ControllerPopUp2:OnReciveMessage(msg,msgBody)
-	-- if msg == MessageNames.OpenUILogin then
-		
-	-- elseif msg == MessageNames.XXXX then
-		
-	-- end
+	if msg == MessageNames.OpenUIPopUp2 then
+		self:ShowPopupView()
+	end
+end
+
+function ControllerPopUp2:ShowPopupView()
+	if self.popupview == nil then
+		self.popupview = self:GetView('ViewUIPopUp2')
+		self.popupview.onClickButtonConfirmCallback = function ()
+			self:SendMessage(MessageNames.OpenUITop1,nil)
+		end
+	end
+	self.popupview:Show()
 end
 
 return ControllerPopUp2

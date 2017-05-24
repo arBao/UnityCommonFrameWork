@@ -2,7 +2,10 @@ local ViewUISelectServer = class(View)
 
 function ViewUISelectServer:OnAwake()
 	self.ButtonConfirm = self:FindTransform('ButtonConfirm'):GetComponent('ButtonCustom')
+	self.ButtonBack = self:FindTransform('ButtonBack'):GetComponent('ButtonCustom')
+
 	self.ButtonConfirm:SetClickAction(self,ViewUISelectServer.OnClickConfirm)
+	self.ButtonBack:SetClickAction(self,ViewUISelectServer.OnClickBack)
 end
 
 function ViewUISelectServer:OnShowView()
@@ -33,4 +36,12 @@ function ViewUISelectServer.OnClickConfirm(self,sender)
 	end
 end
 
+function ViewUISelectServer.OnClickBack(self,sender)
+	Debugger.LogError('ViewUISelectServer.OnClickBack')
+	self:Hide()
+end
+
 return ViewUISelectServer
+
+
+

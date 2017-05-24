@@ -7,17 +7,23 @@ end
 function ControllerTop2:MessagesListening()
 	local messages = 
 	{
-		--MessageNames.OpenUILogin,
+		MessageNames.OpenUITop2,
 	}
 	return messages
 end
 
 function ControllerTop2:OnReciveMessage(msg,msgBody)
-	-- if msg == MessageNames.OpenUILogin then
+	if msg == MessageNames.OpenUITop2 then
+		self:ShowTop2()
+	end
+end
+
+function ControllerTop2:ShowTop2()
+	if self.top2view == nil then
+		self.top2view = self:GetView('ViewUITop2')
 		
-	-- elseif msg == MessageNames.XXXX then
-		
-	-- end
+	end
+	self.top2view:Show()
 end
 
 return ControllerTop2

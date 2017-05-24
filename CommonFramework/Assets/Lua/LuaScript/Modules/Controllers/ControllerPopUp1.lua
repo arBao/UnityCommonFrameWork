@@ -22,7 +22,7 @@ function ControllerPopUp1:ShowPopupView()
 	if self.popupview == nil then
 		self.popupview = self:GetView('ViewUIPopUp1')
 		self.popupview.onClickButtonConfirmCallback = function ()
-			self:SendMessage(MessageNames.OpenUITop1,nil)
+			self:SendMessage(MessageNames.OpenUIPopUp2,nil)
 		end
 	end
 	self.popupview:Show()

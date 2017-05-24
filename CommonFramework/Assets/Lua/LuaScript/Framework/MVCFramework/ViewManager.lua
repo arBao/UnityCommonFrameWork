@@ -1,7 +1,8 @@
 ViewManager = class()
 local viewClassCacheDic = {}--view类
 local viewInstanceCache = {}--实例化后的view
-local viewStackArray = {}--view栈
+local viewNormalPopupStackArray = {}--view Normal和Popup管理栈
+local viewTopStackArray = {}--view Top层管理栈
 local UIRoot = nil
 local UINormal = nil
 local UIPopup = nil
@@ -108,53 +109,64 @@ function ViewManager.GetView(viewName)
 		--如果是normal层的界面，就要隐藏栈里面的已界面显示
 		if view.layer == LayerOrderNum.UINormal then
 			Debugger.LogError('if view.layer == LayerOrderName.UINormal then')
-			for i = #viewStackArray, 1, -1 do
-				local viewInStack = viewStackArray[i]
-			
-				if viewInStack.isShow == true then
-					SetHideView(viewInStack)
+			for i = #viewNormalPopupStackArray, 1, -1 do
+				local viewInStack = viewNormalPopupStackArray[i]
+				if view.layer == LayerOrderNum.UINormal or view.layer == LayerOrderNum.UIPopup then
+					if viewInStack.isShow == true then
+						SetHideView(viewInStack)
+					end
 				end
 			end
 		end
-		--设置SortingOrder
-		local normalOrderCnt = 1
-		local popupOrderCnt = 1
-		local topOrderCnt = 1
 
-		for i = 1,#viewStackArray do
-			if view.layer == LayerOrderNum.UINormal then
-				if view.isShow == true then
-					local uidepth = LuaComponent.Get(view.gameObject,UIDepthLua)
-					uidepth:SetLayerOrderNum(normalOrderCnt)
-					normalOrderCnt = normalOrderCnt + 1
-				end
-			elseif view.layer == LayerOrderNum.UIPopup then
-				if view.isShow == true then
-					local uidepth = LuaComponent.Get(view.gameObject,UIDepthLua)
-					uidepth:SetLayerOrderNum(popupOrderCnt)
-					popupOrderCnt = popupOrderCnt + 1
-				end
-			else
-				if view.isShow == true then
-					local uidepth = LuaComponent.Get(view.gameObject,UIDepthLua)
-					uidepth:SetLayerOrderNum(topOrderCnt)
-					topOrderCnt = topOrderCnt + 1
+		--入栈
+		if view.layer == LayerOrderNum.UINormal or view.layer == LayerOrderNum.UIPopup then
+			table.insert(viewNormalPopupStackArray,view)
+
+			--设置SortingOrder
+			local normalOrderCnt = 1
+			local popupOrderCnt = 1
+			for i = 1,#viewNormalPopupStackArray do
+				local viewInStack = viewNormalPopupStackArray[i]
+				if viewInStack.layer == LayerOrderNum.UINormal then
+					if viewInStack.isShow == true then
+						local uidepth = LuaComponent.Get(viewInStack.gameObject,UIDepthLua)
+						uidepth:SetLayerOrderNum(normalOrderCnt)
+						normalOrderCnt = normalOrderCnt + 1
+					end
+				else 
+					if viewInStack.isShow == true then
+						local uidepth = LuaComponent.Get(viewInStack.gameObject,UIDepthLua)
+						uidepth:SetLayerOrderNum(popupOrderCnt)
+						popupOrderCnt = popupOrderCnt + 1
+					end
 				end
 			end
+		else
+			table.insert(viewTopStackArray,view)
+			local topOrderCnt = 1
+			for i = 1,#viewTopStackArray do
+				local viewInStack = viewTopStackArray[i]
+				local uidepth = LuaComponent.Get(viewInStack.gameObject,UIDepthLua)
+				uidepth:SetLayerOrderNum(topOrderCnt)
+				topOrderCnt = topOrderCnt + 1
+			end
 		end
-		
-		--入栈
-		table.insert(viewStackArray,view)
-	
+
 	end
 	view.showCallback = showFunc
 
 	local function hideFunc()
-		view.gameObject:SetActive(false)
-		view:OnDeactive()
-		view:OnHideView()
+		if view.layer == LayerOrderNum.UINormal then
+
+		elseif view.layer == LayerOrderNum.UIPopup then
+
+		else
+			
+		end
+		
 	end
-	view.Hide = hideFunc
+	view.hideCallback = hideFunc
 
 	local function findTransform(name)
 		local transform = view.transformCache[name]

@@ -21,7 +21,9 @@ end
 function ControllerTop1:ShowTop1()
 	if self.top1view == nil then
 		self.top1view = self:GetView('ViewUITop1')
-		
+		self.top1view.onClickButtonConfirmCallback = function ()
+			self:SendMessage(MessageNames.OpenUITop2,nil)
+		end
 	end
 	self.top1view:Show()
 end
