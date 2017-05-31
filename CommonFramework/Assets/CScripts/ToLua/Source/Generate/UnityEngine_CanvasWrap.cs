@@ -26,9 +26,10 @@ public class UnityEngine_CanvasWrap
 		L.RegVar("overrideSorting", get_overrideSorting, set_overrideSorting);
 		L.RegVar("sortingOrder", get_sortingOrder, set_sortingOrder);
 		L.RegVar("targetDisplay", get_targetDisplay, set_targetDisplay);
-		L.RegVar("sortingGridNormalizedSize", get_sortingGridNormalizedSize, set_sortingGridNormalizedSize);
+		L.RegVar("normalizedSortingGridSize", get_normalizedSortingGridSize, set_normalizedSortingGridSize);
 		L.RegVar("sortingLayerID", get_sortingLayerID, set_sortingLayerID);
 		L.RegVar("cachedSortingLayerValue", get_cachedSortingLayerValue, null);
+		L.RegVar("additionalShaderChannels", get_additionalShaderChannels, set_additionalShaderChannels);
 		L.RegVar("sortingLayerName", get_sortingLayerName, set_sortingLayerName);
 		L.RegVar("rootCanvas", get_rootCanvas, null);
 		L.RegVar("willRenderCanvases", get_willRenderCanvases, set_willRenderCanvases);
@@ -373,7 +374,7 @@ public class UnityEngine_CanvasWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_sortingGridNormalizedSize(IntPtr L)
+	static int get_normalizedSortingGridSize(IntPtr L)
 	{
 		object o = null;
 
@@ -381,13 +382,13 @@ public class UnityEngine_CanvasWrap
 		{
 			o = ToLua.ToObject(L, 1);
 			UnityEngine.Canvas obj = (UnityEngine.Canvas)o;
-			int ret = obj.sortingGridNormalizedSize;
-			LuaDLL.lua_pushinteger(L, ret);
+			float ret = obj.normalizedSortingGridSize;
+			LuaDLL.lua_pushnumber(L, ret);
 			return 1;
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index sortingGridNormalizedSize on a nil value" : e.Message);
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index normalizedSortingGridSize on a nil value" : e.Message);
 		}
 	}
 
@@ -426,6 +427,25 @@ public class UnityEngine_CanvasWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index cachedSortingLayerValue on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_additionalShaderChannels(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.Canvas obj = (UnityEngine.Canvas)o;
+			UnityEngine.AdditionalCanvasShaderChannels ret = obj.additionalShaderChannels;
+			ToLua.Push(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index additionalShaderChannels on a nil value" : e.Message);
 		}
 	}
 
@@ -665,7 +685,7 @@ public class UnityEngine_CanvasWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int set_sortingGridNormalizedSize(IntPtr L)
+	static int set_normalizedSortingGridSize(IntPtr L)
 	{
 		object o = null;
 
@@ -673,13 +693,13 @@ public class UnityEngine_CanvasWrap
 		{
 			o = ToLua.ToObject(L, 1);
 			UnityEngine.Canvas obj = (UnityEngine.Canvas)o;
-			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
-			obj.sortingGridNormalizedSize = arg0;
+			float arg0 = (float)LuaDLL.luaL_checknumber(L, 2);
+			obj.normalizedSortingGridSize = arg0;
 			return 0;
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index sortingGridNormalizedSize on a nil value" : e.Message);
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index normalizedSortingGridSize on a nil value" : e.Message);
 		}
 	}
 
@@ -699,6 +719,25 @@ public class UnityEngine_CanvasWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index sortingLayerID on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_additionalShaderChannels(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.Canvas obj = (UnityEngine.Canvas)o;
+			UnityEngine.AdditionalCanvasShaderChannels arg0 = (UnityEngine.AdditionalCanvasShaderChannels)ToLua.CheckObject(L, 2, typeof(UnityEngine.AdditionalCanvasShaderChannels));
+			obj.additionalShaderChannels = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index additionalShaderChannels on a nil value" : e.Message);
 		}
 	}
 

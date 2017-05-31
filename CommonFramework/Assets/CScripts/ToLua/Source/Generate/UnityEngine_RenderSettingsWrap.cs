@@ -21,12 +21,14 @@ public class UnityEngine_RenderSettingsWrap
 		L.RegVar("ambientLight", get_ambientLight, set_ambientLight);
 		L.RegVar("ambientIntensity", get_ambientIntensity, set_ambientIntensity);
 		L.RegVar("ambientProbe", get_ambientProbe, set_ambientProbe);
+		L.RegVar("subtractiveShadowColor", get_subtractiveShadowColor, set_subtractiveShadowColor);
 		L.RegVar("reflectionIntensity", get_reflectionIntensity, set_reflectionIntensity);
 		L.RegVar("reflectionBounces", get_reflectionBounces, set_reflectionBounces);
 		L.RegVar("haloStrength", get_haloStrength, set_haloStrength);
 		L.RegVar("flareStrength", get_flareStrength, set_flareStrength);
 		L.RegVar("flareFadeSpeed", get_flareFadeSpeed, set_flareFadeSpeed);
 		L.RegVar("skybox", get_skybox, set_skybox);
+		L.RegVar("sun", get_sun, set_sun);
 		L.RegVar("defaultReflectionMode", get_defaultReflectionMode, set_defaultReflectionMode);
 		L.RegVar("defaultReflectionResolution", get_defaultReflectionResolution, set_defaultReflectionResolution);
 		L.RegVar("customReflection", get_customReflection, set_customReflection);
@@ -234,6 +236,20 @@ public class UnityEngine_RenderSettingsWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_subtractiveShadowColor(IntPtr L)
+	{
+		try
+		{
+			ToLua.Push(L, UnityEngine.RenderSettings.subtractiveShadowColor);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int get_reflectionIntensity(IntPtr L)
 	{
 		try
@@ -309,6 +325,20 @@ public class UnityEngine_RenderSettingsWrap
 		try
 		{
 			ToLua.Push(L, UnityEngine.RenderSettings.skybox);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_sun(IntPtr L)
+	{
+		try
+		{
+			ToLua.Push(L, UnityEngine.RenderSettings.sun);
 			return 1;
 		}
 		catch(Exception e)
@@ -555,6 +585,21 @@ public class UnityEngine_RenderSettingsWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_subtractiveShadowColor(IntPtr L)
+	{
+		try
+		{
+			UnityEngine.Color arg0 = ToLua.ToColor(L, 2);
+			UnityEngine.RenderSettings.subtractiveShadowColor = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int set_reflectionIntensity(IntPtr L)
 	{
 		try
@@ -636,6 +681,21 @@ public class UnityEngine_RenderSettingsWrap
 		{
 			UnityEngine.Material arg0 = (UnityEngine.Material)ToLua.CheckUnityObject(L, 2, typeof(UnityEngine.Material));
 			UnityEngine.RenderSettings.skybox = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_sun(IntPtr L)
+	{
+		try
+		{
+			UnityEngine.Light arg0 = (UnityEngine.Light)ToLua.CheckUnityObject(L, 2, typeof(UnityEngine.Light));
+			UnityEngine.RenderSettings.sun = arg0;
 			return 0;
 		}
 		catch(Exception e)

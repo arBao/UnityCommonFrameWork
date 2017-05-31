@@ -1,9 +1,9 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{894E9931-8AF8-929C-EFC1-1D31FB00DFC8}") = "CommonFramework", "Assembly-CSharp.csproj", "{E69349AC-1CEE-F806-634B-B25FC6CECDBC}"
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonFramework", "Assembly-CSharp.csproj", "{E69349AC-1CEE-F806-634B-B25FC6CECDBC}"
 EndProject
-Project("{894E9931-8AF8-929C-EFC1-1D31FB00DFC8}") = "CommonFramework", "Assembly-CSharp-Editor.csproj", "{7FB5D4D4-B52B-673A-D619-4F740D11D6BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonFramework", "Assembly-CSharp-Editor.csproj", "{7FB5D4D4-B52B-673A-D619-4F740D11D6BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
