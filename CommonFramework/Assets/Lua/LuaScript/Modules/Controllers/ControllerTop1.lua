@@ -24,6 +24,12 @@ function ControllerTop1:ShowTop1()
 		self.top1view.onClickButtonConfirmCallback = function ()
 			self:SendMessage(MessageNames.OpenUITop2,nil)
 		end
+		self.top1view.onClickButtonLoadSceneCallback = function ()
+            local funcProgress = function (operation)
+                Debugger.LogError(operation.progress)
+            end
+            SceneMgr.LoadASyny('Scene1',funcProgress)
+		end
 	end
 	self.top1view:Show()
 end

@@ -1,3 +1,4 @@
 CommonFramework/Library/*
 CommonFramework/Temp/*
 .idea
+*.csproj

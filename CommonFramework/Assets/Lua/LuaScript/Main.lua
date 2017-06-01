@@ -8,6 +8,7 @@ require 'Const/CSVPaths'
 require 'Const/MessageNames'
 require 'Tools/CSVParser'
 require 'Tools/PrintTable'
+require 'SystemModule/SceneModule/SceneMgr'
 
 
 --主入口函数。从这里开始lua逻辑
