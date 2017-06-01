@@ -37,5 +37,6 @@ MVCRegister = {
 		['ViewUIPopUp4'] = require 'Modules/Views/ViewUIPopUp4',
 		['ViewUITop1'] = require 'Modules/Views/ViewUITop1',
 		['ViewUITop2'] = require 'Modules/Views/ViewUITop2',
+		--['ViewUILoading'] = require 'Modules/Views/ViewUILoading',
 	},
 }

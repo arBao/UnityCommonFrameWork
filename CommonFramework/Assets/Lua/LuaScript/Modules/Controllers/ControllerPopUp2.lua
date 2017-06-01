@@ -24,6 +24,15 @@ function ControllerPopUp2:ShowPopupView()
 		self.popupview.onClickButtonConfirmCallback = function ()
 			self:SendMessage(MessageNames.OpenUISelectServer,nil)
 		end
+        self.popupview.onClickButtonLoadSceneCallback = function ()
+            local funcProgress = function (operation)
+                Debugger.LogError(operation.progress)
+            end
+            local finishCallback = function ()
+                self:SendMessage(MessageNames.OpenUISelectServer,nil)
+            end
+            SceneMgr.LoadASyny('Scene1',funcProgress,finishCallback,false)
+        end
 	end
 	self.popupview:Show()
 end

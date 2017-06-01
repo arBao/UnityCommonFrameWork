@@ -1,6 +1,5 @@
 ViewManager = class()
 local viewClassCacheDic = {}--view类
-local viewInstanceCache = {}--实例化后的view
 local viewNormalPopupStackArray = {}--view Normal和Popup管理栈
 local viewTopStackArray = {}--view Top层管理栈
 local UIRoot = nil
@@ -202,7 +201,13 @@ function ViewManager.GetView(viewName)
 end
 
 function ViewManager.DestroyAllView(except)
-	
+	for k, v in pairs(viewNormalPopupStackArray) do
+		if v.name ~= except then
+            v:OnDestroy()
+			UnityEngine.GameObject.Destroy(v.gameObject)
+			v.gameObject = nil
+		end
+	end
 end
 
 
