@@ -4,3 +4,4 @@ CommonFramework/Temp/*
 *.csproj
 Assembly-CSharp-Editor.csproj
 Assembly-CSharp.csproj
+.DS_Store
