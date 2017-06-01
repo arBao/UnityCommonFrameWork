@@ -2,3 +2,5 @@ CommonFramework/Library/*
 CommonFramework/Temp/*
 .idea
 *.csproj
+Assembly-CSharp-Editor.csproj
+Assembly-CSharp.csproj
