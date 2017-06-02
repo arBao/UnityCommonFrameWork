@@ -13,8 +13,6 @@ local function SceneMgrUpdate(operation)
     if operation.isDone then
         UpdateBeat:Remove(SceneMgrUpdate,operation)
 
-        ViewManager.DestroyAllView('ViewUILoading')
-
         m_progressAction = nil
         if m_finishCallback ~= nil then
             m_finishCallback()
@@ -23,10 +21,12 @@ local function SceneMgrUpdate(operation)
 end
 
 function SceneMgr.LoadSyny(name)
+    ViewManager.DestroyAllView('ViewUILoading')
     UnityEngine.SceneManagement.SceneManager.LoadScene(name)
 end
 
 function SceneMgr.LoadASyny(name,progressAction,finishCallback,isShowLoadingUI)
+    ViewManager.DestroyAllView('ViewUILoading')
     m_finishCallback = finishCallback
     local operation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(name)
     if progressAction ~= nil then
