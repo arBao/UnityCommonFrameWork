@@ -17,9 +17,9 @@ public class NetworkManager
 		}
 	}
 
-	public static void SendUDPMsg(byte[] data)
+	public static void SendUDPMsg(int seq,byte[] data)
 	{
-		UDPSender.Instance.SendUDPMsg(data);
+		UDPServer.Instance.SendUDPMsg(data,seq);
 	}
 
 	public static void SendTCPMsg(byte[] byteArray)

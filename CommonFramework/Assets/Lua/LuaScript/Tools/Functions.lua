@@ -108,15 +108,19 @@ function string.split(str, delimiter)
     return result
 end
 
+function string.tobyteString(byteTable)
+	return string.char(unpack(byteTable))
+end
+
 function file_exists(path)
-  local file = io.open(path, "rb")
-  if file then file:close() end
-  return file ~= nil
+	local file = io.open(path, "rb")
+	if file then file:close() end
+	return file ~= nil
 end
 
 function length_of_file(filename)
-  local fh = assert(io.open(filename, "rb"))
-  local len = assert(fh:seek("end"))
-  fh:close()
-  return len
+	local fh = assert(io.open(filename, "rb"))
+	local len = assert(fh:seek("end"))
+	fh:close()
+	return len
 end

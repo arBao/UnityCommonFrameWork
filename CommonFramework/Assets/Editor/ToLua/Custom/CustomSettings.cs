@@ -60,6 +60,8 @@ public static class CustomSettings
 		_GT(typeof(UnityEngine.UI.GraphicRaycaster)),
 		_GT(typeof(ButtonCustom)),
 		_GT(typeof(UnityEngine.SceneManagement.SceneManager)),
+		//_GT(typeof(NetworkManager)),
+		_GT(typeof(UDPServer)),
 		
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),
