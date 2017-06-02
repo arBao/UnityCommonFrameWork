@@ -38,7 +38,10 @@ end
 
 function ViewUISelectServer.OnClickBack(self,sender)
 	Debugger.LogError('ViewUISelectServer.OnClickBack')
-	self:Hide()
+	if self.onClickBackCallback ~= nil then
+		self.onClickBackCallback()
+	end
+
 end
 
 return ViewUISelectServer

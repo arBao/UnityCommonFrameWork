@@ -43,7 +43,44 @@ local function SetTransformDic(transform,dicTransforms)
     for i = 0,transform.childCount - 1,1 do
      	SetTransformDic(transform:GetChild(i),dicTransforms)
     end
-end 
+end
+
+local function CreateViewObj(view)
+    local viewName = view.name
+    local uidata = CSVParser.LoadCsv(CSVPaths.UIConfig,viewName)
+    local uiGameObj = AssetsManager.Instance:GetAsset(uidata.path,typeof(UnityEngine.GameObject))
+    uiGameObj.name = viewName
+    view.gameObject = uiGameObj
+    view.transformCache = {}
+    SetTransformDic(view.gameObject.transform,view.transformCache)
+
+    view.layer = uidata.layer
+    local sortLayerName = ''
+
+    if uidata.layer == LayerOrderNum.UINormal then
+        uiGameObj.transform.parent = UINormal.transform
+        sortLayerName = LayerOrderName.UINormal
+    elseif uidata.layer == LayerOrderNum.UIPopup then
+        uiGameObj.transform.parent = UIPopup.transform
+        sortLayerName = LayerOrderName.UIPopup
+    elseif uidata.layer == LayerOrderNum.UITop then
+        uiGameObj.transform.parent = UITop.transform
+        sortLayerName = LayerOrderName.UITop
+    end
+
+    uiGameObj.transform.localPosition = Vector3.zero
+    uiGameObj.transform.localScale = Vector3.one
+    uiGameObj.transform.localRotation = Quaternion.identity
+
+    local recttransform = uiGameObj:GetComponent('RectTransform')
+    recttransform:SetAsLastSibling()
+
+    local uidepth = LuaComponent.Add(uiGameObj,UIDepthLua)
+    uidepth:SetLayerData(true,sortLayerName,1)
+
+    uiGameObj:AddComponent(typeof(UnityEngine.UI.GraphicRaycaster))
+    view:OnAwake()
+end
 
 local function SetHideView(view)
     if view.isShow == false then
@@ -62,6 +99,9 @@ end
 local function SetShowView(view)
     if view.isShow == true then
         return
+    end
+    if view.gameObject == nil then
+        CreateViewObj(view)
     end
     view.gameObject:SetActive(true)
     view.isShow = true
@@ -100,6 +140,8 @@ local function SortTopLayerNums()
     end
 end
 
+
+
 function ViewManager.GetView(viewName)
     Debugger.LogError('ViewManager.GetView ' .. viewName)
     local view = viewClassCacheDic[viewName].new()
@@ -112,40 +154,7 @@ function ViewManager.GetView(viewName)
         if view.gameObject ~= nil then
 
         else
-            local uidata = CSVParser.LoadCsv(CSVPaths.UIConfig,viewName)
-            local uiGameObj = AssetsManager.Instance:GetAsset(uidata.path,typeof(UnityEngine.GameObject))
-            uiGameObj.name = viewName
-            view.gameObject = uiGameObj
-            view.transformCache = {}
-            SetTransformDic(view.gameObject.transform,view.transformCache)
-
-            view.layer = uidata.layer
-            local sortLayerName = ''
-
-            if uidata.layer == LayerOrderNum.UINormal then
-                uiGameObj.transform.parent = UINormal.transform
-                sortLayerName = LayerOrderName.UINormal
-            elseif uidata.layer == LayerOrderNum.UIPopup then
-                uiGameObj.transform.parent = UIPopup.transform
-                sortLayerName = LayerOrderName.UIPopup
-            elseif uidata.layer == LayerOrderNum.UITop then
-                uiGameObj.transform.parent = UITop.transform
-                sortLayerName = LayerOrderName.UITop
-            end
-
-            uiGameObj.transform.localPosition = Vector3.zero
-            uiGameObj.transform.localScale = Vector3.one
-            uiGameObj.transform.localRotation = Quaternion.identity
-
-            local recttransform = uiGameObj:GetComponent('RectTransform')
-            recttransform:SetAsLastSibling()
-
-            local uidepth = LuaComponent.Add(uiGameObj,UIDepthLua)
-            uidepth:SetLayerData(true,sortLayerName,1)
-
-            uiGameObj:AddComponent(typeof(UnityEngine.UI.GraphicRaycaster))
-            view:OnAwake()
-
+            CreateViewObj(view)
         end
 
         SetShowView(view)
@@ -178,6 +187,7 @@ function ViewManager.GetView(viewName)
             table.remove(viewNormalPopupStackArray)
             for i = #viewNormalPopupStackArray, 1, -1 do
                 local viewInStack = viewNormalPopupStackArray[i]
+                Debugger.LogError('viewInStack ' .. viewInStack.name)
                 SetShowView(viewInStack)
                 if viewInStack.layer == LayerOrderNum.UINormal then
                     break
