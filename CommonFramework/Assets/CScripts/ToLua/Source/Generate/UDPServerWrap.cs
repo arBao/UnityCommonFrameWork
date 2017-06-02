@@ -9,6 +9,7 @@ public class UDPServerWrap
 		L.BeginClass(typeof(UDPServer), typeof(System.Object));
 		L.RegFunction("ReceiveMsg", ReceiveMsg);
 		L.RegFunction("SendUDPMsg", SendUDPMsg);
+		L.RegFunction("CloseReceiveSocket", CloseReceiveSocket);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("Instance", get_Instance, null);
 		L.EndClass();
@@ -35,11 +36,28 @@ public class UDPServerWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 3);
+			ToLua.CheckArgsCount(L, 4);
 			UDPServer obj = (UDPServer)ToLua.CheckObject(L, 1, typeof(UDPServer));
 			byte[] arg0 = ToLua.CheckByteBuffer(L, 2);
-			int arg1 = (int)LuaDLL.luaL_checknumber(L, 3);
-			obj.SendUDPMsg(arg0, arg1);
+			uint arg1 = (uint)LuaDLL.luaL_checknumber(L, 3);
+			uint arg2 = (uint)LuaDLL.luaL_checknumber(L, 4);
+			obj.SendUDPMsg(arg0, arg1, arg2);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int CloseReceiveSocket(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			UDPServer obj = (UDPServer)ToLua.CheckObject(L, 1, typeof(UDPServer));
+			obj.CloseReceiveSocket();
 			return 0;
 		}
 		catch(Exception e)

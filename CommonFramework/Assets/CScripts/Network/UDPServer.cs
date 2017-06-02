@@ -7,6 +7,7 @@ using System.Net;
 
 public class UDPServer 
 {
+	private bool openReceive;
 	private Socket udpSendSocket;
 	private Socket udpReceiveSocket;
 	private IPEndPoint ipendPoint;
@@ -35,21 +36,24 @@ public class UDPServer
 
 	public void ReceiveMsg()
 	{
+		openReceive = true;
 		State state = new State(udpReceiveSocket);
 		udpReceiveSocket.BeginReceiveFrom(state.Buffer, 0, state.Buffer.Length, SocketFlags.None, ref state.RemoteEP, new System.AsyncCallback(ReceiveCallback), state);
 	}
 
-	public void SendUDPMsg(byte[] data,int seq)
+	public void SendUDPMsg(byte[] data,uint id,uint seq)
 	{
-		//UDPDataPacket dataPacket = new UDPDataPacket();
-		//dataPacket.seq = seq;
-		//dataPacket.data = data;
+		UDPDataPacket dataPacket = new UDPDataPacket();
+		dataPacket.seq = seq;
+		dataPacket.id = id;
+		dataPacket.PackByteData(data);
 		for (int i = 0; i < data.Length;i++)
 		{
-			Debug.LogError(data[i]);
+			Debug.LogError("send data" + data[i]);
 		}
+		byte[] sendData = dataPacket.GetData();
 		State state = new State(udpSendSocket);
-		udpSendSocket.BeginSendTo(data, 0, data.Length, SocketFlags.None, ipendPoint, new System.AsyncCallback(SendCallback), state);
+		udpSendSocket.BeginSendTo(sendData, 0, sendData.Length, SocketFlags.None, ipendPoint, new System.AsyncCallback(SendCallback), state);
 	}
 
 	private void ReceiveCallback(System.IAsyncResult result)
@@ -58,12 +62,20 @@ public class UDPServer
 		if (result.IsCompleted)
 		{
 			State state = (State)result.AsyncState;
-			for (int i = 0; i < state.Buffer.Length; i++)
+
+			UDPDataPacket dataPacket = new UDPDataPacket();
+			dataPacket.UnPackDataPacket(state.Buffer);
+			byte[] data = dataPacket.GetData();
+			for (int i = 0; i < data.Length; i++)
 			{
-				Debug.LogError(state.Buffer[i]);
+				Debug.LogError(data[i]);
 			}
+			Debug.LogError("dataPacket.seq  " + dataPacket.seq + " dataPacket.id " + dataPacket.id);
 			state.Socket.EndReceiveFrom(result, ref state.RemoteEP);
-			ReceiveMsg();
+			if(openReceive)
+			{
+				ReceiveMsg();
+			}
 		}
 	}
 
@@ -71,9 +83,15 @@ public class UDPServer
 	{
 		if(result.IsCompleted)
 		{
+			Debug.LogError("SendCallback Sucess");
 			State state = (State)result.AsyncState;
 			state.Socket.EndSendTo(result);
 		}
+	}
+
+	public void CloseReceiveSocket()
+	{
+		openReceive = false;
 	}
 
 	/// <summary>

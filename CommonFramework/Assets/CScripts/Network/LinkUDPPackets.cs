@@ -27,14 +27,6 @@ public class LinkUDPPackets
 
 	}
 
-	public void Insert(int seq,byte[] data)
-	{
-		UDPDataPacket p = new UDPDataPacket();
-		p.seq = seq;
-		p.data = data;
-		Insert(p);
-	}
-
 	public void Insert(UDPDataPacket pInsert)
 	{
 		UDPDataPacket p = head;

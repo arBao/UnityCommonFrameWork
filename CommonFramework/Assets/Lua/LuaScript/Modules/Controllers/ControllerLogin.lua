@@ -34,7 +34,7 @@ function ControllerLogin:ShowUILogin()
             table.insert(datasend,2)
             table.insert(datasend,3)
             table.insert(datasend,4)
-            UDPServer.Instance:SendUDPMsg(string.tobyteString(datasend), 1)
+            UDPServer.Instance:SendUDPMsg(string.tobyteString(datasend), 11,22)
 		end
 	end
 	self.loginView:Show()
