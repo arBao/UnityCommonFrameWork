@@ -46,6 +46,9 @@ local function SetTransformDic(transform,dicTransforms)
 end 
 
 local function SetHideView(view)
+	if view.gameObject == nil then
+		return
+	end
 	view.gameObject:SetActive(false)
 	view.isShow = false
 	view:OnDeactive()
@@ -70,7 +73,7 @@ local function SortNormalPopupLayerNums()
 				uidepth:SetLayerOrderNum(normalOrderCnt)
 				normalOrderCnt = normalOrderCnt + 1
 			end
-		else 
+		else
 			if viewInStack.isShow == true then
 				local uidepth = LuaComponent.Get(viewInStack.gameObject,UIDepthLua)
 				uidepth:SetLayerOrderNum(popupOrderCnt)
@@ -135,7 +138,7 @@ function ViewManager.GetView(viewName)
 
 			uiGameObj:AddComponent(typeof(UnityEngine.UI.GraphicRaycaster))
 			view:OnAwake()
-			
+
 		end
 
 		SetShowView(view)
@@ -184,16 +187,16 @@ function ViewManager.GetView(viewName)
 			table.remove(viewTopStackArray)
 			SortTopLayerNums()
 		end
-		
+
 	end
 	view.hideCallback = hideFunc
 
 	local function findTransform(name)
 		local transform = view.transformCache[name]
-     	if transform == nil then
-     		Debugger.LogError('name transform not found ' .. name .. '  view  ' .. viewName)
-     	end
-     	return transform
+		if transform == nil then
+			Debugger.LogError('name transform not found ' .. name .. '  view  ' .. viewName)
+		end
+		return transform
 	end
 	view.findTransformCallback = findTransform
 
@@ -203,7 +206,7 @@ end
 function ViewManager.DestroyAllView(except)
 	for k, v in pairs(viewNormalPopupStackArray) do
 		if v.name ~= except then
-            v:OnDestroy()
+			v:OnDestroy()
 			UnityEngine.GameObject.Destroy(v.gameObject)
 			v.gameObject = nil
 		end
