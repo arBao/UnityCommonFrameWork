@@ -14,6 +14,7 @@ public class LinkUDPPackets
 
 	public void PrintLink()
 	{
+		Debug.LogError("----------------PrintLink------------");
 		UDPDataPacket p = head;
 		if(head == null)
 		{

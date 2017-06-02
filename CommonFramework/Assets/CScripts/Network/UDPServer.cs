@@ -12,6 +12,9 @@ public class UDPServer
 	private Socket udpReceiveSocket;
 	private IPEndPoint ipendPoint;
 
+	private LinkUDPPackets sendLink;
+	private LinkUDPPackets receiveLink;
+
 	private static UDPServer m_Instance;
 	public static UDPServer Instance
 	{
@@ -47,10 +50,12 @@ public class UDPServer
 		dataPacket.seq = seq;
 		dataPacket.id = id;
 		dataPacket.PackByteData(data);
-		for (int i = 0; i < data.Length;i++)
-		{
-			Debug.LogError("send data" + data[i]);
-		}
+		sendLink.Insert(dataPacket);
+		sendLink.PrintLink();
+		//for (int i = 0; i < data.Length;i++)
+		//{
+		//	Debug.LogError("send data" + data[i]);
+		//}
 		byte[] sendData = dataPacket.GetData();
 		State state = new State(udpSendSocket);
 		udpSendSocket.BeginSendTo(sendData, 0, sendData.Length, SocketFlags.None, ipendPoint, new System.AsyncCallback(SendCallback), state);
@@ -58,18 +63,20 @@ public class UDPServer
 
 	private void ReceiveCallback(System.IAsyncResult result)
 	{
-		Debug.LogError("ReceiveCallback result.IsCompleted  " + result.IsCompleted);
+		//Debug.LogError("ReceiveCallback result.IsCompleted  " + result.IsCompleted);
 		if (result.IsCompleted)
 		{
 			State state = (State)result.AsyncState;
 
 			UDPDataPacket dataPacket = new UDPDataPacket();
 			dataPacket.UnPackDataPacket(state.Buffer);
+			receiveLink.Insert(dataPacket);
+			receiveLink.PrintLink();
 			byte[] data = dataPacket.GetData();
-			for (int i = 0; i < data.Length; i++)
-			{
-				Debug.LogError(data[i]);
-			}
+			//for (int i = 0; i < data.Length; i++)
+			//{
+			//	Debug.LogError(data[i]);
+			//}
 			Debug.LogError("dataPacket.seq  " + dataPacket.seq + " dataPacket.id " + dataPacket.id);
 			state.Socket.EndReceiveFrom(result, ref state.RemoteEP);
 			if(openReceive)
@@ -83,7 +90,7 @@ public class UDPServer
 	{
 		if(result.IsCompleted)
 		{
-			Debug.LogError("SendCallback Sucess");
+			//Debug.LogError("SendCallback Sucess");
 			State state = (State)result.AsyncState;
 			state.Socket.EndSendTo(result);
 		}
@@ -92,6 +99,12 @@ public class UDPServer
 	public void CloseReceiveSocket()
 	{
 		openReceive = false;
+	}
+
+	public void Init()
+	{
+		sendLink = new LinkUDPPackets();
+		receiveLink = new LinkUDPPackets();
 	}
 
 	/// <summary>
