@@ -40,16 +40,17 @@ public class LinkUDPPackets
 
 		while(p != null)
 		{
+			lastP = p;
 			if(p.seq == pInsert.seq)
 			{
 				return;
 			}
-			if(pInsert.seq > p.seq)
+			if(pInsert.seq < p.seq)
 			{
-				p.nextUdpPacket = pInsert;
+				lastP.nextUdpPacket = pInsert;
+				pInsert.nextUdpPacket = p;
 				return;
 			}
-			lastP = p;
 			p = p.nextUdpPacket;
 		}
 		lastP.nextUdpPacket = pInsert;
