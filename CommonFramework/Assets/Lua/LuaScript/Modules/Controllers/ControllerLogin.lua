@@ -23,7 +23,7 @@ function ControllerLogin:OnReciveMessage(msg,msgBody)
 	end
 end
 
-local function ReceiveMsg(id,seq,data)
+local function ReceiveMsg(id,data)
     Debugger.LogError("id " .. id)
     local person = person_pb.Person()
     person:ParseFromString(data)
