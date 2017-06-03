@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Net.Sockets;
 using System.Net;
-
+using LuaInterface;
 
 public class UDPServer 
 {
@@ -14,6 +14,8 @@ public class UDPServer
 
 	private LinkUDPPackets sendLink;
 	private LinkUDPPackets receiveLink;
+
+	private LuaFunction m_luafunction;
 
 	private static UDPServer m_Instance;
 	public static UDPServer Instance
@@ -37,8 +39,9 @@ public class UDPServer
 		udpReceiveSocket.Bind(localEP);
 	}
 
-	public void ReceiveMsg()
+	public void ReceiveMsg(LuaFunction luafunction)
 	{
+		m_luafunction = luafunction;
 		openReceive = true;
 		State state = new State(udpReceiveSocket);
 		udpReceiveSocket.BeginReceiveFrom(state.Buffer, 0, state.Buffer.Length, SocketFlags.None, ref state.RemoteEP, new System.AsyncCallback(ReceiveCallback), state);
@@ -46,6 +49,7 @@ public class UDPServer
 
 	public void SendUDPMsg(byte[] data,uint id,uint seq)
 	{
+		Debug.LogError("data.Length " + data.Length);
 		UDPDataPacket dataPacket = new UDPDataPacket();
 		dataPacket.seq = seq;
 		dataPacket.id = id;
@@ -77,11 +81,12 @@ public class UDPServer
 			//{
 			//	Debug.LogError(data[i]);
 			//}
+			m_luafunction.Call(dataPacket.id, data);
 			Debug.LogError("dataPacket.seq  " + dataPacket.seq + " dataPacket.id " + dataPacket.id);
 			state.Socket.EndReceiveFrom(result, ref state.RemoteEP);
 			if(openReceive)
 			{
-				ReceiveMsg();
+				ReceiveMsg(m_luafunction);
 			}
 		}
 	}

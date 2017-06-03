@@ -21,9 +21,10 @@ public class UDPServerWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 1);
+			ToLua.CheckArgsCount(L, 2);
 			UDPServer obj = (UDPServer)ToLua.CheckObject(L, 1, typeof(UDPServer));
-			obj.ReceiveMsg();
+			LuaFunction arg0 = ToLua.CheckLuaFunction(L, 2);
+			obj.ReceiveMsg(arg0);
 			return 0;
 		}
 		catch(Exception e)

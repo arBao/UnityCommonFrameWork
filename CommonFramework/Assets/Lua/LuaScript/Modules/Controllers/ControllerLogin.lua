@@ -1,3 +1,5 @@
+require 'Proto/person_pb'
+
 local ControllerLogin = class(Controller)
 function ControllerLogin:ctor()
 	self.loginView = nil
@@ -21,6 +23,13 @@ function ControllerLogin:OnReciveMessage(msg,msgBody)
 	end
 end
 
+local function ReceiveMsg(id,seq,data)
+    Debugger.LogError("id " .. id)
+    local person = person_pb.Person()
+    person:ParseFromString(data)
+    Debugger.LogError("person.id " .. person.id)
+end
+
 function ControllerLogin:ShowUILogin()
     if self.loginView == nil then
         self.loginView = self:GetView('ViewUILogin')
@@ -28,7 +37,7 @@ function ControllerLogin:ShowUILogin()
             self:SendMessage(MessageNames.OpenUIPopUp1,nil)
         end
         UDPServer.Instance:Init()
-        UDPServer.Instance:ReceiveMsg()
+        UDPServer.Instance:ReceiveMsg(ReceiveMsg)
         if self.id == nil then
             self.id = 0
         end
@@ -44,7 +53,14 @@ function ControllerLogin:ShowUILogin()
             table.insert(datasend,2)
             table.insert(datasend,3)
             table.insert(datasend,4)
-            UDPServer.Instance:SendUDPMsg(string.tobyteString(datasend), self.id,self.seq)
+
+            local person = person_pb.Person()
+            person.id = 1000
+            person.name = "tom"
+            person.email = "tom@1.com"
+            local data = person:SerializeToString()
+
+            UDPServer.Instance:SendUDPMsg(data, self.id,self.seq)
         end
     end
     self.loginView:Show()
