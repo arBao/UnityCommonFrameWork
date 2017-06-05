@@ -58,7 +58,7 @@ function ControllerLogin:ShowUILogin()
             udppackage.posY = 200
             local data = udppackage:SerializeToString()
 
-            UdpNetwork.Send(256,data)
+            UdpNetwork.Send(254,data)
 
         end
     end
