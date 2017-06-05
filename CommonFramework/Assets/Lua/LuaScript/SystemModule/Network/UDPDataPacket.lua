@@ -16,38 +16,49 @@ function UDPDataPacket:Pack(id,seq,originData)
     self.id = id
 
     local length = string.len(originData)
-    Debugger.LogError('id  ' .. id)
+    --Debugger.LogError('id  ' .. id)
 
     local lowID = bit.band(id,255)
     local highID = bit.rshift(id,8)
-    Debugger.LogError('lowID  ' .. lowID)
-    Debugger.LogError('highID ' .. highID)
+    --Debugger.LogError('lowID  ' .. lowID)
+    --Debugger.LogError('highID ' .. highID)
 
     local lowLength = bit.band(length,255)
     local highLength = bit.rshift(length,8)
-    Debugger.LogError('length  ' .. length)
-    Debugger.LogError('lowLength  ' .. lowLength)
-    Debugger.LogError('highLength ' .. highLength)
+    --Debugger.LogError('length  ' .. length)
+    --Debugger.LogError('lowLength  ' .. lowLength)
+    --Debugger.LogError('highLength ' .. highLength)
 
     self.data = string.char(highID) .. string.char(lowID) .. string.char(highLength) .. string.char(lowLength) .. originData
 
-    --self.data = id .. length .. originData
+    --Debugger.LogError('string.len(self.data) ' .. string.len(self.data))
+    --Debugger.LogError('string.len(originData) ' .. string.len(originData))
 
-    Debugger.LogError('self.m_data ' .. self.data)
+    --Debugger.LogError('self.m_data ' .. self.data)
 end
 
 function UDPDataPacket:UnPack(originData)
     local datastr = originData:ToLuaBuffer()
-    local highID = string.sub(datastr,1,1)
-    local lowID = string.sub(datastr,2,2)
-    local highLength = string.sub(datastr,3,3)
-    local lowLength = string.sub(datastr,4,4)
+    local highID = string.byte(string.sub(datastr,1,1))
+    local lowID = string.byte(string.sub(datastr,2,2))
+    local highLength = string.byte(string.sub(datastr,3,3))
+    local lowLength = string.byte(string.sub(datastr,4,4))
 
-    Debugger.LogError('highID ' .. highID)
-    Debugger.LogError('lowID ' .. lowID)
+    --Debugger.LogError('highID ' .. highID)
+    --Debugger.LogError('lowID ' .. lowID)
 
     highID = bit.lshift(highID,8)
-    local id = bit.bor(highID,lowID)
-    Debugger.LogError('id ' .. id)
-    Debugger.LogError('datastr ' .. datastr)
+    local idGet = bit.bor(highID,lowID)
+    --Debugger.LogError('idGet ' .. idGet)
+
+    highLength = bit.lshift(highLength,8)
+    local lengthGet = bit.bor(highLength,lowLength)
+    --Debugger.LogError('lengthGet ' .. lengthGet)
+    --Debugger.LogError('datastr ' .. datastr)
+
+    self.id = tonumber(idGet)
+    self.length = tonumber(lengthGet)
+    self.data = string.sub(datastr,5,5 + self.length - 1)
+
+    --Debugger.LogError('string.len(self.data) ' .. string.len(self.data))
 end

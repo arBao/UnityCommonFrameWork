@@ -25,13 +25,18 @@ function ControllerLogin:OnReciveMessage(msg,msgBody)
 	end
 end
 
-local function SendSucess()
+--local function SendSucess()
+--
+--end
 
-end
-
-local function ReceiveCallback(data)
-
-end
+--local function ReceiveCallback()
+--    Debugger.LogError('ReceiveCallback')
+--    local udppackage = UdpPackage_pb.UdpPackage()
+--    udppackage:ParseFromString(pack.data)
+--    Debugger.LogError('udppackage.seqid  ' .. udppackage.seqid)
+--    Debugger.LogError('udppackage.posX  ' .. udppackage.posX)
+--    Debugger.LogError('udppackage.posY  ' .. udppackage.posY)
+--end
 
 function ControllerLogin:ShowUILogin()
     if self.loginView == nil then
@@ -47,7 +52,19 @@ function ControllerLogin:ShowUILogin()
             self.seq = 0
         end
 
-        UdpNetwork:Init(SendSucess,ReceiveCallback)
+        local SendSucess = function(pack)
+
+        end
+
+        local ReceiveCallback = function(pack)
+            Debugger.LogError('ReceiveCallback')
+            local udppackage = UdpPackage_pb.UdpPackage()
+            udppackage:ParseFromString(pack.data)
+            Debugger.LogError('udppackage.seqid  ' .. udppackage.seqid)
+            Debugger.LogError('udppackage.posX  ' .. udppackage.posX)
+            Debugger.LogError('udppackage.posY  ' .. udppackage.posY)
+        end
+        UdpNetwork.Init(SendSucess,ReceiveCallback)
 
         self.loginView.OnClickButtonSendCallback = function ()
             self.id = self.id + 1

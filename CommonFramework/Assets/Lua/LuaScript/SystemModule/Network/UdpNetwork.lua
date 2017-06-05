@@ -7,14 +7,21 @@ UdpNetwork = class()
 
 function UdpNetwork.Init(sendSucess,receiveCallback)
     UDPServer.Instance:InitUDPServer('127.0.0.1',1111,'127.0.0.1',1110)
-    local function funcSendSucess()
+    local funcSendSucess = function()
         sendSucess()
     end
-    local function funcReceiveCallback(data)
+    local funcReceiveCallback = function(data)
         local pack = UDPDataPacket.new()
         pack:UnPack(data)
-        receiveCallback(data)
+        --Debugger.LogError(receiveCallback)
+        if receiveCallback == nil then
+            Debugger.LogError('receiveCallback == nil')
+        else
+            receiveCallback(pack)
+        end
+
     end
+    Debugger.LogError(funcReceiveCallback)
     UDPServer.Instance:SetSendSucessCallback(funcSendSucess)
     UDPServer.Instance:SetReceive(funcReceiveCallback)
 end
