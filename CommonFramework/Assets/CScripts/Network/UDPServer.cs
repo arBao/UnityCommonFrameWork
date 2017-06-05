@@ -15,7 +15,7 @@ public class UDPServer
 	//private LinkUDPPackets sendLink;
 	//private LinkUDPPackets receiveLink;
 
-	private LuaFunction m_luafunction;
+	//private LuaFunction m_luafunction;
 
 	private static UDPServer m_Instance;
 	public static UDPServer Instance
@@ -215,13 +215,15 @@ public class UDPServer
 
 			Loom.QueueOnMainThread(() =>
 			{
-				m_luafunction.Call(data);
+				ByteBuffer bytebuffer = new ByteBuffer();
+				bytebuffer.WriteBytesWithoutLength(data);
+				m_receiveCallback.Call(bytebuffer);
 			});
 
 			state.Socket.EndReceiveFrom(result, ref state.RemoteEP);
 			if (openReceive)
 			{
-				SetReceive(m_luafunction);
+				SetReceive(m_receiveCallback);
 			}
 		}
 	}

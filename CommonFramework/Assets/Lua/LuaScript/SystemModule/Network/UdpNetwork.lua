@@ -13,7 +13,6 @@ function UdpNetwork.Init(sendSucess,receiveCallback)
     local function funcReceiveCallback(data)
         local pack = UDPDataPacket.new()
         pack:UnPack(data)
-
         receiveCallback(data)
     end
     UDPServer.Instance:SetSendSucessCallback(funcSendSucess)

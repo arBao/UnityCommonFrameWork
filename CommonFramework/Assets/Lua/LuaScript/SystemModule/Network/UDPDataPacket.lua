@@ -14,7 +14,7 @@ end
 function UDPDataPacket:Pack(id,seq,originData)
     self.seq = seq
     self.id = id
-    local finalData = ''
+
     local length = string.len(originData)
     Debugger.LogError('id  ' .. id)
 
@@ -29,12 +29,20 @@ function UDPDataPacket:Pack(id,seq,originData)
     Debugger.LogError('lowLength  ' .. lowLength)
     Debugger.LogError('highLength ' .. highLength)
 
-    self.data = finalData .. lowID .. highID .. lowLength .. highLength .. originData
+    self.data = highID .. lowID .. highLength .. lowLength .. originData
 
     Debugger.LogError('self.m_data ' .. self.data)
 end
 
 function UDPDataPacket:UnPack(originData)
-    Debugger.LogError('originData ' .. originData)
+    local datastr = originData:ToLuaBuffer()
+    local highID = string.sub(datastr,1,1)
+    local lowID = string.sub(datastr,2,2)
+    local highLength = string.sub(datastr,3,3)
+    local lowLength = string.sub(datastr,4,4)
 
+    highID = bit.lshift(highID,8)
+    local id = bit.bor(highID,lowID)
+    Debugger.LogError('id ' .. id)
+    Debugger.LogError('datastr ' .. datastr)
 end
