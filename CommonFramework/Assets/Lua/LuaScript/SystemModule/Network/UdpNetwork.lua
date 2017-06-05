@@ -15,13 +15,12 @@ function UdpNetwork.Init(sendSucess,receiveCallback)
         pack:UnPack(data)
         --Debugger.LogError(receiveCallback)
         if receiveCallback == nil then
-            Debugger.LogError('receiveCallback == nil')
+            --Debugger.LogError('receiveCallback == nil')
         else
             receiveCallback(pack)
         end
-
     end
-    Debugger.LogError(funcReceiveCallback)
+    --Debugger.LogError(funcReceiveCallback)
     UDPServer.Instance:SetSendSucessCallback(funcSendSucess)
     UDPServer.Instance:SetReceive(funcReceiveCallback)
 end

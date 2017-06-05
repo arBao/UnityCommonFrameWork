@@ -57,7 +57,7 @@ function ControllerLogin:ShowUILogin()
         end
 
         local ReceiveCallback = function(pack)
-            Debugger.LogError('ReceiveCallback')
+            --Debugger.LogError('ReceiveCallback')
             local udppackage = UdpPackage_pb.UdpPackage()
             udppackage:ParseFromString(pack.data)
             Debugger.LogError('udppackage.seqid  ' .. udppackage.seqid)
