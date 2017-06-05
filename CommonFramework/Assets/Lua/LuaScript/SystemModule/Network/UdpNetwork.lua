@@ -6,7 +6,7 @@ require 'SystemModule/Network/UDPDataPacket'
 UdpNetwork = class()
 
 function UdpNetwork.Init(sendSucess,receiveCallback)
-    UDPServer.Instance:InitUDPServer('127.0.0.1',1110,'127.0.0.1',1111)
+    UDPServer.Instance:InitUDPServer('127.0.0.1',1111,'127.0.0.1',1110)
     local function funcSendSucess()
         sendSucess()
     end

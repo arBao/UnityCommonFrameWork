@@ -29,9 +29,9 @@ function UDPDataPacket:Pack(id,seq,originData)
     Debugger.LogError('lowLength  ' .. lowLength)
     Debugger.LogError('highLength ' .. highLength)
 
-    self.data = highID .. lowID .. highLength .. lowLength .. originData
+    self.data = string.char(highID) .. string.char(lowID) .. string.char(highLength) .. string.char(lowLength) .. originData
 
-    self.data = id .. length .. originData
+    --self.data = id .. length .. originData
 
     Debugger.LogError('self.m_data ' .. self.data)
 end
