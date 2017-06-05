@@ -1,4 +1,6 @@
+require 'SystemModule/Network/UdpNetwork'
 require 'Proto/person_pb'
+require 'Proto/UdpPackage_pb'
 
 local ControllerLogin = class(Controller)
 function ControllerLogin:ctor()
@@ -26,8 +28,8 @@ end
 local function ReceiveMsg(id,data)
     Debugger.LogError("id " .. id)
     local person = person_pb.Person()
-    local str = data:ToLuaBuffer()
-    person:ParseFromString(str)
+    local datastr = data:ToLuaBuffer()
+    person:ParseFromString(datastr)
     Debugger.LogError("person.id kkk " .. person.id)
 end
 
@@ -55,13 +57,21 @@ function ControllerLogin:ShowUILogin()
             table.insert(datasend,3)
             table.insert(datasend,4)
 
-            local person = person_pb.Person()
-            person.id = 1000
-            person.name = "tom"
-            person.email = "tom@1.com"
-            local data = person:SerializeToString()
+            --local person = person_pb.Person()
+            --person.id = 1000
+            --person.name = "tom"
+            --person.email = "tom@1.com"
+            --local data = person:SerializeToString()
 
-            UDPServer.Instance:SendUDPMsg(data, self.id,self.seq)
+            local udppackage = UdpPackage_pb.UdpPackage()
+            udppackage.seqid = 10;
+            udppackage.posX = 100
+            udppackage.posY = 200
+            local data = udppackage:SerializeToString()
+
+            UdpNetwork.Send(270,data)
+
+            --UDPServer.Instance:SendUDPMsg(data, self.id,self.seq)
         end
     end
     self.loginView:Show()
