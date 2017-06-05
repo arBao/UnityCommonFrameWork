@@ -25,12 +25,12 @@ function ControllerLogin:OnReciveMessage(msg,msgBody)
 	end
 end
 
-local function ReceiveMsg(id,data)
-    Debugger.LogError("id " .. id)
-    local person = person_pb.Person()
-    local datastr = data:ToLuaBuffer()
-    person:ParseFromString(datastr)
-    Debugger.LogError("person.id kkk " .. person.id)
+local function SendSucess()
+
+end
+
+local function ReceiveCallback(data)
+
 end
 
 function ControllerLogin:ShowUILogin()
@@ -39,8 +39,7 @@ function ControllerLogin:ShowUILogin()
         self.loginView.OnClickButtonLoginCallback = function ( )
             self:SendMessage(MessageNames.OpenUIPopUp1,nil)
         end
-        UDPServer.Instance:Init()
-        UDPServer.Instance:ReceiveMsg(ReceiveMsg)
+
         if self.id == nil then
             self.id = 0
         end
@@ -48,30 +47,19 @@ function ControllerLogin:ShowUILogin()
             self.seq = 0
         end
 
+        UdpNetwork:Init(SendSucess,ReceiveCallback)
+
         self.loginView.OnClickButtonSendCallback = function ()
             self.id = self.id + 1
             self.seq = self.seq + 1
-            local datasend = {}
-            table.insert(datasend,1)
-            table.insert(datasend,2)
-            table.insert(datasend,3)
-            table.insert(datasend,4)
-
-            --local person = person_pb.Person()
-            --person.id = 1000
-            --person.name = "tom"
-            --person.email = "tom@1.com"
-            --local data = person:SerializeToString()
-
             local udppackage = UdpPackage_pb.UdpPackage()
             udppackage.seqid = 10;
             udppackage.posX = 100
             udppackage.posY = 200
             local data = udppackage:SerializeToString()
 
-            UdpNetwork.Send(270,data)
+            UdpNetwork.Send(1,data)
 
-            --UDPServer.Instance:SendUDPMsg(data, self.id,self.seq)
         end
     end
     self.loginView:Show()

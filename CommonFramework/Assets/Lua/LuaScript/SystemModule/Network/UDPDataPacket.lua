@@ -31,9 +31,10 @@ function UDPDataPacket:Pack(id,seq,originData)
 
     self.data = finalData .. lowID .. highID .. lowLength .. highLength .. originData
 
-    Debugger.LogError('self.m_data ' .. self.m_data)
+    Debugger.LogError('self.m_data ' .. self.data)
 end
 
 function UDPDataPacket:UnPack(originData)
     Debugger.LogError('originData ' .. originData)
+
 end
