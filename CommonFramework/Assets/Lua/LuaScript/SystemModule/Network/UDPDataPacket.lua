@@ -31,6 +31,8 @@ function UDPDataPacket:Pack(id,seq,originData)
 
     self.data = highID .. lowID .. highLength .. lowLength .. originData
 
+    self.data = id .. length .. originData
+
     Debugger.LogError('self.m_data ' .. self.data)
 end
 
@@ -40,6 +42,9 @@ function UDPDataPacket:UnPack(originData)
     local lowID = string.sub(datastr,2,2)
     local highLength = string.sub(datastr,3,3)
     local lowLength = string.sub(datastr,4,4)
+
+    Debugger.LogError('highID ' .. highID)
+    Debugger.LogError('lowID ' .. lowID)
 
     highID = bit.lshift(highID,8)
     local id = bit.bor(highID,lowID)
