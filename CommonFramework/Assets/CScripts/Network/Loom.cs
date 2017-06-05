@@ -123,7 +123,6 @@ public class Loom : MonoBehaviour
 	}
 
 	List<Action> _currentActions = new List<Action>();
-
 	void FixedUpdate()
 	{
 		lock (_actions)
