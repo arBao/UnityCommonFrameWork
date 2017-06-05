@@ -62,6 +62,9 @@ public static class CustomSettings
 		_GT(typeof(UnityEngine.SceneManagement.SceneManager)),
 		//_GT(typeof(NetworkManager)),
 		_GT(typeof(UDPServer)),
+		_GT(typeof(ByteBuffer)),
+		_GT(typeof(LuaByteBuffer)),
+		_GT(typeof(Loom)),
 		
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),

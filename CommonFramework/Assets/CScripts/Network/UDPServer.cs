@@ -49,11 +49,14 @@ public class UDPServer
 
 	public void SendUDPMsg(byte[] data,uint id,uint seq)
 	{
+		Debug.LogError("System.Threading.Thread.CurrentThread.Name  " + System.Threading.Thread.CurrentThread.Name);
+		Debug.LogError("System.Threading.Thread.CurrentThread.ManagedThreadId  " + System.Threading.Thread.CurrentThread.ManagedThreadId);
 		Debug.LogError("data.Length " + data.Length);
 		UDPDataPacket dataPacket = new UDPDataPacket();
 		dataPacket.seq = seq;
 		dataPacket.id = id;
 		dataPacket.PackByteData(data);
+
 		sendLink.Insert(dataPacket);
 		sendLink.PrintLink();
 		//for (int i = 0; i < data.Length;i++)
@@ -81,8 +84,18 @@ public class UDPServer
 			//{
 			//	Debug.LogError(data[i]);
 			//}
-			m_luafunction.Call(dataPacket.id, data);
-			Debug.LogError("dataPacket.seq  " + dataPacket.seq + " dataPacket.id " + dataPacket.id);
+
+			Debug.LogError("c# print System.Threading.Thread.CurrentThread.Name  " + System.Threading.Thread.CurrentThread.Name);
+			Debug.LogError("c# print System.Threading.Thread.CurrentThread.ManagedThreadId  " + System.Threading.Thread.CurrentThread.ManagedThreadId);
+
+			Loom.QueueOnMainThread(() => {
+				ByteBuffer bytebuffer = new ByteBuffer();
+				bytebuffer.WriteBytesWithoutLength(data);
+				m_luafunction.Call(dataPacket.id, bytebuffer); 
+			});
+
+
+			Debug.LogError("c# print dataPacket.seq  " + dataPacket.seq + " dataPacket.id " + dataPacket.id);
 			state.Socket.EndReceiveFrom(result, ref state.RemoteEP);
 			if(openReceive)
 			{

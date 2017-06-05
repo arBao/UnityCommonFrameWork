@@ -26,8 +26,9 @@ end
 local function ReceiveMsg(id,data)
     Debugger.LogError("id " .. id)
     local person = person_pb.Person()
-    person:ParseFromString(data)
-    Debugger.LogError("person.id " .. person.id)
+    local str = data:ToLuaBuffer()
+    person:ParseFromString(str)
+    Debugger.LogError("person.id kkk " .. person.id)
 end
 
 function ControllerLogin:ShowUILogin()

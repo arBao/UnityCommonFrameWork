@@ -14,6 +14,7 @@ public static class LuaBinder
 		CSharpTransferWrap.Register(L);
 		ButtonCustomWrap.Register(L);
 		UDPServerWrap.Register(L);
+		ByteBufferWrap.Register(L);
 		LuaComponentWrap.Register(L);
 		L.BeginModule("UnityEngine");
 		UnityEngine_TextAssetWrap.Register(L);
