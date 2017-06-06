@@ -7,7 +7,7 @@
 ----0,99 tcp系统相关
 ----100,199 udp系统相关
 ----    100 udp请求重发
-----    101 udp心跳
+----    177 udp心跳
 ----200,1000 tcp功能相关
 ----1000,~ udp功能相关
 ----    1000 udp测试 UdpPackage
@@ -21,6 +21,7 @@ UdpNetwork = class()
 
 local timeSendAgainDelta = 0.1
 local timeHeartbeatDelta = 5
+local reSendTimeMax = 100 ---重发次数最大限制
 
 function UdpNetwork:GetInstance()
     if self.m_instance == nil then
@@ -30,16 +31,25 @@ function UdpNetwork:GetInstance()
 end
 
 local function SendRequestSendAgainUpdate(self)
-    if Time.time - self.timeCache > timeSendAgainDelta then
+    if Time.time - self.timeSendAgainCache > timeSendAgainDelta then
         self:SendRequestSendAgain()
-        self.timeCache = Time.time
+        self.timeSendAgainCache = Time.time
+    end
+end
+
+local function SendHeartbeatUpdate(self)
+    if Time.time - self.timeHeartbeatCache > timeHeartbeatDelta then
+        self:SendHeartbeat()
+        self.timeHeartbeatCache = Time.time
     end
 end
 
 function UdpNetwork:Init(sendSucess,receiveCallback)
 
-    self.timeCache = 0
+    self.timeSendAgainCache = 0
+    self.timeHeartbeatCache = 0
     self.sendSeq = 0
+    self.resendTimeCal = 0
     self.sendLink = LinkUDPPackets.new()
     self.receiveLink = LinkUDPPackets.new()
 
@@ -58,12 +68,12 @@ function UdpNetwork:Init(sendSucess,receiveCallback)
                 Debugger.LogError('收到重发包请求 seqid : ' .. lostPackage.listSeqID[i])
                 self:ReSend(lostPackage.listSeqID[i])
             end
+        elseif pack.id == 177 then
+            Debugger.LogError('心跳')
         elseif pack.id > 200 then
             self.receiveLink:Insert(pack)
             self.receiveLink:CheckLost(pack)
-            --for k,v in pairs(self.receiveLink.lostSeq) do
-            --    Debugger.LogError('self.receiveLink.lostSeq  ' .. k)
-            --end
+
             if receiveCallback == nil then
                 Debugger.LogError('receiveCallback == nil')
             else
@@ -76,6 +86,7 @@ function UdpNetwork:Init(sendSucess,receiveCallback)
     UDPServer.Instance:SetReceive(funcReceiveCallback)
 
     FixedUpdateBeat:Add(SendRequestSendAgainUpdate, self)
+    FixedUpdateBeat:Add(SendHeartbeatUpdate, self)
 end
 
 function UdpNetwork:Stop()
@@ -84,7 +95,9 @@ end
 
 --心跳
 function UdpNetwork:SendHeartbeat()
-
+    local packet = UDPDataPacket.new()
+    packet:Pack(177,0,'')
+    UDPServer.Instance:SendUDPMsg(packet.data)
 end
 
 --请求服务端重发包
@@ -108,6 +121,11 @@ end
 
 --重发队列里面的包
 function UdpNetwork:ReSend(seq)
+    self.resendTimeCal = self.resendTimeCal + 1
+    if self.resendTimeCal > reSendTimeMax then
+        ---大于最大请求次数  判断为掉线
+        return
+    end
     local packet = self.sendLink:GetPacketBySeq(seq,true)
     if packet ~= nil then
         UDPServer.Instance:SendUDPMsg(packet.data)
