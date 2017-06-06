@@ -50,19 +50,20 @@ function UdpNetwork:Init(sendSucess,receiveCallback)
     local funcReceiveCallback = function(data)
         local pack = UDPDataPacket.new()
         pack:UnPack(data)
-        ---100是重发请求
+
         if pack.id == 100 then
             local lostPackage = UdpLostPackage_pb.UdpLostPackage()
             lostPackage:ParseFromString(pack.data)
             for i=1,#lostPackage.listSeqID do
+                Debugger.LogError('收到重发包请求 seqid : ' .. lostPackage.listSeqID[i])
                 self:ReSend(lostPackage.listSeqID[i])
             end
         elseif pack.id > 200 then
             self.receiveLink:Insert(pack)
             self.receiveLink:CheckLost(pack)
-            for k,v in pairs(self.receiveLink.lostSeq) do
-                Debugger.LogError('self.receiveLink.lostSeq  ' .. k)
-            end
+            --for k,v in pairs(self.receiveLink.lostSeq) do
+            --    Debugger.LogError('self.receiveLink.lostSeq  ' .. k)
+            --end
             if receiveCallback == nil then
                 Debugger.LogError('receiveCallback == nil')
             else
@@ -90,11 +91,12 @@ end
 function UdpNetwork:SendRequestSendAgain()
 
     if next(self.receiveLink.lostSeq) ~= nil then
-        Debugger.LogError('--请求服务端重发包 ')
+
         local packet = UDPDataPacket.new()
         local lostPackage = UdpLostPackage_pb.UdpLostPackage()
         for k,v in pairs(self.receiveLink.lostSeq) do
             table.insert(lostPackage.listSeqID,k)
+            Debugger.LogError('--请求服务端重发包 ' .. k)
         end
 
         local data = lostPackage:SerializeToString()
