@@ -5,9 +5,11 @@ function ViewUILogin:OnAwake()
 	self.InputName = self:FindTransform('InputName')
 	self.ButtonLogin = self:FindTransform('ButtonLogin'):GetComponent('ButtonCustom')
 	self.ButtonSend = self:FindTransform('ButtonSend'):GetComponent('ButtonCustom')
+	self.ButtonLinkTest = self:FindTransform('ButtonLinkTest'):GetComponent('ButtonCustom')
 
 	self.ButtonLogin:SetClickAction(self,ViewUILogin.OnClickLogin)
 	self.ButtonSend:SetClickAction(self,ViewUILogin.OnClickButtonSend)
+	self.ButtonLinkTest:SetClickAction(self,ViewUILogin.OnClickButtonLinkTest)
 end
 
 function ViewUILogin:OnShowView()
@@ -42,6 +44,12 @@ function ViewUILogin.OnClickButtonSend(self,sender)
     if self.OnClickButtonSendCallback ~= nil then
         self.OnClickButtonSendCallback()
     end
+end
+
+function ViewUILogin.OnClickButtonLinkTest(self,sender)
+	if self.OnClickButtonLinkTestCallback ~= nil then
+		self.OnClickButtonLinkTestCallback()
+	end
 end
 
 return ViewUILogin

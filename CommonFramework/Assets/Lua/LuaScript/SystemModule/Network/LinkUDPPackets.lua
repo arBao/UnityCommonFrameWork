@@ -66,6 +66,9 @@ function LinkUDPPackets:Insert(pInsert)
                 p.last.next = pInsert
             end
             p.last = pInsert
+            if p == self.head then
+                self.head = pInsert
+            end
             return
         end
         p = p.next

@@ -1,4 +1,5 @@
 require 'SystemModule/Network/UdpNetwork'
+require 'SystemModule/Network/LinkUDPPackets'
 require 'Proto/person_pb'
 require 'Proto/UdpPackage_pb'
 
@@ -24,19 +25,6 @@ function ControllerLogin:OnReciveMessage(msg,msgBody)
 		Debugger.LogError('111 ' .. msgBody)
 	end
 end
-
---local function SendSucess()
---
---end
-
---local function ReceiveCallback()
---    Debugger.LogError('ReceiveCallback')
---    local udppackage = UdpPackage_pb.UdpPackage()
---    udppackage:ParseFromString(pack.data)
---    Debugger.LogError('udppackage.seqid  ' .. udppackage.seqid)
---    Debugger.LogError('udppackage.posX  ' .. udppackage.posX)
---    Debugger.LogError('udppackage.posY  ' .. udppackage.posY)
---end
 
 function ControllerLogin:ShowUILogin()
     if self.loginView == nil then
@@ -64,7 +52,8 @@ function ControllerLogin:ShowUILogin()
             Debugger.LogError('udppackage.posX  ' .. udppackage.posX)
             Debugger.LogError('udppackage.posY  ' .. udppackage.posY)
         end
-        UdpNetwork.Init(SendSucess,ReceiveCallback)
+        UdpNetwork:GetInstance():Init(SendSucess,ReceiveCallback)
+
 
         self.loginView.OnClickButtonSendCallback = function ()
             self.id = self.id + 1
@@ -75,8 +64,40 @@ function ControllerLogin:ShowUILogin()
             udppackage.posY = 200
             local data = udppackage:SerializeToString()
 
-            UdpNetwork.Send(254,data)
+            UdpNetwork:GetInstance():Send(254,data)
 
+        end
+
+        self.loginView.OnClickButtonLinkTestCallback = function ()
+            local link = LinkUDPPackets.new()
+            local p1 = UDPDataPacket.new()
+            p1.seq = 2
+            local p2 = UDPDataPacket.new()
+            p2.seq = 1
+            local p3 = UDPDataPacket.new()
+            p3.seq = 5
+            local p4 = UDPDataPacket.new()
+            p4.seq = 3
+            local p5 = UDPDataPacket.new()
+            p5.seq = 0
+            local p6 = UDPDataPacket.new()
+            p6.seq = 6
+            local p7 = UDPDataPacket.new()
+            p7.seq = 7
+            local p8 = UDPDataPacket.new()
+            p8.seq = 10
+
+            link:Insert(p1)
+            link:Insert(p2)
+            link:Insert(p3)
+            link:Insert(p4)
+            link:Insert(p5)
+            link:Insert(p6)
+            link:Insert(p7)
+            link:Insert(p8)
+
+            link:PrintLink(false)
+            link:PrintLink(true)
         end
     end
     self.loginView:Show()
