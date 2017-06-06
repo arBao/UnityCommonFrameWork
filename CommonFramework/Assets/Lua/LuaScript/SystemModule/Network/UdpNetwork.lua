@@ -27,6 +27,11 @@ function UdpNetwork:Init(sendSucess,receiveCallback)
     local funcReceiveCallback = function(data)
         local pack = UDPDataPacket.new()
         pack:UnPack(data)
+        self.receiveLink:Insert(pack)
+        self.receiveLink:CheckLost(pack)
+        for k,v in self.receiveLink.lostSeq do
+            Debugger.LogError('self.receiveLink.lostSeq  ' .. k)
+        end
         if receiveCallback == nil then
             Debugger.LogError('receiveCallback == nil')
         else
@@ -37,12 +42,25 @@ function UdpNetwork:Init(sendSucess,receiveCallback)
     UDPServer.Instance:SetReceive(funcReceiveCallback)
 end
 
-function UdpNetwork:ReSend(id,seq,data)
-    local packet = UDPDataPacket.new()
-    packet:Pack(id,seq,data)
-    UDPServer.Instance:SendUDPMsg(packet.data)
+--心跳
+function UdpNetwork:SendHeartbeat()
+
 end
 
+--请求服务端重发包
+function UdpNetwork:SendRequestSendAgain(seq)
+
+end
+
+--重发队列里面的包
+function UdpNetwork:ReSend(seq)
+    local packet = self.sendLink:GetPacketBySeq(seq,true)
+    if packet ~= nil then
+        UDPServer.Instance:SendUDPMsg(packet.data)
+    end
+end
+
+--发送一个新包
 function UdpNetwork:Send(id,data)
     local packet = UDPDataPacket.new()
 

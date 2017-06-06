@@ -26,9 +26,6 @@ function UDPDataPacket:Pack(id,seq,originData)
     local seq3 = bit.band(bit.rshift(seq,16),255)
     local seq4 = bit.band(bit.rshift(seq,24),255)
 
-    --Debugger.LogError('seq  ' .. seq)
-    --Debugger.LogError('seq1 ' .. seq1 .. ' seq2 '.. seq2 .. ' seq3 ' .. seq3 .. ' seq4 ' .. seq4)
-
     local lowLength = bit.band(length,255)
     local highLength = bit.rshift(length,8)
 
@@ -64,5 +61,5 @@ function UDPDataPacket:UnPack(originData)
     self.seq = seq
     self.data = string.sub(datastr,9,9 + self.length - 1)
 
-    --Debugger.LogError('string.len(self.data) ' .. string.len(self.data))
+    --Debugger.LogError('self.id ' .. self.id .. ' self.length ' .. self.length .. ' self.seq ' .. self.seq)
 end
