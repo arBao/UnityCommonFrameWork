@@ -58,12 +58,11 @@ function ControllerLogin:ShowUILogin()
             self.id = self.id + 1
             self.seq = self.seq + 1
             local udppackage = UdpPackage_pb.UdpPackage()
-            udppackage.seqid = 10;
             udppackage.posX = 100
             udppackage.posY = 200
             local data = udppackage:SerializeToString()
 
-            UdpNetwork:GetInstance():Send(254,data)
+            UdpNetwork:GetInstance():Send(1000,data)
 
         end
 

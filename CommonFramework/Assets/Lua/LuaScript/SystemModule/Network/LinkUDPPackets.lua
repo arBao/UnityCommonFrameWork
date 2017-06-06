@@ -6,12 +6,13 @@
 LinkUDPPackets = class()
 
 function LinkUDPPackets:ctor()
+    self.head = nil
+    self.tail = nil
     self.lostSeq = {}
 end
 
 function LinkUDPPackets:Init()
-    self.head = nil
-    self.tail = nil
+
 end
 
 --isReverse:是否反向遍历
