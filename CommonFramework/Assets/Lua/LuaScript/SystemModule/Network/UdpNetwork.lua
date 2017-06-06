@@ -3,6 +3,8 @@
 --- DateTime: 2017/6/5 下午2:22
 ---
 require 'SystemModule/Network/UDPDataPacket'
+require 'SystemModule/Network/LinkUDPPackets'
+
 UdpNetwork = class()
 
 function UdpNetwork.Init(sendSucess,receiveCallback)

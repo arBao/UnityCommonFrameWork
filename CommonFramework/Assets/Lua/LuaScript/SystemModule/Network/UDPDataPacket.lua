@@ -5,7 +5,8 @@
 local bit = require("bit")
 UDPDataPacket = class()
 function UDPDataPacket:ctor()
-    self.nextUdpPacket = nil
+    self.next = nil
+    self.last = nil
     self.data = nil
     self.seq = nil
     self.id = nil
