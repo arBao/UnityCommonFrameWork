@@ -64,7 +64,7 @@ end
 function UdpNetwork:Send(id,data)
     local packet = UDPDataPacket.new()
 
-    packet:Pack(id,4294967295,data)
+    packet:Pack(id,self.sendSeq,data)
     self.sendLink:Insert(packet)
 
     self.sendSeq = self.sendSeq + 1
