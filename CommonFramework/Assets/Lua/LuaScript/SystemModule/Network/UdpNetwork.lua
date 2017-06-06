@@ -44,7 +44,28 @@ local function SendHeartbeatUpdate(self)
     end
 end
 
-function UdpNetwork:Init(sendSucess,receiveCallback)
+function UdpNetwork:ListenTo(id,callback)
+    if self.listListening[id] == nil then
+        self.listListening[id] = {}
+    end
+
+    table.insert(self.listListening[id],callback)
+end
+
+function UdpNetwork:UnListen(id,callback)
+    if self.listListening[id] == nil then
+        return
+    end
+
+    for k,v in pairs(self.listListening[id]) do
+        if v == callback then
+            self.listListening[id][k] = nil
+            return
+        end
+    end
+end
+
+function UdpNetwork:Init()
 
     self.timeSendAgainCache = 0
     self.timeHeartbeatCache = 0
@@ -52,10 +73,11 @@ function UdpNetwork:Init(sendSucess,receiveCallback)
     self.resendTimeCal = 0
     self.sendLink = LinkUDPPackets.new()
     self.receiveLink = LinkUDPPackets.new()
+    self.listListening = {}
 
     UDPServer.Instance:InitUDPServer('127.0.0.1',1111,'127.0.0.1',1110)
     local funcSendSucess = function()
-        sendSucess()
+        --sendSucess()
     end
     local funcReceiveCallback = function(data)
         local pack = UDPDataPacket.new()
@@ -74,11 +96,19 @@ function UdpNetwork:Init(sendSucess,receiveCallback)
             self.receiveLink:Insert(pack)
             self.receiveLink:CheckLost(pack)
 
-            if receiveCallback == nil then
-                Debugger.LogError('receiveCallback == nil')
-            else
-                receiveCallback(pack)
+            if self.listListening[pack.id] == nil then
+                Debugger.LogError('没有监听方法 id为 : ' .. pack.id)
+                return
             end
+            for k,v in pairs(self.listListening[pack.id]) do
+                v(pack)
+            end
+
+            --if receiveCallback == nil then
+            --    Debugger.LogError('receiveCallback == nil')
+            --else
+            --    receiveCallback(pack)
+            --end
         end
 
     end

@@ -52,7 +52,8 @@ function ControllerLogin:ShowUILogin()
             Debugger.LogError('udppackage.posX  ' .. udppackage.posX)
             Debugger.LogError('udppackage.posY  ' .. udppackage.posY)
         end
-        UdpNetwork:GetInstance():Init(SendSucess,ReceiveCallback)
+        UdpNetwork:GetInstance():Init()
+        UdpNetwork:GetInstance():ListenTo(1000,ReceiveCallback)
 
         self.loginView.OnClickButtonSendCallback = function ()
             self.id = self.id + 1
