@@ -20,7 +20,7 @@ function UdpNetwork:Init(sendSucess,receiveCallback)
     self.sendLink = LinkUDPPackets.new()
     self.receiveLink = LinkUDPPackets.new()
 
-    UDPServer.Instance:InitUDPServer('127.0.0.1',1111,'127.0.0.1',1110)
+    UDPServer.Instance:InitUDPServer('127.0.0.1',1110,'127.0.0.1',1111)
     local funcSendSucess = function()
         sendSucess()
     end
@@ -46,7 +46,7 @@ end
 function UdpNetwork:Send(id,data)
     local packet = UDPDataPacket.new()
 
-    packet:Pack(id,self.sendSeq,data)
+    packet:Pack(id,4294967295,data)
     self.sendLink:Insert(packet)
 
     self.sendSeq = self.sendSeq + 1
