@@ -54,7 +54,6 @@ function ControllerLogin:ShowUILogin()
         end
         UdpNetwork:GetInstance():Init(SendSucess,ReceiveCallback)
 
-
         self.loginView.OnClickButtonSendCallback = function ()
             self.id = self.id + 1
             self.seq = self.seq + 1
@@ -86,15 +85,18 @@ function ControllerLogin:ShowUILogin()
             p7.seq = 7
             local p8 = UDPDataPacket.new()
             p8.seq = 10
+            local p9 = UDPDataPacket.new()
+            p9.seq = 3
 
-            link:Insert(p1)
-            link:Insert(p2)
-            link:Insert(p3)
-            link:Insert(p4)
-            link:Insert(p5)
-            link:Insert(p6)
-            link:Insert(p7)
-            link:Insert(p8)
+            link:Insert(p1,true)
+            link:Insert(p2,true)
+            link:Insert(p3,true)
+            link:Insert(p4,true)
+            link:Insert(p5,true)
+            link:Insert(p6,true)
+            link:Insert(p7,true)
+            link:Insert(p8,true)
+            link:Insert(p9,true)
 
             link:PrintLink(false)
             link:PrintLink(true)
