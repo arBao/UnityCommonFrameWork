@@ -9,6 +9,7 @@ require 'Const/MessageNames'
 require 'Tools/CSVParser'
 require 'Tools/PrintTable'
 require 'SystemModule/SceneModule/SceneMgr'
+require 'SystemModule/Camera/CameraManager'
 
 
 --主入口函数。从这里开始lua逻辑

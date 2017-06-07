@@ -66,7 +66,7 @@ public static class CustomSettings
 		_GT(typeof(LuaByteBuffer)),
 		_GT(typeof(Loom)),
 		_GT(typeof(UnityEngine.EventSystems.PointerEventData)),
-		_GT(typeof(UIEventTransfer)),
+		_GT(typeof(EventTriggerListener)),
 		
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),

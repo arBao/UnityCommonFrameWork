@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
+using System.Collections;
 using UnityEngine.EventSystems;
 using System;
 using LuaInterface;
 
-public class UIEventTransfer:MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerDownHandler,IPointerUpHandler,IPointerClickHandler,
-IInitializePotentialDragHandler,IBeginDragHandler,IDragHandler,IEndDragHandler,IDropHandler,IScrollHandler,IUpdateSelectedHandler,
-ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
+public class EventTriggerListener : EventTrigger
 {
+	
 	private LuaTable tableCache;
 	private Action<LuaTable, PointerEventData> actionOnPointerClick;
 	private Action<LuaTable, PointerEventData> actionOnPointerEnter;
@@ -25,15 +25,22 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 	private Action<LuaTable, BaseEventData> actionOnSubmit;
 	private Action<LuaTable, BaseEventData> actionOnCancel;
 
+	public static EventTriggerListener GetListener(GameObject go)
+	{
+		EventTriggerListener listener = go.GetComponent<EventTriggerListener>();
+		if (listener == null) listener = go.AddComponent<EventTriggerListener>();
+		return listener;
+	}
+
 	public void SetOnPointerClick(LuaTable table, Action<LuaTable, PointerEventData> action)
 	{
 		tableCache = table;
 		actionOnPointerClick = action;
 	}
 
-	public void OnPointerClick(PointerEventData eventData)
+	public override void OnPointerClick(PointerEventData eventData)
 	{
-		if(actionOnPointerClick != null)
+		if (actionOnPointerClick != null)
 		{
 			actionOnPointerClick(tableCache, eventData);
 		}
@@ -47,9 +54,9 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnPointerEnter = action;
 	}
 
-	public void OnPointerEnter(PointerEventData eventData)
+	public override void OnPointerEnter(PointerEventData eventData)
 	{
-		if(actionOnPointerEnter != null)
+		if (actionOnPointerEnter != null)
 		{
 			actionOnPointerEnter(tableCache, eventData);
 		}
@@ -63,9 +70,9 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnPointerExit = action;
 	}
 
-	public void OnPointerExit(PointerEventData eventData)
+	public override void OnPointerExit(PointerEventData eventData)
 	{
-		if(actionOnPointerExit != null)
+		if (actionOnPointerExit != null)
 		{
 			actionOnPointerExit(tableCache, eventData);
 		}
@@ -79,9 +86,9 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnPointerDown = action;
 	}
 
-	public void OnPointerDown(PointerEventData eventData)
+	public override void OnPointerDown(PointerEventData eventData)
 	{
-		if(actionOnPointerDown != null)
+		if (actionOnPointerDown != null)
 		{
 			actionOnPointerDown(tableCache, eventData);
 		}
@@ -95,12 +102,12 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnPointerUp = action;
 	}
 
-	public void OnPointerUp(PointerEventData eventData)
+	public override void OnPointerUp(PointerEventData eventData)
 	{
-		if(actionOnPointerUp != null)
+		if (actionOnPointerUp != null)
 		{
 			actionOnPointerUp(tableCache, eventData);
-		}	
+		}
 	}
 
 	/// ---------------------------------- /// 
@@ -111,9 +118,9 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnInitializePotentialDrag = action;
 	}
 
-	public void OnInitializePotentialDrag(PointerEventData eventData)
+	public override void OnInitializePotentialDrag(PointerEventData eventData)
 	{
-		if(actionOnInitializePotentialDrag != null)
+		if (actionOnInitializePotentialDrag != null)
 		{
 			actionOnInitializePotentialDrag(tableCache, eventData);
 		}
@@ -123,13 +130,15 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 
 	public void SetOnBeginDrag(LuaTable table, Action<LuaTable, PointerEventData> action)
 	{
+		Debug.LogError("SetOnBeginDrag");
 		tableCache = table;
 		actionOnBeginDrag = action;
 	}
 
-	public void OnBeginDrag(PointerEventData eventData)
+	public override void OnBeginDrag(PointerEventData eventData)
 	{
-		if(actionOnBeginDrag != null)
+		Debug.LogError("OnBeginDrag");
+		if (actionOnBeginDrag != null)
 		{
 			actionOnBeginDrag(tableCache, eventData);
 		}
@@ -143,9 +152,9 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnDrag = action;
 	}
 
-	public void OnDrag(PointerEventData eventData)
+	public override void OnDrag(PointerEventData eventData)
 	{
-		if(actionOnDrag != null)
+		if (actionOnDrag != null)
 		{
 			actionOnDrag(tableCache, eventData);
 		}
@@ -159,9 +168,9 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnEndDrag = action;
 	}
 
-	public void OnEndDrag(PointerEventData eventData)
+	public override void OnEndDrag(PointerEventData eventData)
 	{
-		if(actionOnEndDrag != null)
+		if (actionOnEndDrag != null)
 		{
 			actionOnEndDrag(tableCache, eventData);
 		}
@@ -175,7 +184,7 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnDrag = action;
 	}
 
-	public void OnDrop(PointerEventData eventData)
+	public override void OnDrop(PointerEventData eventData)
 	{
 		if (actionOnDrag != null)
 		{
@@ -191,7 +200,7 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnScroll = action;
 	}
 
-	public void OnScroll(PointerEventData eventData)
+	public override void OnScroll(PointerEventData eventData)
 	{
 		if (actionOnScroll != null)
 		{
@@ -207,7 +216,7 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnUpdateSelected = action;
 	}
 
-	public void OnUpdateSelected(BaseEventData eventData)
+	public override void OnUpdateSelected(BaseEventData eventData)
 	{
 		if (actionOnUpdateSelected != null)
 		{
@@ -223,7 +232,7 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnSelect = action;
 	}
 
-	public void OnSelect(BaseEventData eventData)
+	public override void OnSelect(BaseEventData eventData)
 	{
 		if (actionOnSelect != null)
 		{
@@ -239,7 +248,7 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnDeselect = action;
 	}
 
-	public void OnDeselect(BaseEventData eventData)
+	public override void OnDeselect(BaseEventData eventData)
 	{
 		if (actionOnDeselect != null)
 		{
@@ -255,7 +264,7 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnMove = action;
 	}
 
-	public void OnMove(AxisEventData eventData)
+	public override void OnMove(AxisEventData eventData)
 	{
 		if (actionOnMove != null)
 		{
@@ -271,7 +280,7 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnSubmit = action;
 	}
 
-	public void OnSubmit(BaseEventData eventData)
+	public override void OnSubmit(BaseEventData eventData)
 	{
 		if (actionOnSubmit != null)
 		{
@@ -287,7 +296,7 @@ ISelectHandler,IDeselectHandler,IMoveHandler,ISubmitHandler,ICancelHandler
 		actionOnCancel = action;
 	}
 
-	public void OnCancel(BaseEventData eventData)
+	public override void OnCancel(BaseEventData eventData)
 	{
 		if (actionOnCancel != null)
 		{

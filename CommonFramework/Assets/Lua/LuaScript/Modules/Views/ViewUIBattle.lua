@@ -5,8 +5,9 @@ local ViewUIBattle = class(View)
 function ViewUIBattle:OnAwake()
     self.ButtonSpeed = self:FindTransform('BtnSpeed'):GetComponent('ButtonCustom')
     self.JoyStick = LuaComponent.Add(self:FindTransform('JoyStick').gameObject,JoyStick)
-
     self.ButtonSpeed:SetClickAction(self,ViewUIBattle.OnClickButtonSpeed)
+    self.JoyStick.OnDragCallback = self.JoyStickOnDragCallback
+    self.JoyStick.EndDragCallback = self.JoyStickEndDragCallback
 end
 
 function ViewUIBattle:OnShowView()
@@ -33,6 +34,14 @@ function ViewUIBattle:OnClickButtonSpeed(self,sender)
     if self.onClickButtonSpeedCallback ~= nil then
         self.onClickButtonSpeedCallback()
     end
+end
+
+function ViewUIBattle:SetJoyStickOnDragCallback(func)
+    self.JoyStick.OnDragCallback = func
+end
+
+function ViewUIBattle:SetJoyStickEndDragCallback(func)
+    self.JoyStick.EndDragCallback = func
 end
 
 return ViewUIBattle

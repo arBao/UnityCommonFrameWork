@@ -2,11 +2,12 @@
 using System;
 using LuaInterface;
 
-public class UIEventTransferWrap
+public class EventTriggerListenerWrap
 {
 	public static void Register(LuaState L)
 	{
-		L.BeginClass(typeof(UIEventTransfer), typeof(UnityEngine.MonoBehaviour));
+		L.BeginClass(typeof(EventTriggerListener), typeof(UnityEngine.EventSystems.EventTrigger));
+		L.RegFunction("GetListener", GetListener);
 		L.RegFunction("SetOnPointerClick", SetOnPointerClick);
 		L.RegFunction("OnPointerClick", OnPointerClick);
 		L.RegFunction("SetOnPointerEnter", SetOnPointerEnter);
@@ -47,12 +48,29 @@ public class UIEventTransferWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetListener(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckUnityObject(L, 1, typeof(UnityEngine.GameObject));
+			EventTriggerListener o = EventTriggerListener.GetListener(arg0);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int SetOnPointerClick(IntPtr L)
 	{
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -82,7 +100,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnPointerClick(arg0);
 			return 0;
@@ -99,7 +117,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -129,7 +147,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnPointerEnter(arg0);
 			return 0;
@@ -146,7 +164,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -176,7 +194,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnPointerExit(arg0);
 			return 0;
@@ -193,7 +211,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -223,7 +241,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnPointerDown(arg0);
 			return 0;
@@ -240,7 +258,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -270,7 +288,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnPointerUp(arg0);
 			return 0;
@@ -287,7 +305,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -317,7 +335,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnInitializePotentialDrag(arg0);
 			return 0;
@@ -334,7 +352,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -364,7 +382,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnBeginDrag(arg0);
 			return 0;
@@ -381,7 +399,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -411,7 +429,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnDrag(arg0);
 			return 0;
@@ -428,7 +446,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -458,7 +476,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnEndDrag(arg0);
 			return 0;
@@ -475,7 +493,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -505,7 +523,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnDrop(arg0);
 			return 0;
@@ -522,7 +540,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -552,7 +570,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnScroll(arg0);
 			return 0;
@@ -569,7 +587,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.BaseEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -599,7 +617,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.BaseEventData arg0 = (UnityEngine.EventSystems.BaseEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.BaseEventData));
 			obj.OnUpdateSelected(arg0);
 			return 0;
@@ -616,7 +634,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.BaseEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -646,7 +664,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.BaseEventData arg0 = (UnityEngine.EventSystems.BaseEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.BaseEventData));
 			obj.OnSelect(arg0);
 			return 0;
@@ -663,7 +681,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.BaseEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -693,7 +711,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.BaseEventData arg0 = (UnityEngine.EventSystems.BaseEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.BaseEventData));
 			obj.OnDeselect(arg0);
 			return 0;
@@ -710,7 +728,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.AxisEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -740,7 +758,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.AxisEventData arg0 = (UnityEngine.EventSystems.AxisEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.AxisEventData));
 			obj.OnMove(arg0);
 			return 0;
@@ -757,7 +775,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.BaseEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -787,7 +805,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.BaseEventData arg0 = (UnityEngine.EventSystems.BaseEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.BaseEventData));
 			obj.OnSubmit(arg0);
 			return 0;
@@ -804,7 +822,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			LuaTable arg0 = ToLua.CheckLuaTable(L, 2);
 			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.BaseEventData> arg1 = null;
 			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
@@ -834,7 +852,7 @@ public class UIEventTransferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UIEventTransfer obj = (UIEventTransfer)ToLua.CheckObject(L, 1, typeof(UIEventTransfer));
+			EventTriggerListener obj = (EventTriggerListener)ToLua.CheckObject(L, 1, typeof(EventTriggerListener));
 			UnityEngine.EventSystems.BaseEventData arg0 = (UnityEngine.EventSystems.BaseEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.BaseEventData));
 			obj.OnCancel(arg0);
 			return 0;

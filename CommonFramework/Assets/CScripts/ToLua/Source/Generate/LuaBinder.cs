@@ -16,7 +16,7 @@ public static class LuaBinder
 		UDPServerWrap.Register(L);
 		ByteBufferWrap.Register(L);
 		LoomWrap.Register(L);
-		UIEventTransferWrap.Register(L);
+		EventTriggerListenerWrap.Register(L);
 		LuaComponentWrap.Register(L);
 		L.BeginModule("UnityEngine");
 		UnityEngine_TextAssetWrap.Register(L);
@@ -75,6 +75,7 @@ public static class LuaBinder
 		UnityEngine_EventSystems_UIBehaviourWrap.Register(L);
 		UnityEngine_EventSystems_BaseEventDataWrap.Register(L);
 		UnityEngine_EventSystems_AbstractEventDataWrap.Register(L);
+		UnityEngine_EventSystems_EventTriggerWrap.Register(L);
 		L.EndModule();
 		L.BeginModule("Events");
 		L.RegFunction("UnityAction", UnityEngine_Events_UnityAction);

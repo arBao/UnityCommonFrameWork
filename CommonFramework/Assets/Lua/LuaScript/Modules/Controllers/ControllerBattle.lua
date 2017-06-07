@@ -24,6 +24,13 @@ function ControllerBattle:ShowUIBattle()
 		self.battleview.onClickButtonSpeedCallback = function ()
 
 		end
+        self.battleview.JoyStickOnDragCallback = function(direction)
+            Debugger.LogError("direction.x   " .. direction.x .. '  direction.y  ' .. direction.y)
+        end
+        self.battleview.JoyStickEndDragCallback = function()
+            Debugger.LogError('EndDragCallback')
+        end
+
 	end
 	self.battleview:Show()
 end
