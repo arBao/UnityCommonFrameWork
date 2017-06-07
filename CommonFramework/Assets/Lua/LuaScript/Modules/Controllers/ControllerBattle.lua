@@ -1,3 +1,4 @@
+require 'Battle/BattleManager'
 local ControllerBattle = class(Controller)
 
 function ControllerBattle:ctor()
@@ -33,6 +34,8 @@ function ControllerBattle:ShowUIBattle()
 
 	end
 	self.battleview:Show()
+    BattleManager:GetInstance():Init()
+    BattleManager:GetInstance():Start()
 end
 
 return ControllerBattle

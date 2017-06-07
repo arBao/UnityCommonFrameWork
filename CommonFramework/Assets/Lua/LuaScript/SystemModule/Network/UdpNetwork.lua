@@ -11,6 +11,8 @@
 ----200,1000 tcp功能相关
 ----1000,~ udp功能相关
 ----    1000 udp测试 UdpPackage
+----    1001 客户端准备完成
+----    1002 服务端通知客户端开战
 
 
 require 'SystemModule/Network/UDPDataPacket'
