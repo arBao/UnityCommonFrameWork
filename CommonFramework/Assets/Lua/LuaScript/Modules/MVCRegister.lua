@@ -11,6 +11,7 @@ MVCRegister = {
 		['ControllerPopUp4'] = require 'Modules/Controllers/ControllerPopUp4',
 		['ControllerTop1'] = require 'Modules/Controllers/ControllerTop1',
 		['ControllerTop2'] = require 'Modules/Controllers/ControllerTop2',
+		['ControllerBattle'] = require 'Modules/Controllers/ControllerBattle',
 	},
 
 	Models = 
@@ -24,6 +25,7 @@ MVCRegister = {
 		['ModelPopUp4'] = require 'Modules/Models/ModelPopUp4',
 		['ModelTop1'] = require 'Modules/Models/ModelTop1',
 		['ModelTop2'] = require 'Modules/Models/ModelTop2',
+		['ModelBattle'] = require 'Modules/Models/ModelBattle',
 	},
 
 	Views = 
@@ -37,6 +39,6 @@ MVCRegister = {
 		['ViewUIPopUp4'] = require 'Modules/Views/ViewUIPopUp4',
 		['ViewUITop1'] = require 'Modules/Views/ViewUITop1',
 		['ViewUITop2'] = require 'Modules/Views/ViewUITop2',
-		--['ViewUILoading'] = require 'Modules/Views/ViewUILoading',
+		['ViewUIBattle'] = require 'Modules/Views/ViewUIBattle',
 	},
 }

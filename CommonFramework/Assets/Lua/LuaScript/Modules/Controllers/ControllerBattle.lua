@@ -1,0 +1,31 @@
+local ControllerBattle = class(Controller)
+
+function ControllerBattle:ctor()
+	
+end
+
+function ControllerBattle:MessagesListening()
+	local messages = 
+	{
+		MessageNames.OpenUIBattle,
+	}
+	return messages
+end
+
+function ControllerBattle:OnReciveMessage(msg,msgBody)
+	if msg == MessageNames.OpenUIBattle then
+		self:ShowUIBattle()
+	end
+end
+
+function ControllerBattle:ShowUIBattle()
+	if self.battleview == nil then
+		self.battleview = self:GetView('ViewUIBattle')
+		self.battleview.onClickButtonSpeedCallback = function ()
+
+		end
+	end
+	self.battleview:Show()
+end
+
+return ControllerBattle

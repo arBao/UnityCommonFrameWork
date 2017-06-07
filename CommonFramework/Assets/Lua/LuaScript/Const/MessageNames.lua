@@ -16,4 +16,6 @@ MessageNames =
 	OpenUITop1 = 'OpenUITop1',
 	--ControllerTop2
 	OpenUITop2 = 'OpenUITop2',
+	--ControllerBattle
+	OpenUIBattle = 'OpenUIBattle',
 }

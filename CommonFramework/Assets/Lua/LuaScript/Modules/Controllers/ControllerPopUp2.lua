@@ -31,7 +31,7 @@ function ControllerPopUp2:ShowPopupView()
             local finishCallback = function ()
                 self:SendMessage(MessageNames.OpenUISelectServer,nil)
             end
-            SceneMgr.LoadASyny('Scene1',funcProgress,finishCallback,false)
+            SceneMgr.LoadASync('Scene1',funcProgress,finishCallback,false)
         end
 	end
 	self.popupview:Show()

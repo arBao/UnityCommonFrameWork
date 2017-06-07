@@ -20,12 +20,12 @@ local function SceneMgrUpdate(operation)
     end
 end
 
-function SceneMgr.LoadSyny(name)
+function SceneMgr.LoadSync(name)
     ViewManager.DestroyAllView('ViewUILoading')
     UnityEngine.SceneManagement.SceneManager.LoadScene(name)
 end
 
-function SceneMgr.LoadASyny(name,progressAction,finishCallback,isShowLoadingUI)
+function SceneMgr.LoadASync(name,progressAction,finishCallback,isShowLoadingUI)
     ViewManager.DestroyAllView('ViewUILoading')
     m_finishCallback = finishCallback
     local operation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(name)

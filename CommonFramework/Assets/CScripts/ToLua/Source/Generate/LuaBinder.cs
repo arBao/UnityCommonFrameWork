@@ -16,6 +16,7 @@ public static class LuaBinder
 		UDPServerWrap.Register(L);
 		ByteBufferWrap.Register(L);
 		LoomWrap.Register(L);
+		UIEventTransferWrap.Register(L);
 		LuaComponentWrap.Register(L);
 		L.BeginModule("UnityEngine");
 		UnityEngine_TextAssetWrap.Register(L);
@@ -69,8 +70,11 @@ public static class LuaBinder
 		UnityEngine_SceneManagement_SceneManagerWrap.Register(L);
 		L.EndModule();
 		L.BeginModule("EventSystems");
+		UnityEngine_EventSystems_PointerEventDataWrap.Register(L);
 		UnityEngine_EventSystems_BaseRaycasterWrap.Register(L);
 		UnityEngine_EventSystems_UIBehaviourWrap.Register(L);
+		UnityEngine_EventSystems_BaseEventDataWrap.Register(L);
+		UnityEngine_EventSystems_AbstractEventDataWrap.Register(L);
 		L.EndModule();
 		L.BeginModule("Events");
 		L.RegFunction("UnityAction", UnityEngine_Events_UnityAction);
@@ -103,6 +107,9 @@ public static class LuaBinder
 		L.RegFunction("Action_int", System_Action_int);
 		L.RegFunction("Comparison_int", System_Comparison_int);
 		L.RegFunction("Action_LuaInterface_LuaTable_UnityEngine_GameObject", System_Action_LuaInterface_LuaTable_UnityEngine_GameObject);
+		L.RegFunction("Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData", System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData);
+		L.RegFunction("Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData", System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData);
+		L.RegFunction("Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData", System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData);
 		L.EndModule();
 		L.EndModule();
 		L.BeginPreLoad();
@@ -571,6 +578,87 @@ public static class LuaBinder
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
 				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.GameObject>), func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData>), func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData>), func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.BaseEventData>), func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.BaseEventData>), func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.AxisEventData>), func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.AxisEventData>), func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;

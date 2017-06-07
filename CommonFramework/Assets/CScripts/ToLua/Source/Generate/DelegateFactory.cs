@@ -28,6 +28,9 @@ public static class DelegateFactory
 		dict.Add(typeof(UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode>), UnityEngine_Events_UnityAction_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_LoadSceneMode);
 		dict.Add(typeof(UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene>), UnityEngine_Events_UnityAction_UnityEngine_SceneManagement_Scene);
 		dict.Add(typeof(UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene>), UnityEngine_Events_UnityAction_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene);
+		dict.Add(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData>), System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData);
+		dict.Add(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.BaseEventData>), System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData);
+		dict.Add(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.AxisEventData>), System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.Application.LowMemoryCallback), UnityEngine_Application_LowMemoryCallback);
 		dict.Add(typeof(UnityEngine.Application.AdvertisingIdentifierCallback), UnityEngine_Application_AdvertisingIdentifierCallback);
@@ -665,6 +668,153 @@ public static class DelegateFactory
 		{
 			UnityEngine_Events_UnityAction_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene_Event target = new UnityEngine_Events_UnityAction_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene_Event(func, self);
 			UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	class System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData_Event : LuaDelegate
+	{
+		public System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData_Event(LuaFunction func) : base(func) { }
+		public System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(LuaInterface.LuaTable param0, UnityEngine.EventSystems.PointerEventData param1)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.PushObject(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(LuaInterface.LuaTable param0, UnityEngine.EventSystems.PointerEventData param1)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.PushObject(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public static Delegate System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> fn = delegate(LuaInterface.LuaTable param0, UnityEngine.EventSystems.PointerEventData param1) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData_Event target = new System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData_Event(func);
+			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData_Event target = new System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData_Event(func, self);
+			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.PointerEventData> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	class System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData_Event : LuaDelegate
+	{
+		public System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData_Event(LuaFunction func) : base(func) { }
+		public System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(LuaInterface.LuaTable param0, UnityEngine.EventSystems.BaseEventData param1)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.PushObject(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(LuaInterface.LuaTable param0, UnityEngine.EventSystems.BaseEventData param1)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.PushObject(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public static Delegate System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.BaseEventData> fn = delegate(LuaInterface.LuaTable param0, UnityEngine.EventSystems.BaseEventData param1) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData_Event target = new System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData_Event(func);
+			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.BaseEventData> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData_Event target = new System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData_Event(func, self);
+			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.BaseEventData> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	class System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData_Event : LuaDelegate
+	{
+		public System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData_Event(LuaFunction func) : base(func) { }
+		public System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(LuaInterface.LuaTable param0, UnityEngine.EventSystems.AxisEventData param1)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.PushObject(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(LuaInterface.LuaTable param0, UnityEngine.EventSystems.AxisEventData param1)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.PushObject(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public static Delegate System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.AxisEventData> fn = delegate(LuaInterface.LuaTable param0, UnityEngine.EventSystems.AxisEventData param1) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData_Event target = new System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData_Event(func);
+			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.AxisEventData> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData_Event target = new System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData_Event(func, self);
+			System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.AxisEventData> d = target.CallWithSelf;
 			target.method = d.Method;
 			return d;
 		}

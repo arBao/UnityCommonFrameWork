@@ -101,6 +101,16 @@ function ControllerLogin:ShowUILogin()
             link:PrintLink(false)
             link:PrintLink(true)
         end
+
+        self.loginView.OnClickButtonBattleCallback = function ()
+            local funcProgress = function (operation)
+                Debugger.LogError(operation.progress)
+            end
+            local finishCallback = function ()
+                self:SendMessage(MessageNames.OpenUIBattle,nil)
+            end
+            SceneMgr.LoadASync('Battle',funcProgress,finishCallback,false)
+        end
     end
     self.loginView:Show()
 
