@@ -14,10 +14,12 @@ end
 
 function BattleManager:Init()
     --创建角色
+    self.direction = Vector2.New(1,0)
     local obj = PlayerCreator:GetInstance():Create(Vector3.New(0,0,0))
     local function GameLogicUpdateFunc(deltaTime)
         local pos = obj.transform.position
-        pos.x = pos.x + deltaTime * 1
+        pos.x = pos.x + deltaTime * 1 * self.direction.x
+        pos.y = pos.y + deltaTime * 1 * self.direction.y
         obj.transform.position = pos
     end
     FrameManager:GetInstance():Init(GameLogicUpdateFunc)
