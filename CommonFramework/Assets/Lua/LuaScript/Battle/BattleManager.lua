@@ -16,7 +16,7 @@ function BattleManager:Init()
     --创建角色
     self.direction = Vector2.New(1,0)
     local obj = PlayerCreator:GetInstance():Create(Vector3.New(0,0,0))
-    local function GameLogicUpdateFunc(deltaTime)
+    local GameLogicUpdateFunc = function(deltaTime)
         local pos = obj.transform.position
         pos.x = pos.x + deltaTime * 1 * self.direction.x
         pos.y = pos.y + deltaTime * 1 * self.direction.y
@@ -32,9 +32,9 @@ end
 function BattleManager:Start()
     --预留processmanager
     self.time = 0
-    UpdateBeat:Add(BattleManager.Update, self)
+    UpdateBeat:Add(self.Update, self)
 end
 
-function BattleManager.Update(self)
+function BattleManager:Update(self)
     FrameManager:GetInstance():Update(Time.deltaTime)
 end
