@@ -220,13 +220,16 @@ public class UDPServer
 
 			Loom.QueueOnMainThread(() =>
 			{
-				ByteBuffer bytebuffer = new ByteBuffer();
-				bytebuffer.WriteBytesWithoutLength(data);
+				if(m_receiveCallback != null)
+				{
+					ByteBuffer bytebuffer = new ByteBuffer();
+					bytebuffer.WriteBytesWithoutLength(data);
 
-				m_receiveCallback.BeginPCall();
-				m_receiveCallback.Push(bytebuffer);
-				m_receiveCallback.PCall();
-				m_receiveCallback.EndPCall();
+					m_receiveCallback.BeginPCall();
+					m_receiveCallback.Push(bytebuffer);
+					m_receiveCallback.PCall();
+					m_receiveCallback.EndPCall();
+				}
 			});
 
 			state.Socket.EndReceiveFrom(result, ref state.RemoteEP);
