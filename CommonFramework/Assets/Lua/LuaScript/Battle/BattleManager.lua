@@ -17,12 +17,13 @@ function BattleManager:Init()
     self.direction = Vector2.New(1,0)
     local obj = PlayerCreator:GetInstance():Create(Vector3.New(0,0,0))
     local GameLogicUpdateFunc = function(deltaTime)
-        local pos = obj.transform.position
-        pos.x = pos.x + deltaTime * 1 * self.direction.x
-        pos.y = pos.y + deltaTime * 1 * self.direction.y
-        obj.transform.position = pos
+        --local pos = obj.transform.position
+        --pos.x = pos.x + deltaTime * 1 * self.direction.x
+        --pos.y = pos.y + deltaTime * 1 * self.direction.y
+        --obj.transform.position = pos
     end
     FrameManager:GetInstance():Init(GameLogicUpdateFunc)
+
 end
 
 function BattleManager:Ready()
@@ -36,5 +37,6 @@ function BattleManager:Start()
 end
 
 function BattleManager:Update(self)
+    CameraManager:GetInstance():GetBattleCameraField()
     FrameManager:GetInstance():Update(Time.deltaTime)
 end

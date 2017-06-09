@@ -67,6 +67,7 @@ public static class CustomSettings
 		_GT(typeof(Loom)),
 		_GT(typeof(UnityEngine.EventSystems.PointerEventData)),
 		_GT(typeof(EventTriggerListener)),
+		_GT(typeof(Debug)),
 		
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),

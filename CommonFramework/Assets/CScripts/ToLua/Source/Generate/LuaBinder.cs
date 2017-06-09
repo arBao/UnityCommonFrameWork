@@ -22,6 +22,7 @@ public static class LuaBinder
 		UnityEngine_TextAssetWrap.Register(L);
 		UnityEngine_RectTransformWrap.Register(L);
 		UnityEngine_CanvasWrap.Register(L);
+		UnityEngine_DebugWrap.Register(L);
 		UnityEngine_ComponentWrap.Register(L);
 		UnityEngine_TransformWrap.Register(L);
 		UnityEngine_MaterialWrap.Register(L);
