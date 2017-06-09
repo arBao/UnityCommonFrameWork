@@ -1,4 +1,6 @@
 require 'Battle/BattleManager'
+require 'Proto/Battle_pb'
+
 local ControllerBattle = class(Controller)
 
 function ControllerBattle:ctor()
@@ -37,6 +39,11 @@ function ControllerBattle:ShowUIBattle()
 	self.battleview:Show()
     BattleManager:GetInstance():Init()
     BattleManager:GetInstance():Start()
+
+    local udppackage = Battle_pb.ReadyReq()
+    local data = udppackage:SerializeToString()
+
+	UdpNetwork:GetInstance():Send(1001,data)
 end
 
 return ControllerBattle

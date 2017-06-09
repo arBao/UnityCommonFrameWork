@@ -111,6 +111,8 @@ function ControllerLogin:ShowUILogin()
             end
             SceneMgr.LoadASync('Battle',funcProgress,finishCallback,false)
         end
+
+
     end
     self.loginView:Show()
 

@@ -2,7 +2,7 @@
 --- Created by luzhuqiu.
 --- DateTime: 2017/6/7 下午2:45
 ---
-require 'Battle/PlayerCreator'
+require 'Battle/Player/PlayerCreator'
 require 'Battle/FrameSyncSystem/FrameManager'
 BattleManager = class()
 function BattleManager:GetInstance()
