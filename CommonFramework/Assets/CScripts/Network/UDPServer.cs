@@ -198,10 +198,15 @@ public class UDPServer
 		{
 			State state = (State)result.AsyncState;
 			state.Socket.EndSendTo(result);
-			if(m_sendSucessCallback != null)
+			Loom.QueueOnMainThread(() =>
 			{
-				m_sendSucessCallback.Call();
-			}
+				if (m_sendSucessCallback != null)
+				{
+					m_sendSucessCallback.BeginPCall();
+					m_sendSucessCallback.PCall();
+					m_sendSucessCallback.EndPCall();
+				}
+			});
 		}
 	}
 
@@ -217,7 +222,11 @@ public class UDPServer
 			{
 				ByteBuffer bytebuffer = new ByteBuffer();
 				bytebuffer.WriteBytesWithoutLength(data);
-				m_receiveCallback.Call(bytebuffer);
+
+				m_receiveCallback.BeginPCall();
+				m_receiveCallback.Push(bytebuffer);
+				m_receiveCallback.PCall();
+				m_receiveCallback.EndPCall();
 			});
 
 			state.Socket.EndReceiveFrom(result, ref state.RemoteEP);
