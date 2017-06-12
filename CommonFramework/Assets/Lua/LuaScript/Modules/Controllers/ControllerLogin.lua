@@ -78,8 +78,8 @@ function ControllerLogin:ShowUILogin()
             self.id = self.id + 1
             self.seq = self.seq + 1
             local udppackage = UdpPackage_pb.UdpPackage()
-            udppackage.posX = 100
-            udppackage.posY = 200
+            udppackage.posX = 100 + self.id
+            udppackage.posY = 200 + self.id
             local data = udppackage:SerializeToString()
             local length = string.len(data)
             Debugger.LogError('length  ' .. length)

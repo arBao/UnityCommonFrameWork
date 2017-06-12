@@ -365,7 +365,7 @@ namespace SGF.Network.KCP
 
             Debug.Log("Thread_Recv() End!");
         }
-
+		private int count;
         private void DoReceive()
         {
             if (m_SystemSocket.Available <= 0)
@@ -376,6 +376,12 @@ namespace SGF.Network.KCP
             EndPoint remotePoint = new IPEndPoint(IPAddress.Any, 0);
             int cnt = m_SystemSocket.ReceiveFrom(m_RecvBufferTemp, m_RecvBufferTemp.Length,
                 SocketFlags.None, ref remotePoint);
+
+			count++;
+			if(count %2 == 0)
+			{
+				return;
+			}
 
             if (cnt > 0)
             {
