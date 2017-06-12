@@ -425,7 +425,7 @@ namespace SGF.Network.KCP
             m_Kcp = new KCP(key, HandleKcpSend);
             m_Kcp.NoDelay(1, 10, 2, 1);
             m_Kcp.WndSize(128, 128);
-
+			m_Kcp.SetMtu(512);
         }
 
         public void Dispose()

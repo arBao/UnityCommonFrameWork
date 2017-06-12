@@ -56,7 +56,7 @@ function ControllerLogin:ShowUILogin()
         --UdpNetwork:GetInstance():ListenTo(1000,ReceiveCallback)
 
         local kcpNetwork = KCPNetwork.New()
-        kcpNetwork:Init('kcp1',2,'127.0.0.1',11110,11111)
+        kcpNetwork:Init('kcp1',1,'127.0.0.1',11110,11111)
         kcpNetwork:SetReceiveAny(function(buffer)
             local udppackage = UdpPackage_pb.UdpPackage()
             local luabuffer = buffer:ToLuaBuffer()
