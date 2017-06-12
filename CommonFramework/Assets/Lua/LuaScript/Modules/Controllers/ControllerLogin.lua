@@ -68,6 +68,10 @@ function ControllerLogin:ShowUILogin()
             Debugger.LogError('udppackage.posY  ' .. udppackage.posY)
         end)
 
+        UpdateBeat:Add(function (self)
+            kcpNetwork:Update()
+        end,self)
+
         self.loginView.OnClickButtonSendCallback = function ()
             self.id = self.id + 1
             self.seq = self.seq + 1
