@@ -52,11 +52,11 @@ function ControllerLogin:ShowUILogin()
             Debugger.LogError('udppackage.posX  ' .. udppackage.posX)
             Debugger.LogError('udppackage.posY  ' .. udppackage.posY)
         end
-        UdpNetwork:GetInstance():Init()
-        UdpNetwork:GetInstance():ListenTo(1000,ReceiveCallback)
+        --UdpNetwork:GetInstance():Init()
+        --UdpNetwork:GetInstance():ListenTo(1000,ReceiveCallback)
 
         local kcpNetwork = KCPNetwork.New()
-        kcpNetwork:Init('kcp1',1,'127.0.0.1',11111,11110)
+        kcpNetwork:Init('kcp1',2,'127.0.0.1',11110,11111)
         kcpNetwork:SetReceiveAny(function(buffer)
 
         end)
