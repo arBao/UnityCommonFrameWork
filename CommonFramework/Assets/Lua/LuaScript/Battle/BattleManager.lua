@@ -4,6 +4,7 @@
 ---
 require 'Battle/Player/PlayerCreator'
 require 'Battle/FrameSyncSystem/FrameManager'
+require 'Battle/Collider/ColliderManager'
 BattleManager = class()
 function BattleManager:GetInstance()
     if self.m_instance == nil then
@@ -23,7 +24,7 @@ function BattleManager:Init()
         --obj.transform.position = pos
     end
     FrameManager:GetInstance():Init(GameLogicUpdateFunc)
-
+    ColliderManager:GetInstance():Init()
 end
 
 function BattleManager:Ready()
