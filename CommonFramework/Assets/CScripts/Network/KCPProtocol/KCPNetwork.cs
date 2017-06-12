@@ -33,7 +33,7 @@ public class KCPNetwork
 	private void OnReceiveAny(byte[] buffer, int size, IPEndPoint remotePoint)
 	{
 		//string str = Encoding.UTF8.GetString(buffer, 0, size);
-		Debug.Log("OnReceiveAny() buffer.Length  " + buffer.Length + "  size: " + size);
+		Debug.LogError("OnReceiveAny() buffer.Length  " + buffer.Length + "  size: " + size);
 		Loom.QueueOnMainThread(() => {
 			if (m_luaFunctionRecvAny != null)
 			{
@@ -50,7 +50,7 @@ public class KCPNetwork
 	private void OnReceive(byte[] buffer, int size, IPEndPoint remotePoint)
 	{
 		//string str = Encoding.UTF8.GetString(buffer, 0, size);
-		Debug.Log("OnReceive() buffer.Length  " + buffer.Length + " size: " + size);
+		Debug.LogError("OnReceive() buffer.Length  " + buffer.Length + " size: " + size);
 		Loom.QueueOnMainThread(() => { 
 			if (m_luaFunctionRecv != null)
 			{
@@ -74,7 +74,7 @@ public class KCPNetwork
 
 	public void Send(byte[] data)
 	{
-		Debug.LogError("data.Length  " + data.Length);
+		Debug.LogError("Send data.Length  " + data.Length);
 		m_kcpSocket.SendTo(data, data.Length, m_remoteEndPoint);
 	}
 }

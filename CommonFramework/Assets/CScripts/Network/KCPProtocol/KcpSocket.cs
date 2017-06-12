@@ -377,12 +377,13 @@ namespace SGF.Network.KCP
             int cnt = m_SystemSocket.ReceiveFrom(m_RecvBufferTemp, m_RecvBufferTemp.Length,
                 SocketFlags.None, ref remotePoint);
 
-			count++;
-			if(count %2 == 0)
-			{
-				return;
-			}
-
+			//count++;
+			//if(count %2 == 0)
+			//{
+			//	Debug.LogError("模拟丢包");
+			//	return;
+			//}
+			Debug.LogError("正常接收  cnt  " + cnt);
             if (cnt > 0)
             {
                 KCPProxy proxy = GetKcp((IPEndPoint)remotePoint);
@@ -508,7 +509,9 @@ namespace SGF.Network.KCP
                 for (int size = m_Kcp.PeekSize(); size > 0; size = m_Kcp.PeekSize())
                 {
                     var recvBuffer = new byte[size];
-                    if (m_Kcp.Recv(recvBuffer) > 0)
+					int revcRet = m_Kcp.Recv(recvBuffer);
+					Debug.LogError("revcRet  " + revcRet);
+                    if (revcRet > 0)
                     {
                         if (m_Listener != null)
                         {
