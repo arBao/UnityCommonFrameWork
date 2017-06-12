@@ -3,6 +3,7 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using LuaInterface;
+using SGF.Network.KCP;
 
 public class KCPNetwork
 {
@@ -15,7 +16,7 @@ public class KCPNetwork
 		IPAddress ip = IPAddress.Parse(remoteIP);
 		m_remoteEndPoint = new IPEndPoint(ip, remotePort);
 		m_kcpSocket = new KCPSocket(localPort, id, AddressFamily.InterNetwork);
-		m_kcpSocket.AddReveiveListener(KCPSocket.IPEndPoint_Any, OnReceiveAny);
+		m_kcpSocket.AddReceiveListener(KCPSocket.IPEP_Any, OnReceiveAny);
 		m_kcpSocket.AddReceiveListener(OnReceive);
 	}
 
@@ -36,8 +37,10 @@ public class KCPNetwork
 		Loom.QueueOnMainThread(() => {
 			if (m_luaFunctionRecvAny != null)
 			{
+				ByteBuffer bytebuffer = new ByteBuffer();
+				bytebuffer.WriteBytesWithoutLength(buffer);
 				m_luaFunctionRecvAny.BeginPCall();
-				m_luaFunctionRecvAny.Push(buffer);
+				m_luaFunctionRecvAny.Push(bytebuffer);
 				m_luaFunctionRecvAny.PCall();
 				m_luaFunctionRecvAny.EndPCall();
 			} });
@@ -51,8 +54,11 @@ public class KCPNetwork
 		Loom.QueueOnMainThread(() => { 
 			if (m_luaFunctionRecv != null)
 			{
+				ByteBuffer bytebuffer = new ByteBuffer();
+				bytebuffer.WriteBytesWithoutLength(buffer);
+
 				m_luaFunctionRecv.BeginPCall();
-				m_luaFunctionRecv.Push(buffer);
+				m_luaFunctionRecv.Push(bytebuffer);
 				m_luaFunctionRecv.PCall();
 				m_luaFunctionRecv.EndPCall();
 			}
@@ -68,6 +74,7 @@ public class KCPNetwork
 
 	public void Send(byte[] data)
 	{
+		Debug.LogError("data.Length  " + data.Length);
 		m_kcpSocket.SendTo(data, data.Length, m_remoteEndPoint);
 	}
 }

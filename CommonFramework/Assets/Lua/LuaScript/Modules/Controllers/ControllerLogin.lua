@@ -62,7 +62,9 @@ function ControllerLogin:ShowUILogin()
         end)
         kcpNetwork:SetReceive(function(buffer)
             local udppackage = UdpPackage_pb.UdpPackage()
-            udppackage:ParseFromString(buffer)
+            local luabuffer = buffer:ToLuaBuffer()
+            Debugger.LogError('string.len(luabuffer)  ' .. string.len(luabuffer))
+            udppackage:ParseFromString(luabuffer)
 
             Debugger.LogError('udppackage.posX  ' .. udppackage.posX)
             Debugger.LogError('udppackage.posY  ' .. udppackage.posY)
@@ -79,6 +81,8 @@ function ControllerLogin:ShowUILogin()
             udppackage.posX = 100
             udppackage.posY = 200
             local data = udppackage:SerializeToString()
+            local length = string.len(data)
+            Debugger.LogError('length  ' .. length)
 
             --UdpNetwork:GetInstance():Send(1000,data)
             kcpNetwork:Send(data)
