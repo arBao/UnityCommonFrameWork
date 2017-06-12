@@ -17,6 +17,7 @@ public static class LuaBinder
 		ByteBufferWrap.Register(L);
 		LoomWrap.Register(L);
 		EventTriggerListenerWrap.Register(L);
+		KCPNetworkWrap.Register(L);
 		LuaComponentWrap.Register(L);
 		L.BeginModule("UnityEngine");
 		UnityEngine_TextAssetWrap.Register(L);

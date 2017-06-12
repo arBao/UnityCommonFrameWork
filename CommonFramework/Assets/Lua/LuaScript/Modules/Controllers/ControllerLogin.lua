@@ -55,6 +55,19 @@ function ControllerLogin:ShowUILogin()
         UdpNetwork:GetInstance():Init()
         UdpNetwork:GetInstance():ListenTo(1000,ReceiveCallback)
 
+        local kcpNetwork = KCPNetwork.New()
+        kcpNetwork:Init('kcp1',1,'127.0.0.1',11111,11110)
+        kcpNetwork:SetReceiveAny(function(buffer)
+
+        end)
+        kcpNetwork:SetReceive(function(buffer)
+            local udppackage = UdpPackage_pb.UdpPackage()
+            udppackage:ParseFromString(buffer)
+
+            Debugger.LogError('udppackage.posX  ' .. udppackage.posX)
+            Debugger.LogError('udppackage.posY  ' .. udppackage.posY)
+        end)
+
         self.loginView.OnClickButtonSendCallback = function ()
             self.id = self.id + 1
             self.seq = self.seq + 1
@@ -63,8 +76,8 @@ function ControllerLogin:ShowUILogin()
             udppackage.posY = 200
             local data = udppackage:SerializeToString()
 
-            UdpNetwork:GetInstance():Send(1000,data)
-
+            --UdpNetwork:GetInstance():Send(1000,data)
+            kcpNetwork:Send(data)
         end
 
         self.loginView.OnClickButtonLinkTestCallback = function ()
