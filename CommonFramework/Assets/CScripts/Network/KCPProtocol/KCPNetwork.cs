@@ -3,7 +3,6 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using LuaInterface;
-using SGF.Network.KCP;
 
 public class KCPNetwork
 {
