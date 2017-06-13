@@ -4,9 +4,16 @@
 ---
 
 ColliderUnit = class()
-function ColliderUnit:Set()
+function ColliderUnit:ctor()
     self.id = 1
-    self.ColliderCache = {}
+    self.x = 0
+    self.y = 0
+    self.posOrign = nil
+    self.colliderTypeList = {}
+end
+
+function ColliderUnit:AddType(type)
+    table.insert(self.colliderTypeList,type)
 end
 
 function ColliderUnit:Detect()

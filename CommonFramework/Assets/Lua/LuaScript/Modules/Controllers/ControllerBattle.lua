@@ -43,7 +43,7 @@ function ControllerBattle:ShowUIBattle()
     local udppackage = Battle_pb.ReadyReq()
     local data = udppackage:SerializeToString()
 
-	UdpNetwork:GetInstance():Send(1001,data)
+	--UdpNetwork:GetInstance():Send(1001,data)
 end
 
 return ControllerBattle

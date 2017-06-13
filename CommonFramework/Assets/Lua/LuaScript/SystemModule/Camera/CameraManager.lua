@@ -3,6 +3,7 @@
 --- DateTime: 2017/6/7 下午12:10
 ---
 CameraManager = class()
+local debug = true
 function CameraManager:GetInstance()
     if self.m_instance == nil then
         self.m_instance = CameraManager.new()
@@ -31,9 +32,12 @@ function CameraManager:GetBattleCameraField()
     local height = self.orthographicSize * delta
     local t = {['xLeft'] = cameraPos.x - width,['xRight'] = cameraPos.x + width,
         ['yBottom'] = cameraPos.y - height,['yTop'] = cameraPos.y + height}
-    UnityEngine.Debug.DrawLine(Vector3.New(t.xLeft,t.yTop,-10),Vector3.New(t.xRight,t.yTop,-10),Color.red)
-    UnityEngine.Debug.DrawLine(Vector3.New(t.xLeft,t.yTop,-10),Vector3.New(t.xLeft,t.yBottom,-10),Color.red)
-    UnityEngine.Debug.DrawLine(Vector3.New(t.xRight,t.yTop,-10),Vector3.New(t.xRight,t.yBottom,-10),Color.red)
-    UnityEngine.Debug.DrawLine(Vector3.New(t.xLeft,t.yBottom,-10),Vector3.New(t.xRight,t.yBottom,-10),Color.red)
+    if debug then
+        UnityEngine.Debug.DrawLine(Vector3.New(t.xLeft,t.yTop,-10),Vector3.New(t.xRight,t.yTop,-10),Color.red)
+        UnityEngine.Debug.DrawLine(Vector3.New(t.xLeft,t.yTop,-10),Vector3.New(t.xLeft,t.yBottom,-10),Color.red)
+        UnityEngine.Debug.DrawLine(Vector3.New(t.xRight,t.yTop,-10),Vector3.New(t.xRight,t.yBottom,-10),Color.red)
+        UnityEngine.Debug.DrawLine(Vector3.New(t.xLeft,t.yBottom,-10),Vector3.New(t.xRight,t.yBottom,-10),Color.red)
+    end
+
     return t
 end

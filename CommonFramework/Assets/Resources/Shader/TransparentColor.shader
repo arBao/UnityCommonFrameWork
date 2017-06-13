@@ -1,0 +1,54 @@
+﻿Shader "Custom/TransparentColor"
+{
+	Properties {
+	_Color ("Main Color", Color) = (1,1,1,1)
+}
+
+SubShader {
+	Tags { "RenderType"="Transparent" "QUEUE" = "Transparent"}
+
+	Pass {  
+		Zwrite On
+		ColorMask 0
+	}
+
+	Pass {  
+		
+		Zwrite Off
+		Blend SrcAlpha OneMinusSrcAlpha
+
+
+		CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			#include "UnityCG.cginc"
+
+			struct appdata_t {
+				float4 vertex : POSITION;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+
+			struct v2f {
+				float4 vertex : SV_POSITION;
+			};
+
+			fixed4 _Color;
+			
+			v2f vert (appdata_t v)
+			{
+				v2f o;
+				o.vertex = UnityObjectToClipPos(v.vertex);
+				return o;
+			}
+			
+			fixed4 frag (v2f i) : COLOR
+			{
+				fixed4 col = _Color;
+				return col;
+			}
+		ENDCG
+	}
+
+
+}
+}
