@@ -87,7 +87,8 @@ namespace SGF.Network.KCP
         //KCP参数
         private List<KCPProxy> m_ListKcp; 
         private uint m_KcpKey = 0;
-        private KCPReceiveListener m_AnyEPListener;
+		private KCPReceiveListener m_AnyListener;
+		private KCPReceiveListener m_RemoteListener;
 
         //=================================================================================
         #region 构造和析构
@@ -141,7 +142,7 @@ namespace SGF.Network.KCP
         public void Dispose()
         {
             m_IsRunning = false;
-            m_AnyEPListener = null;
+			m_AnyListener = null;
 
             if (m_ThreadRecv != null)
             {
@@ -234,7 +235,7 @@ namespace SGF.Network.KCP
             }
 
             proxy = new KCPProxy(m_KcpKey, ipep, m_SystemSocket);
-            proxy.AddReceiveListener(OnReceiveAny);
+            proxy.AddReceiveListener(OnReceive);
             m_ListKcp.Add(proxy);
             return proxy;
         }
@@ -245,6 +246,7 @@ namespace SGF.Network.KCP
         #region 发送逻辑
         public bool SendTo(byte[] buffer, int size, IPEndPoint remotePoint)
         {
+			Debug.LogError("IPAddress.Broadcast  " + IPAddress.Broadcast);
             if (remotePoint.Address == IPAddress.Broadcast)
             {
                 int cnt = m_SystemSocket.SendTo(buffer, size, SocketFlags.None, remotePoint);
@@ -305,7 +307,7 @@ namespace SGF.Network.KCP
             }
             else
             {
-                m_AnyEPListener += listener;
+                m_AnyListener += listener;
             }
         }
 
@@ -318,26 +320,26 @@ namespace SGF.Network.KCP
             }
             else
             {
-                m_AnyEPListener -= listener;
+                m_AnyListener -= listener;
             }
         }
 
-        public void AddReceiveListener(KCPReceiveListener listener)
-        {
-            m_AnyEPListener += listener;
-        }
+        //public void AddReceiveListener(KCPReceiveListener listener)
+        //{
+        //    m_AnyListener += listener;
+        //}
 
-        public void RemoveReceiveListener(KCPReceiveListener listener)
-        {
-            m_AnyEPListener -= listener;
-        }
+        //public void RemoveReceiveListener(KCPReceiveListener listener)
+        //{
+        //    m_AnyListener -= listener;
+        //}
 
-
-        private void OnReceiveAny(byte[] buffer, int size,   IPEndPoint remotePoint)
+		//接收回调
+		private void OnReceive(byte[] buffer, int size,   IPEndPoint remotePoint)
         {
-            if (m_AnyEPListener != null)
+            if (m_AnyListener != null)
             {
-                m_AnyEPListener(buffer, size, remotePoint);
+                m_AnyListener(buffer, size, remotePoint);
             }
         }
 
@@ -383,7 +385,7 @@ namespace SGF.Network.KCP
 			//	Debug.LogError("模拟丢包");
 			//	return;
 			//}
-			Debug.LogError("正常接收  cnt  " + cnt);
+			Debug.LogError("正常接收  cnt " + cnt + "  remotePoint  " + (remotePoint as IPEndPoint).ToString());
             if (cnt > 0)
             {
                 KCPProxy proxy = GetKcp((IPEndPoint)remotePoint);
@@ -449,14 +451,6 @@ namespace SGF.Network.KCP
 				Debug.LogError("HandleKcpSend buffer.Length  " + buff.Length + " size " + size);
                 m_Socket.SendTo(buff, 0, size, SocketFlags.None, m_RemotePoint);
             }   
-        }
-
-        private void HandleKcpSend_Hook(byte[] buff, int size)
-        {
-            if (m_Socket != null)
-            {
-                m_Socket.SendTo(buff, 0, size, SocketFlags.None, m_RemotePoint);
-            }    
         }
 
         public bool DoSend(byte[] buff, int size)

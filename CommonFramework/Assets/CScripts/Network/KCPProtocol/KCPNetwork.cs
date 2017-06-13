@@ -16,8 +16,8 @@ public class KCPNetwork
 		IPAddress ip = IPAddress.Parse(remoteIP);
 		m_remoteEndPoint = new IPEndPoint(ip, remotePort);
 		m_kcpSocket = new KCPSocket(localPort, id, AddressFamily.InterNetwork);
-		m_kcpSocket.AddReceiveListener(KCPSocket.IPEP_Any, OnReceiveAny);
-		m_kcpSocket.AddReceiveListener(OnReceive);
+		m_kcpSocket.AddReceiveListener(m_remoteEndPoint, OnReceive);
+		m_kcpSocket.AddReceiveListener(KCPSocket.IPEP_Any,OnReceiveAny);
 	}
 
 	public void SetReceiveAny(LuaFunction luafunction)
