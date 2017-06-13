@@ -85,19 +85,22 @@ end
 
 ---碰撞元素入栈
 function ColliderManager:Stack(pos,width,height,colliderType)
-    local modX = math.mod(pos.x,lineSpace)
-    local modY = math.mod(pos.y,lineSpace)
+    local modX = math.abs(math.mod(pos.x,lineSpace))
+    local modY = math.abs(math.mod(pos.y,lineSpace))
 
-    if modX > lineSpace / 2 then
+    local addX = 0
+    local addY = 0
 
-    else
-
+    if modX > lineSpace / 2 and pos.x > 0 then
+        addX = 1
+    elseif modX < lineSpace / 2 and pos.x< 0 then
+        addX = 1
     end
 
-    if modY > lineSpace / 2 then
-
-    else
-
+    if modY > lineSpace / 2 and pos.y > 0 then
+        addY = 1
+    elseif modY < lineSpace / 2 and pos.y < 0 then
+        addY = 1
     end
 
     ---中心位置
@@ -112,8 +115,8 @@ function ColliderManager:Stack(pos,width,height,colliderType)
     local str = ''
     local strID = ''
     local cnt = 0
-    for i = math.floor((0 - xCnt) / 2) + 1,math.floor((0 + xCnt) / 2),1 do
-        for j = math.floor((0 - yCnt) / 2) + 1,math.floor((0 + yCnt) / 2),1 do
+    for i = math.floor((0 - xCnt) / 2) + 1 + addX,math.floor((0 + xCnt) / 2)+ addX ,1 do
+        for j = math.floor((0 - yCnt) / 2) + 1 + addY,math.floor((0 + yCnt) / 2)+ addY ,1 do
             local x = centerX + i
             local y = centerY + j
             local id = x * self.max + y
