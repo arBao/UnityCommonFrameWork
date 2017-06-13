@@ -246,7 +246,7 @@ namespace SGF.Network.KCP
         #region 发送逻辑
         public bool SendTo(byte[] buffer, int size, IPEndPoint remotePoint)
         {
-			Debug.LogError("IPAddress.Broadcast  " + IPAddress.Broadcast);
+			//Debug.LogError("IPAddress.Broadcast  " + IPAddress.Broadcast);
             if (remotePoint.Address == IPAddress.Broadcast)
             {
                 int cnt = m_SystemSocket.SendTo(buffer, size, SocketFlags.None, remotePoint);
@@ -267,7 +267,7 @@ namespace SGF.Network.KCP
         public bool SendTo(string message, IPEndPoint remotePoint)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(message);
-			Debug.LogError("buffer.Length  " + buffer.Length);
+			Debug.LogError("SendTo buffer.Length  " + buffer.Length);
             return SendTo(buffer, buffer.Length, remotePoint);
         }
 
