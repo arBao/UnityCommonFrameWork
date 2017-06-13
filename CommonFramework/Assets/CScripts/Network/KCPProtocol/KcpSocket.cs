@@ -420,6 +420,8 @@ class KCPProxy
 	//---------------------------------------------
 	private void HandleKcpSend(byte[] buff, int size)
 	{
+		if (size == 0)
+			return;
 		if (m_Socket != null)
 		{
 			Debug.LogError("HandleKcpSend buffer.Length  " + buff.Length + " size " + size);
