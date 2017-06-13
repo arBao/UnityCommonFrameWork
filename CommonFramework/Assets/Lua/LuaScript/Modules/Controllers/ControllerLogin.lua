@@ -67,13 +67,13 @@ function ControllerLogin:ShowUILogin()
             --Debugger.LogError('ReceiveAny  udppackage.posY  ' .. udppackage.posY)
         end)
         kcpNetwork:SetReceive(function(buffer)
-            local udppackage = UdpPackage_pb.UdpPackage()
+            --local udppackage = UdpPackage_pb.UdpPackage()
             local luabuffer = buffer:ToLuaBuffer()
             Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(luabuffer))
-            udppackage:ParseFromString(luabuffer)
+            --udppackage:ParseFromString(luabuffer)
 
-            Debugger.LogError('Receive  udppackage.posX  ' .. udppackage.posX)
-            Debugger.LogError('Receive  udppackage.posY  ' .. udppackage.posY)
+            --Debugger.LogError('Receive  udppackage.posX  ' .. udppackage.posX)
+            --Debugger.LogError('Receive  udppackage.posY  ' .. udppackage.posY)
         end)
 
         UpdateBeat:Add(function (self)
@@ -89,7 +89,22 @@ function ControllerLogin:ShowUILogin()
             local data = udppackage:SerializeToString()
             local length = string.len(data)
             Debugger.LogError('length  ' .. length)
+            local sendData = 'asdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjwe
+            igjbvaipwejbvioawjerbiawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
+            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
+            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
+            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
+            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
+            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
+            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
+            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
+            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
+            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
+            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
+            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
+            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl'
 
+            Debugger.LogError('sendData  ' .. string.len(sendData))
             --UdpNetwork:GetInstance():Send(1000,data)
             kcpNetwork:Send(data)
         end
