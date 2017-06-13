@@ -89,7 +89,7 @@ function ControllerLogin:ShowUILogin()
             local data = udppackage:SerializeToString()
             local length = string.len(data)
             Debugger.LogError('length  ' .. length)
-            local sendData = 'asdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjwe'
+            local sendData = 'asdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjwe'
 
             Debugger.LogError('sendData  ' .. string.len(sendData))
             --UdpNetwork:GetInstance():Send(1000,data)

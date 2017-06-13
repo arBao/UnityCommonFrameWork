@@ -370,6 +370,7 @@ namespace SGF.Network.KCP
 		private int count;
         private void DoReceive()
         {
+			
             if (m_SystemSocket.Available <= 0)
             {
                 return;
@@ -427,7 +428,7 @@ namespace SGF.Network.KCP
             m_Kcp = new KCP(key, HandleKcpSend);
             m_Kcp.NoDelay(1, 10, 2, 1);
             m_Kcp.WndSize(128, 128);
-			m_Kcp.SetMtu(512);
+			m_Kcp.SetMtu(1024);
         }
 
         public void Dispose()
