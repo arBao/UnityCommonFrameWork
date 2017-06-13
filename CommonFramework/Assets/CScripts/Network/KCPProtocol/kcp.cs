@@ -344,10 +344,10 @@ namespace SGF.Network.KCP
             for (var i = 0; i < count; i++)
             {
                 var size = 0;
-                if (bufferSize > mss)
-                    size = (int)mss;
-                else
-                    size = bufferSize;
+				if (bufferSize - offset > mss)
+					size = (int)mss;
+				else
+					size = bufferSize - offset;
 
                 var seg = new Segment(size);
                 Array.Copy(buffer, offset, seg.data, 0, size);
