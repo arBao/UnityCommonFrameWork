@@ -89,20 +89,7 @@ function ControllerLogin:ShowUILogin()
             local data = udppackage:SerializeToString()
             local length = string.len(data)
             Debugger.LogError('length  ' .. length)
-            local sendData = 'asdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjwe
-            igjbvaipwejbvioawjerbiawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
-            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
-            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
-            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
-            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
-            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
-            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
-            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
-            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
-            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
-            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
-            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl
-            biawjnbiknaewbn aebn aewknrblkajwrblkajwlebvmalwrdmb laemrwbl anewrlbknl'
+            local sendData = 'asdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjwe'
 
             Debugger.LogError('sendData  ' .. string.len(sendData))
             --UdpNetwork:GetInstance():Send(1000,data)
