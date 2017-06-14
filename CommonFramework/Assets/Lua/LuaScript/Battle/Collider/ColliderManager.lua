@@ -110,13 +110,19 @@ function ColliderManager:Stack(pos,width,height,colliderType)
     local xCnt = width / lineSpace
     local yCnt = height / lineSpace
 
+    local xBegin = math.floor((0 - xCnt) / 2) + 1 + addX
+    local xEnd = math.floor((0 + xCnt) / 2)+ addX
+
+    local jBegin = math.floor((0 - yCnt) / 2) + 1 + addY
+    local jEnd = math.floor((0 + yCnt) / 2)+ addY
+
     --Debugger.LogError('centerX  ' .. centerX .. '  lineY  ' .. centerY)
 
     local str = ''
     local strID = ''
     local cnt = 0
-    for i = math.floor((0 - xCnt) / 2) + 1 + addX,math.floor((0 + xCnt) / 2)+ addX ,1 do
-        for j = math.floor((0 - yCnt) / 2) + 1 + addY,math.floor((0 + yCnt) / 2)+ addY ,1 do
+    for i = xBegin,xEnd, 1 do
+        for j = jBegin, jEnd, 1 do
             local x = centerX + i
             local y = centerY + j
             local id = x * self.max + y

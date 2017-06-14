@@ -401,7 +401,7 @@ class KCPProxy
 		m_Kcp = new KCP(key, HandleKcpSend);
 		m_Kcp.NoDelay(1, 10, 2, 1);
 		m_Kcp.WndSize(128, 128);
-		m_Kcp.SetMtu(1024);
+		m_Kcp.SetMtu(512);
 	}
 
 	public void Dispose()
@@ -424,7 +424,7 @@ class KCPProxy
 			return;
 		if (m_Socket != null)
 		{
-			Debug.LogError("HandleKcpSend buffer.Length  " + buff.Length + " size " + size);
+			Debug.LogError("HandleKcpSend buffer.Length  " + buff.Length + " send size " + size);
 			m_Socket.SendTo(buff, 0, size, SocketFlags.None, m_RemotePoint);
 		}
 	}

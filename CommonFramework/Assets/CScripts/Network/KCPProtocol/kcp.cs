@@ -342,10 +342,10 @@ public class KCP
 		for (var i = 0; i < count; i++)
 		{
 			var size = 0;
-			if (bufferSize - offset > mss)
+			if (bufferSize > mss)
 				size = (int)mss;
 			else
-				size = bufferSize - offset;
+				size = bufferSize ;
 
 			var seg = new Segment(size);
 			Array.Copy(buffer, offset, seg.data, 0, size);
