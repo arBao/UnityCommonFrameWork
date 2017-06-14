@@ -84,7 +84,7 @@ function ColliderManager:Clean()
 end
 
 ---碰撞元素入栈
-function ColliderManager:Stack(pos,width,height,colliderType)
+function ColliderManager:Stack(pos,width,height,playerid,colliderType)
     local modX = math.abs(math.mod(pos.x,lineSpace))
     local modY = math.abs(math.mod(pos.y,lineSpace))
 
@@ -134,7 +134,6 @@ function ColliderManager:Stack(pos,width,height,colliderType)
             local unit = self.unitList[id]
             if unit == nil then
                 unit = ColliderUnit.new()
-                unit.id = id
                 unit.x = x
                 unit.y = y
                 unit.centerX = centerX
@@ -142,7 +141,7 @@ function ColliderManager:Stack(pos,width,height,colliderType)
                 self.unitList[id] = unit
             end
 
-            unit:AddType(colliderType)
+            unit:AddType(playerid,colliderType)
         end
     end
 
@@ -162,7 +161,31 @@ function ColliderManager:DebugUnitList()
     --Debugger.LogError('DebugUnitList  cnt ' .. cnt)
 end
 
----碰撞检测
+---碰撞检测 返回碰撞对
 function ColliderManager:ColliderDetect()
+    local tablePairs = {}
+    for k,v in pairs(self.unitList) do
+        local pairs = v:Detect()
+        if #pairs ~= 0 then
+            for i = 1,#pairs do
+                ---去重 + 插入
+                local pairInsert = pairs[i]
+                local shouldInsert = true
+                for j = 1,#tablePairs do
+                    local pair = tablePairs[j]
+                    if pair.element1.id == pairInsert.element1.id and pair.element2.id == pairInsert.element2.id then
+                        shouldInsert = false
+                    end
+                end
+                if shouldInsert then
+                    table.insert(tablePairs,pairInsert)
+                end
 
+            end
+
+        end
+
+    end
+
+    return tablePairs
 end
