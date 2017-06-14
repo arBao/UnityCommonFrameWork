@@ -5,6 +5,7 @@
 require 'Battle/Player/PlayerCreator'
 require 'Battle/FrameSyncSystem/FrameManager'
 require 'Battle/Collider/ColliderManager'
+require 'Battle/Process/ProcessManager'
 BattleManager = class()
 function BattleManager:GetInstance()
     if self.m_instance == nil then
@@ -27,6 +28,9 @@ function BattleManager:Init()
     end
     FrameManager:GetInstance():Init(GameLogicUpdateFunc)
     ColliderManager:GetInstance():Init()
+    ProcessManager:GetInstance():Init('ProcessModeNormal')
+    BattleEventsManager:GetInstance():Send('BattleReady',nil)
+    Debugger.LogError('Send  BattleReady')
 end
 
 
@@ -42,6 +46,7 @@ function BattleManager:Start()
 end
 
 function BattleManager.Update(self)
+    ProcessManager:GetInstance():Update(Time.deltaTime)
     CameraManager:GetInstance():GetBattleCameraField()
     FrameManager:GetInstance():Update(Time.deltaTime)
     local pos1 = self.obj1.transform.position
@@ -62,4 +67,8 @@ function BattleManager.Update(self)
         Debugger.LogError('pair.element1.id  ' .. pair.element1.id .. '  pair.element1.type  ' .. pair.element1.type )
         Debugger.LogError('pair.element2.id  ' .. pair.element2.id .. '  pair.element2.type  ' .. pair.element2.type )
     end
+end
+
+function BattleManager:Clear()
+
 end

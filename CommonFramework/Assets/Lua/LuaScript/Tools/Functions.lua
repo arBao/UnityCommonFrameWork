@@ -43,30 +43,30 @@ function string.tobyteString(byteTable)
 	return string.char(unpack(byteTable))
 end
 
-function arrayContain( array, value, returnIndex)
-	for i=1,#array do
-		if array[i] == value then
-			if returnIndex then
-				return i
-			else
-				return true
-			end
-		end
-	end
-	if returnIndex then
-		return 0
-	else
-		return false
-	end
-end
+--function arrayContain( array, value, returnIndex)
+--	for i=1,#array do
+--		if array[i] == value then
+--			if returnIndex then
+--				return i
+--			else
+--				return true
+--			end
+--		end
+--	end
+--	if returnIndex then
+--		return 0
+--	else
+--		return false
+--	end
+--end
 
 function arrayContain( array, value)
 	for i=1,#array do
 		if array[i] == value then
-			return i
+			return true
 		end
 	end
-	return 0
+	return false
 end
 
 function file_exists(path)
