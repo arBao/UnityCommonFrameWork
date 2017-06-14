@@ -27,9 +27,6 @@ function BattleManager:Init()
     end
     FrameManager:GetInstance():Init(GameLogicUpdateFunc)
     ColliderManager:GetInstance():Init()
-    --ColliderManager:GetInstance():Stack(Vector2.New(0.6,0.6),1,1,1)
-
-    --ColliderManager:GetInstance():Stack(Vector2.New(0.3,0.3),1,1,1)
 end
 
 
@@ -55,7 +52,10 @@ function BattleManager.Update(self)
     ColliderManager:GetInstance():Stack(Vector2.New(pos2.x,pos2.y),1,1,222,2)
     ColliderManager:GetInstance():Stack(Vector2.New(pos3.x,pos3.y),1,1,333,3)
     local pairs = ColliderManager:GetInstance():ColliderDetect()
-    Debugger.LogError('--------------------' )
+    if #pairs ~= 0 then
+        Debugger.LogError('--------------------' )
+    end
+
     for i=1,#pairs do
         local pair = pairs[i]
         Debugger.LogError('##########' )
