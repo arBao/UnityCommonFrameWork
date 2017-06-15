@@ -425,7 +425,8 @@ class KCPProxy
 		if (m_Socket != null)
 		{
 			Debug.LogError("HandleKcpSend buffer.Length  " + buff.Length + " send size " + size);
-			m_Socket.SendTo(buff, 0, size, SocketFlags.None, m_RemotePoint);
+			//m_Socket.SendTo(buff, 0, size, SocketFlags.None, m_RemotePoint);
+			m_Socket.BeginSendTo(buff, 0, size, SocketFlags.None, m_RemotePoint, null, null);
 		}
 	}
 
