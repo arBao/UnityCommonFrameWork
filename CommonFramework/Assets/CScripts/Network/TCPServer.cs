@@ -19,8 +19,10 @@ public class TCPServer
 	private bool m_isNoDelay = true;
 	private int m_SendTimeout = 10;
 	private int m_ReceiveTimeout = 10;
+	private int m_connectTimeout = 5;
 	private LuaFunction m_ConnectSuccessCallback;
 	private LuaFunction m_ConnectFailCallback;
+	private int m_connentDelayTimerID = 0;
 
 	public TCPServer Instance
 	{
@@ -39,12 +41,12 @@ public class TCPServer
 		Disconnect();
 	}
 
-	public void SetTcpParms(bool isNodelay,int sendTimeout,int receiveTimeout)
+	public void SetTcpParms(bool isNodelay,int sendTimeout,int receiveTimeout,int connectTimeout)
 	{
 		m_isNoDelay = isNodelay;
 		m_SendTimeout = sendTimeout;
 		m_ReceiveTimeout = receiveTimeout;
-
+		m_connectTimeout = connectTimeout;
 	}
 
 	public void SetConnectCallback(LuaFunction successCallback, LuaFunction failCallback)
@@ -68,6 +70,13 @@ public class TCPServer
 
 		IPAddress ipAdr = IPAddress.Parse(remoteIP);
 		m_tcpClient.BeginConnect(ipAdr, port, new AsyncCallback(ConnectCallback), state);
+
+		m_connentDelayTimerID = TimerManager.Instance.CallActionDelay((object data) => {
+			if(actionFail != null)
+			{
+				actionFail();
+			}
+		}, m_connectTimeout, null, 0);
 	}
 
 	public void Disconnect()
@@ -103,7 +112,7 @@ public class TCPServer
 	{
 		if(result.IsCompleted)
 		{
-			
+			TimerManager.Instance.DeleteTimer(m_connentDelayTimerID);
 		}
 	}
 }

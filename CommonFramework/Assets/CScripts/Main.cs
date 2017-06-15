@@ -9,6 +9,7 @@ public class Main : MonoBehaviour {
 	{
 		Application.runInBackground = true;
 		Loom.Initialize();
+		TimerManager.Initialize();
 		GameObject obj = new GameObject("Main");
 		DontDestroyOnLoad(obj);
 		obj.AddComponent<LuaManager>();
