@@ -140,7 +140,11 @@ function ControllerLogin:ShowUILogin()
             end
             SceneMgr.LoadASync('Battle',funcProgress,finishCallback,false)
         end
-
+        TCPSocket.Instance:SetRecvCallback(
+        function(bytebuffer)
+            local luabuffer = bytebuffer:ToLuaBuffer()
+            Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(luabuffer))
+        end)
         self.loginView.OnClickButtonTcpConnectCallback = function ()
             TCPSocket.Instance:Connect('127.0.0.1',9999,
             function ()

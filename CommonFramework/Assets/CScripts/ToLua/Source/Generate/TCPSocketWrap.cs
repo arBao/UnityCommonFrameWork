@@ -10,8 +10,8 @@ public class TCPSocketWrap
 		L.RegFunction("Clear", Clear);
 		L.RegFunction("SetTcpParms", SetTcpParms);
 		L.RegFunction("Connect", Connect);
+		L.RegFunction("SetRecvCallback", SetRecvCallback);
 		L.RegFunction("Send", Send);
-		L.RegFunction("Listen", Listen);
 		L.RegFunction("New", _CreateTCPSocket);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("Instance", get_Instance, null);
@@ -125,6 +125,35 @@ public class TCPSocketWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int SetRecvCallback(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			TCPSocket obj = (TCPSocket)ToLua.CheckObject(L, 1, typeof(TCPSocket));
+			System.Action<ByteBuffer> arg0 = null;
+			LuaTypes funcType2 = LuaDLL.lua_type(L, 2);
+
+			if (funcType2 != LuaTypes.LUA_TFUNCTION)
+			{
+				 arg0 = (System.Action<ByteBuffer>)ToLua.CheckObject(L, 2, typeof(System.Action<ByteBuffer>));
+			}
+			else
+			{
+				LuaFunction func = ToLua.ToLuaFunction(L, 2);
+				arg0 = DelegateFactory.CreateDelegate(typeof(System.Action<ByteBuffer>), func) as System.Action<ByteBuffer>;
+			}
+
+			obj.SetRecvCallback(arg0);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int Send(IntPtr L)
 	{
 		try
@@ -159,36 +188,6 @@ public class TCPSocketWrap
 			}
 
 			obj.Send(arg0, arg1, arg2);
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Listen(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 3);
-			TCPSocket obj = (TCPSocket)ToLua.CheckObject(L, 1, typeof(TCPSocket));
-			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
-			System.Action<int,byte[]> arg1 = null;
-			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
-
-			if (funcType3 != LuaTypes.LUA_TFUNCTION)
-			{
-				 arg1 = (System.Action<int,byte[]>)ToLua.CheckObject(L, 3, typeof(System.Action<int,byte[]>));
-			}
-			else
-			{
-				LuaFunction func = ToLua.ToLuaFunction(L, 3);
-				arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<int,byte[]>), func) as System.Action<int,byte[]>;
-			}
-
-			obj.Listen(arg0, arg1);
 			return 0;
 		}
 		catch(Exception e)

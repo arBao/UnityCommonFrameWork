@@ -33,6 +33,8 @@ public class TCPSocket
 	private const int MAX_READ = 8192;
 	private byte[] byteBuffer = new byte[MAX_READ];
 
+	private Action<ByteBuffer> m_recvCallback;
+
 	private NetworkStream m_networkStream;
 
 	private static TCPSocket m_Instance;
@@ -51,10 +53,8 @@ public class TCPSocket
 	public void Clear()
 	{
 		Disconnect();
-		m_ConnectSuccessCallback = null;
-		m_ConnectFailCallback = null;
-		TimerManager.Instance.DeleteTimer(m_connentDelayTimerID);
-		m_connentDelayTimerID = 0;
+
+		m_recvCallback = null;
 	}
 
 	public void SetTcpParms(bool isNodelay,int sendTimeout,int receiveTimeout,int connectTimeout,
@@ -70,7 +70,7 @@ public class TCPSocket
 
 	public void Connect(string remoteIP,int port,Action actionSuccess,Action<string> actionFail)
 	{
-		Clear();
+		Disconnect();
 
 		m_ConnectSuccessCallback = actionSuccess;
 		m_ConnectFailCallback = actionFail;
@@ -124,13 +124,22 @@ public class TCPSocket
 			m_tcpClient = null;
 			m_networkStream.Dispose();
 			m_networkStream = null;
+			TimerManager.Instance.DeleteTimer(m_connentDelayTimerID);
+			m_connentDelayTimerID = 0;
 		}
+	}
+
+	public void SetRecvCallback(Action<ByteBuffer> recvCallback)
+	{
+		Debug.LogError("SetRecvCallback");
+		m_recvCallback = recvCallback;
 	}
 
 	public void Send(byte[] data,Action sendSuccess,Action<string> sendFail)
 	{
 		m_sendSuccess = sendSuccess;
 		m_sendFail = sendFail;
+
 		if(m_tcpClient != null && m_tcpClient.Connected && m_networkStream != null)
 		{
 			try
@@ -154,11 +163,6 @@ public class TCPSocket
 		}
 	}
 
-	public void Listen(int msgID,Action<int,byte[]>callBack)
-	{
-		
-	}
-
 	private void WriteCallback(IAsyncResult result)
 	{
 		Loom.QueueOnMainThread(() => { 
@@ -172,15 +176,66 @@ public class TCPSocket
 		});
 	}
 
+	private void OnRead(IAsyncResult result)
+	{
+		if (m_tcpClient != null && m_tcpClient.Connected && m_networkStream != null)
+		{
+			try
+			{
+				int bytesRead = 0;
+				bytesRead = m_networkStream.EndRead(result);
+				if(bytesRead < 1)
+				{
+					Loom.QueueOnMainThread(() =>
+					{
+						Clear();
+						Debug.LogError("包数据有问题，字节长度为0");
+					});
+					return;
+				}
+
+				byte[] byteRecv = new byte[bytesRead];
+				Array.Copy(byteBuffer, byteRecv, bytesRead);
+
+				ByteBuffer buffer = new ByteBuffer();
+				buffer.WriteBytesWithoutLength(byteRecv);
+				Loom.QueueOnMainThread(() =>
+				{
+					m_recvCallback(buffer);
+				});
+
+				Array.Clear(byteBuffer, 0, byteBuffer.Length);
+				m_networkStream.BeginRead(byteBuffer, 0, byteBuffer.Length, new AsyncCallback(OnRead), null);
+			}
+			catch (Exception e)
+			{
+				Debug.LogError("OnRead error " + e.Message);
+			}
+		}
+		else
+		{
+			if (m_sendFail != null)
+			{
+				m_sendFail("未连接或者连接已断开");
+			}
+		}
+
+	}
+
 	private void ConnectCallback(IAsyncResult result)
 	{
 		if(result.IsCompleted)
 		{
+			m_tcpClient.EndConnect(result);
+
 			Loom.QueueOnMainThread(() => {
 				TCPState state = (TCPState)result.AsyncState;
 				if(state.tcpClient.Connected)
 				{
 					m_networkStream = m_tcpClient.GetStream();
+
+					m_networkStream.BeginRead(byteBuffer, 0, byteBuffer.Length, new AsyncCallback(OnRead), null);
+
 					if (m_ConnectSuccessCallback != null)
 					{
 						m_ConnectSuccessCallback();
@@ -195,6 +250,8 @@ public class TCPSocket
 				}
 				TimerManager.Instance.DeleteTimer(m_connentDelayTimerID);
 				m_connentDelayTimerID = 0;
+				m_ConnectSuccessCallback = null;
+				m_ConnectFailCallback = null;
 
 			});
 		}

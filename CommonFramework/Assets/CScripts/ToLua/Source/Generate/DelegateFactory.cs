@@ -32,7 +32,7 @@ public static class DelegateFactory
 		dict.Add(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.BaseEventData>), System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData);
 		dict.Add(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.AxisEventData>), System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData);
 		dict.Add(typeof(System.Action<string>), System_Action_string);
-		dict.Add(typeof(System.Action<int,byte[]>), System_Action_int_bytes);
+		dict.Add(typeof(System.Action<ByteBuffer>), System_Action_ByteBuffer);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.Application.LowMemoryCallback), UnityEngine_Application_LowMemoryCallback);
 		dict.Add(typeof(UnityEngine.Application.AdvertisingIdentifierCallback), UnityEngine_Application_AdvertisingIdentifierCallback);
@@ -869,50 +869,48 @@ public static class DelegateFactory
 		}
 	}
 
-	class System_Action_int_bytes_Event : LuaDelegate
+	class System_Action_ByteBuffer_Event : LuaDelegate
 	{
-		public System_Action_int_bytes_Event(LuaFunction func) : base(func) { }
-		public System_Action_int_bytes_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+		public System_Action_ByteBuffer_Event(LuaFunction func) : base(func) { }
+		public System_Action_ByteBuffer_Event(LuaFunction func, LuaTable self) : base(func, self) { }
 
-		public void Call(int param0, byte[] param1)
+		public void Call(ByteBuffer param0)
 		{
 			func.BeginPCall();
-			func.Push(param0);
-			func.Push(param1);
+			func.PushObject(param0);
 			func.PCall();
 			func.EndPCall();
 		}
 
-		public void CallWithSelf(int param0, byte[] param1)
+		public void CallWithSelf(ByteBuffer param0)
 		{
 			func.BeginPCall();
 			func.Push(self);
-			func.Push(param0);
-			func.Push(param1);
+			func.PushObject(param0);
 			func.PCall();
 			func.EndPCall();
 		}
 	}
 
-	public static Delegate System_Action_int_bytes(LuaFunction func, LuaTable self, bool flag)
+	public static Delegate System_Action_ByteBuffer(LuaFunction func, LuaTable self, bool flag)
 	{
 		if (func == null)
 		{
-			System.Action<int,byte[]> fn = delegate(int param0, byte[] param1) { };
+			System.Action<ByteBuffer> fn = delegate(ByteBuffer param0) { };
 			return fn;
 		}
 
 		if(!flag)
 		{
-			System_Action_int_bytes_Event target = new System_Action_int_bytes_Event(func);
-			System.Action<int,byte[]> d = target.Call;
+			System_Action_ByteBuffer_Event target = new System_Action_ByteBuffer_Event(func);
+			System.Action<ByteBuffer> d = target.Call;
 			target.method = d.Method;
 			return d;
 		}
 		else
 		{
-			System_Action_int_bytes_Event target = new System_Action_int_bytes_Event(func, self);
-			System.Action<int,byte[]> d = target.CallWithSelf;
+			System_Action_ByteBuffer_Event target = new System_Action_ByteBuffer_Event(func, self);
+			System.Action<ByteBuffer> d = target.CallWithSelf;
 			target.method = d.Method;
 			return d;
 		}
