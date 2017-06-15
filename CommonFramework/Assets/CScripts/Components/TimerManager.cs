@@ -124,7 +124,8 @@ public class TimerManager : MonoBehaviour
 
 	public void DeleteTimer(int id)
 	{
-		m_dicTimers.RemoveKeyValue(id);
+		if(m_dicTimers.ContainsKey(id))
+			m_dicTimers.RemoveKeyValue(id);
 	}
 
 	// Update is called once per frame

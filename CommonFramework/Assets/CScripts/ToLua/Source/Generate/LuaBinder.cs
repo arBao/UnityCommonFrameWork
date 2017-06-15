@@ -18,6 +18,7 @@ public static class LuaBinder
 		LoomWrap.Register(L);
 		EventTriggerListenerWrap.Register(L);
 		KCPNetworkWrap.Register(L);
+		TCPSocketWrap.Register(L);
 		LuaComponentWrap.Register(L);
 		L.BeginModule("UnityEngine");
 		UnityEngine_TextAssetWrap.Register(L);
@@ -113,6 +114,8 @@ public static class LuaBinder
 		L.RegFunction("Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData", System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_PointerEventData);
 		L.RegFunction("Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData", System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_BaseEventData);
 		L.RegFunction("Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData", System_Action_LuaInterface_LuaTable_UnityEngine_EventSystems_AxisEventData);
+		L.RegFunction("Action_string", System_Action_string);
+		L.RegFunction("Action_int_bytes", System_Action_int_bytes);
 		L.EndModule();
 		L.EndModule();
 		L.BeginPreLoad();
@@ -662,6 +665,60 @@ public static class LuaBinder
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
 				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<LuaInterface.LuaTable,UnityEngine.EventSystems.AxisEventData>), func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int System_Action_string(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<string>), func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<string>), func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int System_Action_int_bytes(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<int,byte[]>), func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<int,byte[]>), func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;

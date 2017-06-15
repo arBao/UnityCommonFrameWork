@@ -7,11 +7,15 @@ function ViewUILogin:OnAwake()
 	self.ButtonSend = self:FindTransform('ButtonSend'):GetComponent('ButtonCustom')
 	self.ButtonLinkTest = self:FindTransform('ButtonLinkTest'):GetComponent('ButtonCustom')
 	self.ButtonBattle = self:FindTransform('ButtonBattle'):GetComponent('ButtonCustom')
+	self.ButtonTcpConnect = self:FindTransform('ButtonTcpConnect'):GetComponent('ButtonCustom')
+    self.ButtonTcpSend = self:FindTransform('ButtonTcpSend'):GetComponent('ButtonCustom')
 
 	self.ButtonLogin:SetClickAction(self,ViewUILogin.OnClickLogin)
 	self.ButtonSend:SetClickAction(self,ViewUILogin.OnClickButtonSend)
 	self.ButtonLinkTest:SetClickAction(self,ViewUILogin.OnClickButtonLinkTest)
 	self.ButtonBattle:SetClickAction(self,ViewUILogin.OnClickButtonBattle)
+	self.ButtonTcpConnect:SetClickAction(self,ViewUILogin.OnClickButtonTcpConnect)
+    self.ButtonTcpSend:SetClickAction(self,ViewUILogin.OnClickButtonTcpSend)
 end
 
 function ViewUILogin:OnShowView()
@@ -58,6 +62,18 @@ function ViewUILogin.OnClickButtonBattle(self,sender)
 	if self.OnClickButtonBattleCallback ~= nil then
 		self.OnClickButtonBattleCallback()
 	end
+end
+
+function ViewUILogin.OnClickButtonTcpConnect(self,sender)
+	if self.OnClickButtonTcpConnectCallback ~= nil then
+		self.OnClickButtonTcpConnectCallback()
+	end
+end
+
+function ViewUILogin.OnClickButtonTcpSend(self,sender)
+    if self.OnClickButtonTcpSendCallback ~= nil then
+        self.OnClickButtonTcpSendCallback()
+    end
 end
 
 return ViewUILogin

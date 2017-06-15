@@ -141,6 +141,25 @@ function ControllerLogin:ShowUILogin()
             SceneMgr.LoadASync('Battle',funcProgress,finishCallback,false)
         end
 
+        self.loginView.OnClickButtonTcpConnectCallback = function ()
+            TCPSocket.Instance:Connect('127.0.0.1',9999,
+            function ()
+                Debugger.LogError('Success connect')
+            end,
+            function(err)
+                Debugger.LogError('fail ' .. err)
+            end)
+        end
+
+        self.loginView.OnClickButtonTcpSendCallback = function ()
+            TCPSocket.Instance:Send('11111',
+            function()
+                Debugger.LogError('Success send')
+            end,
+            function(err)
+                Debugger.LogError('fail send ' .. err)
+            end)
+        end
 
     end
     self.loginView:Show()

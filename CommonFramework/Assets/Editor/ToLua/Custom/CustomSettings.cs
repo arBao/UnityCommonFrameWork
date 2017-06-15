@@ -69,6 +69,7 @@ public static class CustomSettings
 		_GT(typeof(EventTriggerListener)),
 		_GT(typeof(Debug)),
 		_GT(typeof(KCPNetwork)),
+		_GT(typeof(TCPSocket)),
 		
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),
