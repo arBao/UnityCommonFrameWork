@@ -22,11 +22,23 @@ function ControllerBattle:OnReciveMessage(msg,msgBody)
 end
 
 function ControllerBattle:ShowUIBattle()
-	if self.battleview == nil then
-		self.battleview = self:GetView('ViewUIBattle')
-		self.battleview.onClickButtonSpeedCallback = function ()
+    if self.battleview == nil then
+        self.playingPlot = false
+        self.battleview = self:GetView('ViewUIBattle')
+        self.battleview.onClickButtonSpeedCallback = function ()
 
-		end
+        end
+
+        self.battleview.onClickBtnTestProcessModeCallback = function ()
+            Debugger.LogError('onClickBtnTestProcessModeCallback')
+            self.playingPlot = not(self.playingPlot)
+            if self.playingPlot then
+                BattleEventsManager:GetInstance():Send('PlayPlot')
+            else
+                BattleEventsManager:GetInstance():Send('EndPlot')
+            end
+        end
+
         self.battleview.JoyStickOnDragCallback = function(direction)
             Debugger.LogError("direction.x   " .. direction.x .. '  direction.y  ' .. direction.y)
             BattleManager:GetInstance().direction = direction
@@ -35,15 +47,15 @@ function ControllerBattle:ShowUIBattle()
             Debugger.LogError('EndDragCallback')
         end
 
-	end
-	self.battleview:Show()
+    end
+    self.battleview:Show()
     BattleManager:GetInstance():Init()
     BattleManager:GetInstance():Start()
 
     local udppackage = Battle_pb.ReadyReq()
     local data = udppackage:SerializeToString()
 
-	--UdpNetwork:GetInstance():Send(1001,data)
+    --UdpNetwork:GetInstance():Send(1001,data)
 end
 
 return ControllerBattle

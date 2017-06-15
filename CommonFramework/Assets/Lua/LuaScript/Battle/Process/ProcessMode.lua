@@ -19,7 +19,7 @@ function ProcessMode:Init()
 
             self:InsertIProcess(processParm)
             if processParm:ProcessWhenRequest() then
-                self:Process()
+                self:Process(Time.deltaTime)
             end
         end
         process:SetRequestCallback(callback)
@@ -71,7 +71,7 @@ function ProcessMode:InsertIProcess(process)
             local priorityNew = process:GetProcessPriority()
             if priorityOrigin < priorityNew then
                 haveInsert = true
-                table.insert(self.processInQueue,process,i)
+                table.insert(self.processInQueue,i,process)
                 break
             end
 
@@ -98,14 +98,15 @@ function ProcessMode:Process(deltaTime)
                 self.currentProcess:Running(deltaTime)
             elseif self.currentProcess:GetProcessState() == ProcessState.finish then
                 self.currentProcess:End()
+                self.currentProcess:SetProcessState(ProcessState.ready)
                 table.remove(self.processInQueue,1)
                 self.currentProcess = nil
-                self:Process()
+                self:Process(deltaTime)
             end
         else
             self.currentProcess:Pause()
             self.currentProcess = self.processInQueue[1]
-            self:Process()
+            self:Process(deltaTime)
         end
     end
 end
