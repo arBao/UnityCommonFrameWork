@@ -2,6 +2,7 @@ require 'SystemModule/Network/UdpNetwork'
 require 'SystemModule/Network/LinkUDPPackets'
 require 'Proto/person_pb'
 require 'Proto/UdpPackage_pb'
+require 'SystemModule/Network/TCPNetwork'
 
 local ControllerLogin = class(Controller)
 function ControllerLogin:ctor()
@@ -146,17 +147,21 @@ function ControllerLogin:ShowUILogin()
             Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(luabuffer))
         end)
         self.loginView.OnClickButtonTcpConnectCallback = function ()
-            TCPSocket.Instance:Connect('127.0.0.1',9999,
+            TCPNetwork:GetInstance():Connect('127.0.0.1',9999,
             function ()
                 Debugger.LogError('Success connect')
             end,
             function(err)
                 Debugger.LogError('fail ' .. err)
             end)
+
+            TimerManager:GetInstance():CallActionDelay(function(parm)
+                Debugger.LogError('calldelay  ' .. parm)
+            end,3,'11',3)
         end
 
         self.loginView.OnClickButtonTcpSendCallback = function ()
-            TCPSocket.Instance:Send('11111',
+            TCPNetwork:GetInstance():Send(1,'11111',
             function()
                 Debugger.LogError('Success send')
             end,
