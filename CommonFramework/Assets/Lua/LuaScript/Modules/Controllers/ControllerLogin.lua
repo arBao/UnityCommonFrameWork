@@ -141,11 +141,12 @@ function ControllerLogin:ShowUILogin()
             end
             SceneMgr.LoadASync('Battle',funcProgress,finishCallback,false)
         end
-        TCPSocket.Instance:SetRecvCallback(
-        function(bytebuffer)
-            local luabuffer = bytebuffer:ToLuaBuffer()
-            Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(luabuffer))
-        end)
+        --TCPSocket.Instance:SetRecvCallback(
+        --function(bytebuffer)
+        --    local luabuffer = bytebuffer:ToLuaBuffer()
+        --    Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(luabuffer))
+        --end)
+        TCPNetwork:GetInstance():Init()
         self.loginView.OnClickButtonTcpConnectCallback = function ()
             TCPNetwork:GetInstance():Connect('127.0.0.1',9999,
             function ()

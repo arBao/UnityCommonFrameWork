@@ -135,11 +135,15 @@ public class TCPSocket
 		m_recvCallback = recvCallback;
 	}
 
-	public void Send(byte[] data,Action sendSuccess,Action<string> sendFail)
+	public void SetSendCallback(Action sendSuccessCallback, Action<string> sendFailCallback)
 	{
-		m_sendSuccess = sendSuccess;
-		m_sendFail = sendFail;
+		Debug.LogError("SetSendCallback");
+		m_sendSuccess = sendSuccessCallback;
+		m_sendFail = sendFailCallback;
+	}
 
+	public void Send(byte[] data)
+	{
 		if(m_tcpClient != null && m_tcpClient.Connected && m_networkStream != null)
 		{
 			try

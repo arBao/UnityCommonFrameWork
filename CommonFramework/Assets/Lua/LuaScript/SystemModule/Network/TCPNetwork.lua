@@ -3,6 +3,9 @@
 --- DateTime: 2017/6/16 上午10:56
 ---
 require 'SystemModule/Timer/TimerManager'
+require 'SystemModule/Network/DataPacket'
+require 'SystemModule/Network/TCPSendTaskManager'
+
 TCPNetwork = class()
 
 function TCPNetwork:GetInstance()
@@ -12,12 +15,50 @@ function TCPNetwork:GetInstance()
     return self.m_Instance
 end
 
+function TCPNetwork:Init()
+    TCPSocket.Instance:SetRecvCallback(
+    function(bytebuffer)
+        local luabuffer = bytebuffer:ToLuaBuffer()
+        local data = DataPacket.UnPacket(luabuffer)
+
+        local id = data[1]
+        local length = data[2]
+        local seq = data[3]
+        local dataBytes = data[4]
+
+        if seq ~= 0 then
+            local task = TCPSendTaskManager:GetInstance():GetTask(seq)
+            if task.successCallback ~= nil then
+                task.successCallback()
+            end
+            TCPSendTaskManager:GetInstance():CancelTask(seq)
+        end
+
+        Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(luabuffer))
+        Debugger.LogError('id  ' .. id .. '  length  ' .. length .. ' seq  ' .. seq .. '  dataBytes  ' .. dataBytes)
+
+    end)
+
+    TCPSocket.Instance:SetSendCallback(
+    function()
+        Debugger.LogError('send sucess')
+    end,
+    function(err)
+        Debugger.LogError('send fail  ' .. err)
+    end
+    )
+
+    self.seqCnt = 1
+end
+
 function TCPNetwork:Connect(ip,prot,funcSuccess,funcFail)
     TCPSocket.Instance:Connect(ip,prot,funcSuccess,funcFail)
 end
 
 function TCPNetwork:Send(msgID,data,successCallback,failCallback)
-    TCPSocket.Instance:Send(data,
-    successCallback,
-    failCallback)
+    local seq = TCPSendTaskManager:GetInstance():GetSeq()
+    local dataSend = DataPacket.Packet(msgID,seq,data)
+    TCPSendTaskManager:GetInstance():AddTask(msgID,seq,dataSend,successCallback,failCallback)
+    TCPSocket.Instance:Send(dataSend)
 end
+
