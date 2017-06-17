@@ -81,11 +81,8 @@ function ControllerLogin:ShowUILogin()
             udppackage.posY = 200 + self.id
             local data = udppackage:SerializeToString()
             local length = string.len(data)
-            Debugger.LogError('length  ' .. length)
-            local sendData = 'asdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjwe'
-
-            --Debugger.LogError('sendData  ' .. string.len(sendData))
-            --UdpNetwork:GetInstance():Send(1000,data)
+            Debugger.LogError('origin data length  ' .. length)
+            --local sendData = 'asdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjwe'
             kcpNetwork:Send(data)
         end
 
