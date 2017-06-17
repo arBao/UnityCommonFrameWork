@@ -248,7 +248,7 @@
 //	#region 发送逻辑
 //	private void SendResult(IAsyncResult result)
 //	{
-		
+
 //	}
 
 //	public bool SendTo(byte[] buffer, int size, IPEndPoint remotePoint)
@@ -256,7 +256,7 @@
 //		//Debug.LogError("IPAddress.Broadcast  " + IPAddress.Broadcast);
 //		if (remotePoint.Address == IPAddress.Broadcast)
 //		{
-			
+
 //			m_udpClient.BeginSend(buffer, size, new AsyncCallback(SendResult), null);
 //			return true;
 //		}
@@ -380,7 +380,7 @@
 //	{
 //		try
 //		{
-			
+
 //			int cnt = m_SystemSocket.ReceiveFrom(m_RecvBufferTemp, m_RecvBufferTemp.Length,
 //			SocketFlags.None, ref m_remotePoint);
 
@@ -544,9 +544,128 @@
 //	//---------------------------------------------
 
 //}
+//using System;
+//using System.Net;
+//using System.Net.Sockets;
+
+//public class UDPState
+//{
+//	public UdpClient udpClient;
+//	public IPEndPoint remoteEndPoint;
+//}
+
+//public class KCPSocket
+//{
+//	private UdpClient m_udpClient;
+//	private KCP m_kcp;
+//	private SwitchQueue<byte[]> m_RecvQueue = new SwitchQueue<byte[]>(128);
+//	private bool m_NeedUpdateFlag = false;
+//	private static readonly DateTime utc_time = new DateTime(1970, 1, 1);
+//	private Action<byte[]> m_actionReceive;
+//	private UInt32 m_NextUpdateTime;
+
+//	private void UDPSendResult(IAsyncResult result)
+//	{
+//		if(result.IsCompleted)
+//		{
+//			//UnityEngine.Debug.LogError("UDPSendResult  ");
+//		}
+//	}
+
+//	private void HandleUDPSend(byte[] data,int size)
+//	{
+//		UnityEngine.Debug.LogError("HandleUDPSend  data.Length  " + size);
+//		m_udpClient.BeginSend(data, size, new AsyncCallback(UDPSendResult), null);
+//	}
+
+//	private void UDPReceiveCallback(IAsyncResult result)
+//	{
+//		UDPState state = (UDPState)result.AsyncState;
+//		UdpClient udpClient = state.udpClient;
+//		IPEndPoint endPoint = state.remoteEndPoint;
+//		byte[] receiveData = udpClient.Receive(ref endPoint);
+//		UnityEngine.Debug.LogError("receiveData  " + receiveData.Length);
+//		if (receiveData != null)
+//		{
+//			m_RecvQueue.Push(receiveData);
+//		}
+//		if (m_udpClient != null)
+//		{
+//			m_udpClient.BeginReceive(UDPReceiveCallback, state);
+//		}
+//		if(result.IsCompleted)
+//		{
+
+//		}
+//	}
+
+//	public void Init(uint kcpid, string remoteIP, int localPort, int remotePort,Action<byte[]> actionReceive)
+//	{
+//		IPEndPoint ipep = new IPEndPoint(IPAddress.Parse(remoteIP), remotePort);
+//		m_udpClient = new UdpClient(localPort);
+//		m_udpClient.Connect(ipep);
+
+//		m_kcp = new KCP(kcpid,HandleUDPSend);
+//		m_kcp.NoDelay(1, 10, 2, 1);
+//		m_kcp.WndSize(128, 128);
+//		m_kcp.SetMtu(512);
+
+//		UDPState state = new UDPState();
+//		state.udpClient = m_udpClient;
+//		state.remoteEndPoint = ipep;
+
+//		m_udpClient.BeginReceive(UDPReceiveCallback,state);
+//	}
+
+//	public void Send(byte[] data)
+//	{
+//		UnityEngine.Debug.LogError("kcpsocket send  " + data.Length);
+//		m_kcp.Send(data, data.Length);
+//		m_NeedUpdateFlag = true;
+//	}
+
+//	private void ProcessRecvQueue()
+//	{
+//		m_RecvQueue.Switch();
+//		while(!m_RecvQueue.Empty())
+//		{
+//			var buf = m_RecvQueue.Pop();
+//			m_kcp.Input(buf);
+//			m_NeedUpdateFlag = true;
+//			for (int size = m_kcp.PeekSize(); size > 0;size = m_kcp.PeekSize())
+//			{
+//				byte[] data = new byte[size];
+//				if(m_kcp.Recv(data) > 0 && m_actionReceive!= null)
+//				{
+//					m_actionReceive(data);
+//				}
+//			}
+//		}
+//	}
+
+//	public void Update()
+//	{
+//		UInt32 current = Iclock();
+//		ProcessRecvQueue();
+//		if(m_NeedUpdateFlag || current >= m_NextUpdateTime)
+//		{
+//			m_kcp.Update(current);
+//			m_NextUpdateTime = m_kcp.Check(current);
+//			m_NeedUpdateFlag = false;
+//		}
+//	}
+
+//	private static UInt32 Iclock()
+//	{
+//		return (UInt32)(Convert.ToInt64(DateTime.UtcNow.Subtract(utc_time).TotalMilliseconds) & 0xffffffff);
+//	}
+
+//}
+using UnityEngine;
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 public class UDPState
 {
@@ -556,64 +675,95 @@ public class UDPState
 
 public class KCPSocket
 {
-	private UdpClient m_udpClient;
+	private Socket m_udpSocket;
 	private KCP m_kcp;
 	private SwitchQueue<byte[]> m_RecvQueue = new SwitchQueue<byte[]>(128);
 	private bool m_NeedUpdateFlag = false;
 	private static readonly DateTime utc_time = new DateTime(1970, 1, 1);
 	private Action<byte[]> m_actionReceive;
 	private UInt32 m_NextUpdateTime;
+	private IPEndPoint m_RemoteEndPoint;
+	private bool m_isRunning = false;
+	private byte[] bufferRecv = new byte[2048];
 
 	private void UDPSendResult(IAsyncResult result)
 	{
-		if(result.IsCompleted)
+		if (result.IsCompleted)
 		{
 			//UnityEngine.Debug.LogError("UDPSendResult  ");
 		}
 	}
 
-	private void HandleUDPSend(byte[] data,int size)
+	private void HandleUDPSend(byte[] data, int size)
 	{
 		UnityEngine.Debug.LogError("HandleUDPSend  data.Length  " + size);
-		m_udpClient.BeginSend(data, size, new AsyncCallback(UDPSendResult), null);
+		//m_udpClient.BeginSend(data, size, new AsyncCallback(UDPSendResult), null);
+		m_udpSocket.SendTo(data, 0, size, SocketFlags.None, m_RemoteEndPoint);
 	}
 
-	private void UDPReceiveCallback(IAsyncResult result)
+	//private void UDPReceiveCallback(IAsyncResult result)
+	//{
+	//	UDPState state = (UDPState)result.AsyncState;
+	//	UdpClient udpClient = state.udpClient;
+	//	IPEndPoint endPoint = state.remoteEndPoint;
+	//	byte[] receiveData = udpClient.Receive(ref endPoint);
+	//	UnityEngine.Debug.LogError("receiveData  " + receiveData.Length);
+	//	if (receiveData != null)
+	//	{
+	//		m_RecvQueue.Push(receiveData);
+	//	}
+	//	if (m_udpClient != null)
+	//	{
+	//		m_udpClient.BeginReceive(UDPReceiveCallback, state);
+	//	}
+	//	if (result.IsCompleted)
+	//	{
+
+	//	}
+	//}
+
+	private void ThreadRecv()
 	{
-		if(result.IsCompleted)
+		while(m_isRunning)
 		{
-			UDPState state =(UDPState)result.AsyncState;
-			UdpClient udpClient = state.udpClient;
-			IPEndPoint endPoint = state.remoteEndPoint;
-			byte[] receiveData = udpClient.Receive(ref endPoint);
-			UnityEngine.Debug.LogError("receiveData  " + receiveData.Length);
-			if(receiveData != null)
+			EndPoint remotePoint = new IPEndPoint(IPAddress.Any, 0);
+			int size = m_udpSocket.ReceiveFrom(bufferRecv, bufferRecv.Length,
+				SocketFlags.None, ref remotePoint);
+			if (size >= 0)
 			{
-				m_RecvQueue.Push(receiveData);
-			}
-			if(m_udpClient != null)
-			{
-				m_udpClient.BeginReceive(UDPReceiveCallback, state);
+				byte[] dst = new byte[size];
+				Buffer.BlockCopy(bufferRecv, 0, dst, 0, size);
+				m_RecvQueue.Push(dst);
 			}
 		}
 	}
 
-	public void Init(uint kcpid, string remoteIP, int localPort, int remotePort,Action<byte[]> actionReceive)
+	public void Init(uint kcpid, string remoteIP, int localPort, int remotePort, Action<byte[]> actionReceive)
 	{
-		IPEndPoint ipep = new IPEndPoint(IPAddress.Parse(remoteIP), remotePort);
-		m_udpClient = new UdpClient(localPort);
-		m_udpClient.Connect(ipep);
+		m_isRunning = true;
 
-		m_kcp = new KCP(kcpid,HandleUDPSend);
+		m_RemoteEndPoint = new IPEndPoint(IPAddress.Parse(remoteIP), remotePort);
+		m_udpSocket = new Socket(AddressFamily.InterNetwork,SocketType.Dgram,ProtocolType.Udp);
+		IPEndPoint endPointBind = new IPEndPoint(IPAddress.Any, localPort);
+		m_udpSocket.Bind(endPointBind);
+
+		Thread thread = new Thread(ThreadRecv);
+		thread.IsBackground = true;
+		thread.Start();
+
+		//m_udpClient = new UdpClient(localPort);
+		//m_udpClient.Connect(ipep);
+
+		m_kcp = new KCP(kcpid, HandleUDPSend);
 		m_kcp.NoDelay(1, 10, 2, 1);
 		m_kcp.WndSize(128, 128);
 		m_kcp.SetMtu(512);
 
-		UDPState state = new UDPState();
-		state.udpClient = m_udpClient;
-		state.remoteEndPoint = ipep;
+		//UDPState state = new UDPState();
+		//state.udpClient = m_udpClient;
+		//state.remoteEndPoint = ipep;
 
-		m_udpClient.BeginReceive(UDPReceiveCallback,state);
+		//m_udpClient.BeginReceive(UDPReceiveCallback, state);
 	}
 
 	public void Send(byte[] data)
@@ -626,15 +776,15 @@ public class KCPSocket
 	private void ProcessRecvQueue()
 	{
 		m_RecvQueue.Switch();
-		while(!m_RecvQueue.Empty())
+		while (!m_RecvQueue.Empty())
 		{
 			var buf = m_RecvQueue.Pop();
 			m_kcp.Input(buf);
 			m_NeedUpdateFlag = true;
-			for (int size = m_kcp.PeekSize(); size > 0;size = m_kcp.PeekSize())
+			for (int size = m_kcp.PeekSize(); size > 0; size = m_kcp.PeekSize())
 			{
 				byte[] data = new byte[size];
-				if(m_kcp.Recv(data) > 0 && m_actionReceive!= null)
+				if (m_kcp.Recv(data) > 0 && m_actionReceive != null)
 				{
 					m_actionReceive(data);
 				}
@@ -646,7 +796,7 @@ public class KCPSocket
 	{
 		UInt32 current = Iclock();
 		ProcessRecvQueue();
-		if(m_NeedUpdateFlag || current >= m_NextUpdateTime)
+		if (m_NeedUpdateFlag || current >= m_NextUpdateTime)
 		{
 			m_kcp.Update(current);
 			m_NextUpdateTime = m_kcp.Check(current);
@@ -660,3 +810,4 @@ public class KCPSocket
 	}
 
 }
+
