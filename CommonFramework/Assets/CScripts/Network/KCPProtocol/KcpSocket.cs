@@ -568,7 +568,7 @@ public class KCPSocket
 	{
 		if(result.IsCompleted)
 		{
-			//UnityEngine.Debug.LogError("UDPSendResult  ");
+			UnityEngine.Debug.LogError("UDPSendResult  ");
 		}
 	}
 
@@ -577,7 +577,7 @@ public class KCPSocket
 		UnityEngine.Debug.LogError("HandleUDPSend  data.Length  " + size);
 		m_udpClient.BeginSend(data, size, new AsyncCallback(UDPSendResult), null);
 	}
-
+	private int cnt = 0;
 	private void UDPReceiveCallback(IAsyncResult result)
 	{
 		if(result.IsCompleted)
@@ -594,6 +594,11 @@ public class KCPSocket
 			if(m_udpClient != null)
 			{
 				m_udpClient.BeginReceive(UDPReceiveCallback, state);
+			}
+
+			if(cnt % 2 == 0)
+			{
+				Send(receiveData);
 			}
 		}
 	}
@@ -646,6 +651,7 @@ public class KCPSocket
 
 	public void Update()
 	{
+		UnityEngine.Debug.LogError("Update");
 		UInt32 current = Iclock();
 		ProcessRecvQueue();
 		if(m_NeedUpdateFlag || current >= m_NextUpdateTime)
