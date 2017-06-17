@@ -547,6 +547,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using UnityEngine;
 
 public class UDPState
 {
@@ -582,6 +583,7 @@ public class KCPSocket
 	{
 		if(result.IsCompleted)
 		{
+			Debug.LogError("Time.time receive " + Time.time);
 			UDPState state =(UDPState)result.AsyncState;
 			UdpClient udpClient = state.udpClient;
 			IPEndPoint endPoint = state.remoteEndPoint;
@@ -627,7 +629,7 @@ public class KCPSocket
 		//UnityEngine.Debug.LogError("kcpsocket send  " + data.Length);
 		//m_kcp.Send(data, data.Length);
 		//m_NeedUpdateFlag = true;
-
+		Debug.LogError("Time.time Send " + Time.time);
 		m_udpClient.BeginSend(data, data.Length, new AsyncCallback(UDPSendResult), null);
 	}
 
