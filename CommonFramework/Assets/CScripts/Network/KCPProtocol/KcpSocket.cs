@@ -618,9 +618,11 @@ public class KCPSocket
 
 	public void Send(byte[] data)
 	{
-		UnityEngine.Debug.LogError("kcpsocket send  " + data.Length);
-		m_kcp.Send(data, data.Length);
-		m_NeedUpdateFlag = true;
+		//UnityEngine.Debug.LogError("kcpsocket send  " + data.Length);
+		//m_kcp.Send(data, data.Length);
+		//m_NeedUpdateFlag = true;
+
+		m_udpClient.BeginSend(data, data.Length, new AsyncCallback(UDPSendResult), null);
 	}
 
 	private void ProcessRecvQueue()
