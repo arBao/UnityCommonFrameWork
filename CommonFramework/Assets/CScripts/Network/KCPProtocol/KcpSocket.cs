@@ -579,11 +579,14 @@ public class KCPSocket
 		m_udpClient.BeginSend(data, size, new AsyncCallback(UDPSendResult), null);
 	}
 	private int cnt = 0;
+	private int cache = 100;
 	private void UDPReceiveCallback(IAsyncResult result)
 	{
 		if(result.IsCompleted)
 		{
-			Debug.LogError("Time.time receive " + Time.time);
+			//Loom.QueueOnMainThread()
+			cache = 10000;
+			//Debug.LogError("Time.time receive " + Time.time);
 			UDPState state =(UDPState)result.AsyncState;
 			UdpClient udpClient = state.udpClient;
 			IPEndPoint endPoint = state.remoteEndPoint;
@@ -654,7 +657,7 @@ public class KCPSocket
 
 	public void Update()
 	{
-		//UnityEngine.Debug.LogError("Update");
+		UnityEngine.Debug.LogError("Update " + cache);
 		UInt32 current = Iclock();
 		ProcessRecvQueue();
 		if(m_NeedUpdateFlag || current >= m_NextUpdateTime)
