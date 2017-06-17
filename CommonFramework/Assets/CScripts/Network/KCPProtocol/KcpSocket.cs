@@ -598,6 +598,7 @@ public class KCPSocket
 
 			if(cnt % 2 == 0)
 			{
+				cnt++;
 				Send(receiveData);
 			}
 		}
