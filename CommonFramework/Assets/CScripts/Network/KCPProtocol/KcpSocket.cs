@@ -586,11 +586,11 @@ public class KCPSocket
 			UdpClient udpClient = state.udpClient;
 			IPEndPoint endPoint = state.remoteEndPoint;
 			byte[] receiveData = udpClient.Receive(ref endPoint);
-			UnityEngine.Debug.LogError("receiveData  " + receiveData.Length);
-			if(receiveData != null)
-			{
-				m_RecvQueue.Push(receiveData);
-			}
+			//UnityEngine.Debug.LogError("receiveData  " + receiveData.Length);
+			//if(receiveData != null)
+			//{
+			//	m_RecvQueue.Push(receiveData);
+			//}
 			if(m_udpClient != null)
 			{
 				m_udpClient.BeginReceive(UDPReceiveCallback, state);
@@ -652,7 +652,7 @@ public class KCPSocket
 
 	public void Update()
 	{
-		UnityEngine.Debug.LogError("Update");
+		//UnityEngine.Debug.LogError("Update");
 		UInt32 current = Iclock();
 		ProcessRecvQueue();
 		if(m_NeedUpdateFlag || current >= m_NextUpdateTime)
