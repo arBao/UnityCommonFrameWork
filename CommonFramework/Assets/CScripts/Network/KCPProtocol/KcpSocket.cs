@@ -56,7 +56,7 @@ public class KCPSocket
 		m_threadRecv.Start();
 
 		m_kcp = new KCP(kcpid, HandleUDPSend);
-		m_kcp.NoDelay(1, 10, 2, 1);
+		m_kcp.NoDelay(1, 40, 2, 1);
 		m_kcp.WndSize(128, 128);
 		m_kcp.SetMtu(512);
 	}
