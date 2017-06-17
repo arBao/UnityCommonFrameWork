@@ -22,9 +22,11 @@ public class TCPSocket
 	private int m_connectTimeout = 5;
 	private string m_timeoutConnectStr = "连接超时";
 	private string m_timeoutConnectFailStr = "网络异常,服务端无响应";
+	private bool m_isConnecting = false;
 
 	private Action m_ConnectSuccessCallback;
 	private Action<string> m_ConnectFailCallback;
+	private Action m_ServerDisConnectCallback;
 	private int m_connentDelayTimerID = 0;
 
 	private Action m_sendSuccess;
@@ -50,13 +52,6 @@ public class TCPSocket
 		}
 	}
 
-	public void Clear()
-	{
-		Disconnect();
-
-		m_recvCallback = null;
-	}
-
 	public void SetTcpParms(bool isNodelay,int sendTimeout,int receiveTimeout,int connectTimeout,
 	                        string timeoutConnectStr,string timeoutConnectFailStr)
 	{
@@ -70,8 +65,22 @@ public class TCPSocket
 
 	public void Connect(string remoteIP,int port,Action actionSuccess,Action<string> actionFail)
 	{
-		Disconnect();
+		Debug.LogError("m_isConnecting  " + m_isConnecting);
+		if (m_isConnecting)
+		{
+			Debug.LogError("正在连接中...");
+			return;
+		}
+			
+		m_isConnecting = true;
 
+		if(m_tcpClient != null && m_tcpClient.Connected)
+		{
+			Debug.LogError("服务器已连接");
+			m_isConnecting = false;
+			return;
+		}
+		
 		m_ConnectSuccessCallback = actionSuccess;
 		m_ConnectFailCallback = actionFail;
 		if (m_tcpClient == null)
@@ -96,17 +105,21 @@ public class TCPSocket
 				m_ConnectFailCallback(e.Message);
 		}
 
+		TimerManager.Instance.DeleteTimer(m_connentDelayTimerID);
 		m_connentDelayTimerID = TimerManager.Instance.CallActionDelay((object data) => {
+			m_isConnecting = false;
 			if(m_ConnectFailCallback != null)
 			{
 				m_ConnectFailCallback(m_timeoutConnectStr);
 			}
-			Clear();
+			Disconnect();
 		}, m_connectTimeout, null, 0);
 	}
 
 	private void Disconnect()
 	{
+		Debug.LogError("Disconnect");
+		m_isConnecting = false;
 		if (m_tcpClient != null)
 		{
 			if (m_tcpClient.Connected)
@@ -122,7 +135,10 @@ public class TCPSocket
 			}
 
 			m_tcpClient = null;
-			m_networkStream.Dispose();
+			if(m_networkStream != null)
+			{
+				m_networkStream.Dispose();
+			}
 			m_networkStream = null;
 			TimerManager.Instance.DeleteTimer(m_connentDelayTimerID);
 			m_connentDelayTimerID = 0;
@@ -140,6 +156,11 @@ public class TCPSocket
 		Debug.LogError("SetSendCallback");
 		m_sendSuccess = sendSuccessCallback;
 		m_sendFail = sendFailCallback;
+	}
+
+	public void SetServerDisconnectCallback(Action callback)
+	{
+		m_ServerDisConnectCallback = callback;
 	}
 
 	public void Send(byte[] data)
@@ -169,15 +190,24 @@ public class TCPSocket
 
 	private void WriteCallback(IAsyncResult result)
 	{
-		Loom.QueueOnMainThread(() => { 
-			if (result.IsCompleted)
+		if (m_tcpClient != null && m_tcpClient.Connected && m_networkStream != null)
+		{
+			Loom.QueueOnMainThread(() =>
 			{
-				if (m_sendSuccess != null)
+				if (result.IsCompleted)
 				{
-					m_sendSuccess();
+					if (m_sendSuccess != null)
+					{
+						m_sendSuccess();
+					}
 				}
-			}
-		});
+			});
+		}
+		else
+		{
+			m_sendFail("未连接或者连接已断开");
+		}
+
 	}
 
 	private void OnRead(IAsyncResult result)
@@ -192,8 +222,12 @@ public class TCPSocket
 				{
 					Loom.QueueOnMainThread(() =>
 					{
-						Clear();
-						Debug.LogError("包数据有问题，字节长度为0");
+						Debug.LogError("服务器主动断开连接");
+						if(m_ServerDisConnectCallback != null)
+						{
+							m_ServerDisConnectCallback();
+						}
+						Disconnect();
 					});
 					return;
 				}
@@ -231,9 +265,10 @@ public class TCPSocket
 		if(result.IsCompleted)
 		{
 			m_tcpClient.EndConnect(result);
-
 			Loom.QueueOnMainThread(() => {
+				m_isConnecting = false;
 				TCPState state = (TCPState)result.AsyncState;
+
 				if(state.tcpClient.Connected)
 				{
 					m_networkStream = m_tcpClient.GetStream();

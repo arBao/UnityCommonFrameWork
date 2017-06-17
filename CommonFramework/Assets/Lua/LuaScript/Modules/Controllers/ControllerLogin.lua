@@ -145,9 +145,9 @@ function ControllerLogin:ShowUILogin()
                 Debugger.LogError('fail ' .. err)
             end)
 
-            TimerManager:GetInstance():CallActionDelay(function(parm)
-                Debugger.LogError('calldelay  ' .. parm)
-            end,3,'11',3)
+            --TimerManager:GetInstance():CallActionDelay(function(parm)
+            --    Debugger.LogError('calldelay  ' .. parm)
+            --end,3,'11',3)
         end
 
         self.loginView.OnClickButtonTcpSendCallback = function ()

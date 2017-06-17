@@ -48,6 +48,13 @@ function TCPNetwork:Init()
     end
     )
 
+    TCPSocket.Instance:SetServerDisconnectCallback(
+    function ()
+        Debugger.LogError('服务端主动断开连接  ')
+        
+    end
+    )
+
     self.seqCnt = 1
 end
 

@@ -7,11 +7,11 @@ public class TCPSocketWrap
 	public static void Register(LuaState L)
 	{
 		L.BeginClass(typeof(TCPSocket), typeof(System.Object));
-		L.RegFunction("Clear", Clear);
 		L.RegFunction("SetTcpParms", SetTcpParms);
 		L.RegFunction("Connect", Connect);
 		L.RegFunction("SetRecvCallback", SetRecvCallback);
 		L.RegFunction("SetSendCallback", SetSendCallback);
+		L.RegFunction("SetServerDisconnectCallback", SetServerDisconnectCallback);
 		L.RegFunction("Send", Send);
 		L.RegFunction("New", _CreateTCPSocket);
 		L.RegFunction("__tostring", ToLua.op_ToString);
@@ -36,22 +36,6 @@ public class TCPSocketWrap
 			{
 				return LuaDLL.luaL_throw(L, "invalid arguments to ctor method: TCPSocket.New");
 			}
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Clear(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			TCPSocket obj = (TCPSocket)ToLua.CheckObject(L, 1, typeof(TCPSocket));
-			obj.Clear();
-			return 0;
 		}
 		catch(Exception e)
 		{
@@ -188,6 +172,35 @@ public class TCPSocketWrap
 			}
 
 			obj.SetSendCallback(arg0, arg1);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int SetServerDisconnectCallback(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			TCPSocket obj = (TCPSocket)ToLua.CheckObject(L, 1, typeof(TCPSocket));
+			System.Action arg0 = null;
+			LuaTypes funcType2 = LuaDLL.lua_type(L, 2);
+
+			if (funcType2 != LuaTypes.LUA_TFUNCTION)
+			{
+				 arg0 = (System.Action)ToLua.CheckObject(L, 2, typeof(System.Action));
+			}
+			else
+			{
+				LuaFunction func = ToLua.ToLuaFunction(L, 2);
+				arg0 = DelegateFactory.CreateDelegate(typeof(System.Action), func) as System.Action;
+			}
+
+			obj.SetServerDisconnectCallback(arg0);
 			return 0;
 		}
 		catch(Exception e)
