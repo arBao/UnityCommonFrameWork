@@ -7,11 +7,10 @@ public class KCPNetworkWrap
 	public static void Register(LuaState L)
 	{
 		L.BeginClass(typeof(KCPNetwork), typeof(System.Object));
+		L.RegFunction("SetReceiveAction", SetReceiveAction);
 		L.RegFunction("Init", Init);
-		L.RegFunction("SetReceiveAny", SetReceiveAny);
-		L.RegFunction("SetReceive", SetReceive);
-		L.RegFunction("Update", Update);
 		L.RegFunction("Send", Send);
+		L.RegFunction("Update", Update);
 		L.RegFunction("New", _CreateKCPNetwork);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.EndClass();
@@ -42,68 +41,46 @@ public class KCPNetworkWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int SetReceiveAction(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			KCPNetwork obj = (KCPNetwork)ToLua.CheckObject(L, 1, typeof(KCPNetwork));
+			System.Action<ByteBuffer> arg0 = null;
+			LuaTypes funcType2 = LuaDLL.lua_type(L, 2);
+
+			if (funcType2 != LuaTypes.LUA_TFUNCTION)
+			{
+				 arg0 = (System.Action<ByteBuffer>)ToLua.CheckObject(L, 2, typeof(System.Action<ByteBuffer>));
+			}
+			else
+			{
+				LuaFunction func = ToLua.ToLuaFunction(L, 2);
+				arg0 = DelegateFactory.CreateDelegate(typeof(System.Action<ByteBuffer>), func) as System.Action<ByteBuffer>;
+			}
+
+			obj.SetReceiveAction(arg0);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int Init(IntPtr L)
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 6);
+			ToLua.CheckArgsCount(L, 5);
 			KCPNetwork obj = (KCPNetwork)ToLua.CheckObject(L, 1, typeof(KCPNetwork));
-			string arg0 = ToLua.CheckString(L, 2);
-			uint arg1 = (uint)LuaDLL.luaL_checknumber(L, 3);
-			string arg2 = ToLua.CheckString(L, 4);
+			uint arg0 = (uint)LuaDLL.luaL_checknumber(L, 2);
+			string arg1 = ToLua.CheckString(L, 3);
+			int arg2 = (int)LuaDLL.luaL_checknumber(L, 4);
 			int arg3 = (int)LuaDLL.luaL_checknumber(L, 5);
-			int arg4 = (int)LuaDLL.luaL_checknumber(L, 6);
-			obj.Init(arg0, arg1, arg2, arg3, arg4);
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int SetReceiveAny(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			KCPNetwork obj = (KCPNetwork)ToLua.CheckObject(L, 1, typeof(KCPNetwork));
-			LuaFunction arg0 = ToLua.CheckLuaFunction(L, 2);
-			obj.SetReceiveAny(arg0);
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int SetReceive(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			KCPNetwork obj = (KCPNetwork)ToLua.CheckObject(L, 1, typeof(KCPNetwork));
-			LuaFunction arg0 = ToLua.CheckLuaFunction(L, 2);
-			obj.SetReceive(arg0);
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Update(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			KCPNetwork obj = (KCPNetwork)ToLua.CheckObject(L, 1, typeof(KCPNetwork));
-			obj.Update();
+			obj.Init(arg0, arg1, arg2, arg3);
 			return 0;
 		}
 		catch(Exception e)
@@ -121,6 +98,22 @@ public class KCPNetworkWrap
 			KCPNetwork obj = (KCPNetwork)ToLua.CheckObject(L, 1, typeof(KCPNetwork));
 			byte[] arg0 = ToLua.CheckByteBuffer(L, 2);
 			obj.Send(arg0);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Update(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			KCPNetwork obj = (KCPNetwork)ToLua.CheckObject(L, 1, typeof(KCPNetwork));
+			obj.Update();
 			return 0;
 		}
 		catch(Exception e)

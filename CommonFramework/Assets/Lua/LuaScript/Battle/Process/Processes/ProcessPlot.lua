@@ -28,7 +28,7 @@ function ProcessPlot:OnBegin()
 end
 
 function ProcessPlot:OnRunning(deltaTime)
-    Debugger.LogError('ProcessPlot:OnRunning  ' .. deltaTime)
+    --Debugger.LogError('ProcessPlot:OnRunning  ' .. deltaTime)
 end
 
 function ProcessPlot:OnEnd()

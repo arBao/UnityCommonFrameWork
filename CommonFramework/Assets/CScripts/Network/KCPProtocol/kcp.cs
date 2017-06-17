@@ -840,7 +840,6 @@ public class KCP
 	// 'current' - current timestamp in millisec.
 	public void Update(UInt32 current_)
 	{
-
 		current = current_;
 
 		if (0 == updated)

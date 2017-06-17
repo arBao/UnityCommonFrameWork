@@ -23,7 +23,7 @@ function ProcessFight:OnBegin()
 end
 
 function ProcessFight:OnRunning(deltaTime)
-    Debugger.LogError('ProcessFight:OnRunning  ' .. deltaTime)
+    --Debugger.LogError('ProcessFight:OnRunning  ' .. deltaTime)
 end
 
 function ProcessFight:OnEnd()

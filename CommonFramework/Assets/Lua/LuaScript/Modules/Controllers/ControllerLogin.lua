@@ -57,17 +57,9 @@ function ControllerLogin:ShowUILogin()
         --UdpNetwork:GetInstance():ListenTo(1000,ReceiveCallback)
 
         local kcpNetwork = KCPNetwork.New()
-        kcpNetwork:Init('kcp1',1,'127.0.0.1',11110,11111)
-        kcpNetwork:SetReceiveAny(function(buffer)
-            --local udppackage = UdpPackage_pb.UdpPackage()
-            --local luabuffer = buffer:ToLuaBuffer()
-            --Debugger.LogError('ReceiveAny string.len(luabuffer)  ' .. string.len(luabuffer))
-            --udppackage:ParseFromString(luabuffer)
-            --
-            --Debugger.LogError('ReceiveAny  udppackage.posX  ' .. udppackage.posX)
-            --Debugger.LogError('ReceiveAny  udppackage.posY  ' .. udppackage.posY)
-        end)
-        kcpNetwork:SetReceive(function(buffer)
+        kcpNetwork:Init(1,'127.0.0.1',11110,11111)
+
+        kcpNetwork:SetReceiveAction(function(buffer)
             --local udppackage = UdpPackage_pb.UdpPackage()
             local luabuffer = buffer:ToLuaBuffer()
             Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(luabuffer))
@@ -92,7 +84,7 @@ function ControllerLogin:ShowUILogin()
             Debugger.LogError('length  ' .. length)
             local sendData = 'asdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjwe'
 
-            Debugger.LogError('sendData  ' .. string.len(sendData))
+            --Debugger.LogError('sendData  ' .. string.len(sendData))
             --UdpNetwork:GetInstance():Send(1000,data)
             kcpNetwork:Send(data)
         end
