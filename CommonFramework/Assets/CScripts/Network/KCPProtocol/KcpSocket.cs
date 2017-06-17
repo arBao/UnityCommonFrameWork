@@ -574,8 +574,8 @@ public class KCPSocket
 
 	private void HandleUDPSend(byte[] data,int kcpID)
 	{
-		m_udpClient.BeginSend(data, data.Length, new AsyncCallback(UDPSendResult), null);
 		UnityEngine.Debug.LogError("HandleUDPSend  data.Length  " + data.Length);
+		m_udpClient.BeginSend(data, data.Length, new AsyncCallback(UDPSendResult), null);
 	}
 
 	private void UDPReceiveCallback(IAsyncResult result)
@@ -586,6 +586,7 @@ public class KCPSocket
 			UdpClient udpClient = state.udpClient;
 			IPEndPoint endPoint = state.remoteEndPoint;
 			byte[] receiveData = udpClient.Receive(ref endPoint);
+			UnityEngine.Debug.LogError("receiveData  " + receiveData.Length);
 			if(receiveData != null)
 			{
 				m_RecvQueue.Push(receiveData);
@@ -600,7 +601,7 @@ public class KCPSocket
 	public void Init(uint kcpid, string remoteIP, int localPort, int remotePort,Action<byte[]> actionReceive)
 	{
 		IPEndPoint ipep = new IPEndPoint(IPAddress.Parse(remoteIP), remotePort);
-		m_udpClient = new UdpClient(ipep);
+		m_udpClient = new UdpClient(localPort);
 		m_udpClient.Connect(ipep);
 
 		m_kcp = new KCP(kcpid,HandleUDPSend);
