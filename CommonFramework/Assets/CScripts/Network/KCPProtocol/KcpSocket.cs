@@ -601,9 +601,9 @@ public class KCPSocket
 				m_udpClient.BeginReceive(UDPReceiveCallback, state);
 			}
 
-			if(cnt % 2 == 0)
+			if(cnt == 0)
 			{
-				cnt++;
+				cnt = 1;
 				Send(receiveData);
 			}
 		}
