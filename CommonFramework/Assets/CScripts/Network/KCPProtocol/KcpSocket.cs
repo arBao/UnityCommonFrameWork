@@ -646,7 +646,7 @@ public class KCPSocket
 	{
 		UInt32 current = Iclock();
 		ProcessRecvQueue();
-		if(m_NeedUpdateFlag || current > m_NextUpdateTime)
+		if(m_NeedUpdateFlag || current >= m_NextUpdateTime)
 		{
 			m_kcp.Update(current);
 			m_NextUpdateTime = m_kcp.Check(current);
