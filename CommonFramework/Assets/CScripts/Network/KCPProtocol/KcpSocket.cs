@@ -572,10 +572,10 @@ public class KCPSocket
 		}
 	}
 
-	private void HandleUDPSend(byte[] data,int kcpID)
+	private void HandleUDPSend(byte[] data,int size)
 	{
-		UnityEngine.Debug.LogError("HandleUDPSend  data.Length  " + data.Length);
-		m_udpClient.BeginSend(data, data.Length, new AsyncCallback(UDPSendResult), null);
+		UnityEngine.Debug.LogError("HandleUDPSend  data.Length  " + size);
+		m_udpClient.BeginSend(data, size, new AsyncCallback(UDPSendResult), null);
 	}
 
 	private void UDPReceiveCallback(IAsyncResult result)
@@ -618,6 +618,7 @@ public class KCPSocket
 
 	public void Send(byte[] data)
 	{
+		UnityEngine.Debug.LogError("kcpsocket send  " + data.Length);
 		m_kcp.Send(data, data.Length);
 		m_NeedUpdateFlag = true;
 	}
