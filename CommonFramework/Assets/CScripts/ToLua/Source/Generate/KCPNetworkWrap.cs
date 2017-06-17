@@ -11,6 +11,7 @@ public class KCPNetworkWrap
 		L.RegFunction("Init", Init);
 		L.RegFunction("Send", Send);
 		L.RegFunction("Update", Update);
+		L.RegFunction("Dispose", Dispose);
 		L.RegFunction("New", _CreateKCPNetwork);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.EndClass();
@@ -114,6 +115,22 @@ public class KCPNetworkWrap
 			ToLua.CheckArgsCount(L, 1);
 			KCPNetwork obj = (KCPNetwork)ToLua.CheckObject(L, 1, typeof(KCPNetwork));
 			obj.Update();
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Dispose(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			KCPNetwork obj = (KCPNetwork)ToLua.CheckObject(L, 1, typeof(KCPNetwork));
+			obj.Dispose();
 			return 0;
 		}
 		catch(Exception e)
