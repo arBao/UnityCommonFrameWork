@@ -17,6 +17,11 @@ function CameraManager:GetUICamera()
     end
     return self.uiCamera
 end
+
+--function funcName()
+--
+--end
+
 ---获取摄像机视野
 function CameraManager:GetBattleCameraField()
     if self.BattleCamera == nil then
