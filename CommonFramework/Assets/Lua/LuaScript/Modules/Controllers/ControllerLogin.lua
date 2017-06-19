@@ -35,12 +35,12 @@ function ControllerLogin:ShowUILogin()
             self:SendMessage(MessageNames.OpenUIPopUp1,nil)
         end
 
-        --if self.id == nil then
-        --    self.id = 0
-        --end
-        --if self.seq == nil then
-        --    self.seq = 0
-        --end
+        if self.id == nil then
+            self.id = 0
+        end
+        if self.seq == nil then
+            self.seq = 0
+        end
 
         --local SendSucess = function(pack)
         --
@@ -147,7 +147,7 @@ function ControllerLogin:ShowUILogin()
 
         TCPNetwork:GetInstance():Init()
         self.loginView.OnClickButtonTcpConnectCallback = function ()
-            TCPNetwork:GetInstance():Connect('127.0.0.1',9999,
+            TCPNetwork:GetInstance():Connect('192.168.0.131',8008,
             function ()
                 Debugger.LogError('Success connect')
             end,
@@ -161,7 +161,12 @@ function ControllerLogin:ShowUILogin()
         end
 
         self.loginView.OnClickButtonTcpSendCallback = function ()
-            TCPNetwork:GetInstance():Send(1,'11111',
+            local udppackage = UdpPackage_pb.UdpPackage()
+            udppackage.posX = 100 + self.id
+            udppackage.posY = 200 + self.id
+            local data = udppackage:SerializeToString()
+
+            TCPNetwork:GetInstance():Send(1,data,
             function(data)
                 Debugger.LogError('Success send call back ' .. data)
             end,
