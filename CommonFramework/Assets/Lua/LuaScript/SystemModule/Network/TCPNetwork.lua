@@ -67,10 +67,18 @@ function TCPNetwork:Connect(ip,prot,funcSuccess,funcFail)
     TCPSocket.Instance:Connect(ip,prot,funcSuccess,funcFail)
 end
 
+---往返发送，有返回消息
 function TCPNetwork:Send(msgID,data,successCallback,failCallback)
     local seq = TCPSendTaskManager:GetInstance():GetSeq()
     local dataSend = DataPacket.Packet(msgID,seq,data)
     TCPSendTaskManager:GetInstance():AddTask(msgID,seq,dataSend,successCallback,failCallback)
+    TCPSocket.Instance:Send(dataSend)
+end
+
+---单程发送，无返回消息
+function TCPNetwork:SendOneWay(msgID,data)
+    local seq = TCPSendTaskManager:GetInstance():GetSeq()
+    local dataSend = DataPacket.Packet(msgID,seq,data)
     TCPSocket.Instance:Send(dataSend)
 end
 
