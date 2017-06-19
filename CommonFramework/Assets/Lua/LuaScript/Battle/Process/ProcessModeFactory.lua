@@ -8,7 +8,7 @@ require 'Battle/Process/ProcessMode/ProcessModeNormal'
 ProcessModeFactory = class()
 
 function ProcessModeFactory.Create(name)
-    if name == 'ProcessModeNormal' then
+    if name == ProcessModeName.ProcessModeNormal then
         return ProcessModeNormal.new()
     elseif name == '2' then
 

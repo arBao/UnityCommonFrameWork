@@ -35,12 +35,12 @@ function ControllerLogin:ShowUILogin()
             self:SendMessage(MessageNames.OpenUIPopUp1,nil)
         end
 
-        if self.id == nil then
-            self.id = 0
-        end
-        if self.seq == nil then
-            self.seq = 0
-        end
+        --if self.id == nil then
+        --    self.id = 0
+        --end
+        --if self.seq == nil then
+        --    self.seq = 0
+        --end
 
         --local SendSucess = function(pack)
         --

@@ -11,6 +11,11 @@ ProcessPriority =
     ['playPlot'] = 30,---播放剧情
 }
 
+ProcessModeName =
+{
+    ['ProcessModeNormal'] = 'ProcessModeNormal',
+}
+
 ProcessState =
 {
     ['ready'] = 0,
