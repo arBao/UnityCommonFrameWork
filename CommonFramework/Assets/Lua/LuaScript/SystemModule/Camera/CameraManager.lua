@@ -18,9 +18,9 @@ function CameraManager:GetUICamera()
     return self.uiCamera
 end
 
---function funcName()
---
---end
+function CameraManager:CameraAreaTest(pos)
+    return pos.x > self.xLeft and pos.x < self.xRight and pos.y > self.yBottom and pos.y < self.yTop
+end
 
 ---获取摄像机视野
 function CameraManager:GetBattleCameraField()
@@ -35,14 +35,16 @@ function CameraManager:GetBattleCameraField()
     local delta = 1.1
     local width = self.orthographicSize * self.scale * delta
     local height = self.orthographicSize * delta
-    local t = {['xLeft'] = cameraPos.x - width,['xRight'] = cameraPos.x + width,
-        ['yBottom'] = cameraPos.y - height,['yTop'] = cameraPos.y + height}
-    if debug then
-        UnityEngine.Debug.DrawLine(Vector3.New(t.xLeft,t.yTop,-10),Vector3.New(t.xRight,t.yTop,-10),Color.red)
-        UnityEngine.Debug.DrawLine(Vector3.New(t.xLeft,t.yTop,-10),Vector3.New(t.xLeft,t.yBottom,-10),Color.red)
-        UnityEngine.Debug.DrawLine(Vector3.New(t.xRight,t.yTop,-10),Vector3.New(t.xRight,t.yBottom,-10),Color.red)
-        UnityEngine.Debug.DrawLine(Vector3.New(t.xLeft,t.yBottom,-10),Vector3.New(t.xRight,t.yBottom,-10),Color.red)
-    end
 
-    return t
+    self.xLeft = cameraPos.x - width
+    self.xRight = cameraPos.x + width
+    self.yBottom = cameraPos.y - height
+    self.yTop = cameraPos.y + height
+
+    if debug then
+        UnityEngine.Debug.DrawLine(Vector3.New(self.xLeft,self.yTop,-10),Vector3.New(self.xRight,self.yTop,-10),Color.red)
+        UnityEngine.Debug.DrawLine(Vector3.New(self.xLeft,self.yTop,-10),Vector3.New(self.xLeft,self.yBottom,-10),Color.red)
+        UnityEngine.Debug.DrawLine(Vector3.New(self.xRight,self.yTop,-10),Vector3.New(self.xRight,self.yBottom,-10),Color.red)
+        UnityEngine.Debug.DrawLine(Vector3.New(self.xLeft,self.yBottom,-10),Vector3.New(self.xRight,self.yBottom,-10),Color.red)
+    end
 end

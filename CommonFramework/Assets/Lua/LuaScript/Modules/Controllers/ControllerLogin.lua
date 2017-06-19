@@ -4,6 +4,7 @@ require 'Proto/person_pb'
 require 'Proto/UdpPackage_pb'
 require 'SystemModule/Network/TCP/TCPNetwork'
 require 'SystemModule/Network/KCP/KCPNetwork'
+require 'Battle/Player/Link/PlayerLinkedList'
 
 local ControllerLogin = class(Controller)
 function ControllerLogin:ctor()
@@ -101,38 +102,25 @@ function ControllerLogin:ShowUILogin()
         end
 
         self.loginView.OnClickButtonLinkTestCallback = function ()
-            local link = LinkUDPPackets.new()
-            local p1 = UDPDataPacket.new()
-            p1.seq = 2
-            local p2 = UDPDataPacket.new()
-            p2.seq = 1
-            local p3 = UDPDataPacket.new()
-            p3.seq = 5
-            local p4 = UDPDataPacket.new()
-            p4.seq = 3
-            local p5 = UDPDataPacket.new()
-            p5.seq = 0
-            local p6 = UDPDataPacket.new()
-            p6.seq = 6
-            local p7 = UDPDataPacket.new()
-            p7.seq = 7
-            local p8 = UDPDataPacket.new()
-            p8.seq = 10
-            local p9 = UDPDataPacket.new()
-            p9.seq = 3
+            local playerLink = PlayerLinkedList.new()
+            local item1 = PlayerLinkedListItem.new()
+            item1.data = '1'
 
-            link:Insert(p1,true)
-            link:Insert(p2,true)
-            link:Insert(p3,true)
-            link:Insert(p4,true)
-            link:Insert(p5,true)
-            link:Insert(p6,true)
-            link:Insert(p7,true)
-            link:Insert(p8,true)
-            link:Insert(p9,true)
+            local item2 = PlayerLinkedListItem.new()
+            item2.data = '2'
 
-            link:PrintLink(false)
-            link:PrintLink(true)
+            local item3 = PlayerLinkedListItem.new()
+            item3.data = '3'
+
+            local item4 = PlayerLinkedListItem.new()
+            item4.data = '4'
+
+            playerLink:InsertAtTail(item2)
+            playerLink:InsertAtTail(item3)
+            playerLink:InsertAtHead(item1)
+            playerLink:InsertAtTail(item4)
+
+            playerLink:PrintLink(false)
         end
 
         self.loginView.OnClickButtonBattleCallback = function ()
@@ -169,6 +157,10 @@ function ControllerLogin:ShowUILogin()
             TCPNetwork:GetInstance():Send(1,data,
             function(data)
                 Debugger.LogError('Success send call back ' .. data)
+                --local luabuffer = data:ToLuaBuffer()
+                udppackage:ParseFromString(data)
+                Debugger.LogError('udppackage.posX  ' .. udppackage.posX)
+                Debugger.LogError('udppackage.posY  ' .. udppackage.posY)
             end,
             function(err)
                 Debugger.LogError('fail send ' .. err)
