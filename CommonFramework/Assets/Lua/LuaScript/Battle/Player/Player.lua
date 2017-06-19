@@ -18,5 +18,9 @@ function Player:Init(id,long,startPos)
     for i = 1,long,1 do
         local logicItem = PlayerLogicLinkItem.new()
         self.logicLink:InsertAtTail(logicItem)
+        logicItem.pos = startPos
+        logicItem.id = self.id .. '_' .. i
+        startPos.x = startPos.x + self.partSpace
     end
+
 end

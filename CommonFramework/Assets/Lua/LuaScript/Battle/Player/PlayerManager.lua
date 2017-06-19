@@ -13,10 +13,23 @@ function PlayerManager:GetInstance()
     return self.m_instance
 end
 
+function PlayerManager:ctor()
+    self.players = {}
+end
+
+function PlayerManager:GetPlayer(id)
+    return self.players[id]
+end
+
+function PlayerManager:GetPlayers()
+    return self.players
+end
+
 function PlayerManager:Create(id,long,pos)
 
     local player = Player.new()
     player:Init(id,long,pos)
+    self.players[id] = player
 
     return player
 

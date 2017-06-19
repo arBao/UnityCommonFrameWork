@@ -6,4 +6,5 @@ require 'Tools/LinkedListItem'
 PlayerLogicLinkItem = class(LinkedListItem)
 function PlayerLogicLinkItem:cotr()
     self.pos = nil
+    self.id = nil
 end

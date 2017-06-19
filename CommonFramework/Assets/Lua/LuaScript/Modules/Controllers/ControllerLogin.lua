@@ -71,15 +71,14 @@ function ControllerLogin:ShowUILogin()
         --    --Debugger.LogError('Receive  udppackage.posY  ' .. udppackage.posY)
         --end)
 
-        KCPNetwork:GetInstance():Init(1,'127.0.0.1',11110,11111,
+        KCPNetwork:GetInstance():Init(1,'192.168.0.131',8008,8007,
         function(buffer)
             --local udppackage = UdpPackage_pb.UdpPackage()
-            local luabuffer = buffer:ToLuaBuffer()
-            Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(luabuffer))
-            --udppackage:ParseFromString(luabuffer)
+            Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(buffer))
+            udppackage:ParseFromString(buffer)
 
-            --Debugger.LogError('Receive  udppackage.posX  ' .. udppackage.posX)
-            --Debugger.LogError('Receive  udppackage.posY  ' .. udppackage.posY)
+            Debugger.LogError('Receive  udppackage.posX  ' .. udppackage.posX)
+            Debugger.LogError('Receive  udppackage.posY  ' .. udppackage.posY)
         end)
 
         UpdateBeat:Add(function (self)
@@ -96,9 +95,7 @@ function ControllerLogin:ShowUILogin()
             local data = udppackage:SerializeToString()
             local length = string.len(data)
             Debugger.LogError('origin data length  ' .. length)
-            --local sendData = 'asdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjwe'
-            --kcpNetwork:Send(data)
-            KCPNetwork:GetInstance():Send(data)
+            KCPNetwork:GetInstance():Send(1,1,data)
         end
 
         self.loginView.OnClickButtonLinkTestCallback = function ()

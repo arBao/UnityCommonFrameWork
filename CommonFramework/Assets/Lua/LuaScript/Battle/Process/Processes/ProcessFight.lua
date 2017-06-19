@@ -24,6 +24,13 @@ function ProcessFight:OnInit()
         --ColliderManager:GetInstance():Stack(Vector2.New(pos2.x,pos2.y),1,1,222,2)
         --ColliderManager:GetInstance():Stack(Vector2.New(pos3.x,pos3.y),1,1,333,3)
 
+        local players = PlayerManager:GetInstance():GetPlayers()
+        for id,player in pairs(players) do
+            player:ForEach(function()
+
+            end)
+        end
+
         local pairs = ColliderManager:GetInstance():ColliderDetect()
         if #pairs ~= 0 then
             Debugger.LogError('--------------------' )

@@ -34,6 +34,7 @@ public class KCPSocket
 				SocketFlags.None, ref remotePoint);
 			if (size >= 0)
 			{
+				Debug.LogError("KCPSocket recv:size " + size);
 				byte[] dst = new byte[size];
 				Buffer.BlockCopy(m_bufferRecv, 0, dst, 0, size);
 				m_RecvQueue.Push(dst);

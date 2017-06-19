@@ -78,5 +78,46 @@ function LinkedList:DeleteAtTail()
     self.tail = p
 end
 
+function LinkedList:IsHead(p)
+    return p == self.head
+end
+
+function LinkedList:IsTail(p)
+    return p == self.tail
+end
+
+function LinkedList:ForEach(func,isReverse)
+    if isReverse then
+        local p = self.tail
+        if p == nil then
+            Debugger.LogError('empty LinkedList')
+            return
+        end
+        while (p ~= nil)
+        do
+            local isBreak = func(p)
+            if isBreak then
+                break
+            end
+            p = p.last
+        end
+    else
+        local p = self.head
+        if p == nil then
+            Debugger.LogError('empty LinkedList')
+            return
+        end
+
+        while (p ~= nil)
+        do
+            local isBreak = func(p)
+            if isBreak then
+                break
+            end
+            p = p.next
+        end
+    end
+end
+
 
 
