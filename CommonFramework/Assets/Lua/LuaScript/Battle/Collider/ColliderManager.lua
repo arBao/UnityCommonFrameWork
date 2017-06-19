@@ -11,6 +11,7 @@ local rowMax = 1500
 local lineMax = 750
 local lineSpace = 0.2
 local debug = true
+local drawLine = false
 
 function ColliderManager:GetInstance()
     if self.m_instance == nil then
@@ -61,14 +62,17 @@ function ColliderManager.DrawColliderMesh(self)
     local bottomY = (0 - lineMax / 2 + 0.5) * lineSpace
     local topY = (0 + lineMax / 2 + 0.5) * lineSpace
 
-    for i=0,rowMax,1 do
-        local x = leftX + lineSpace * i
-        UnityEngine.Debug.DrawLine(Vector3.New(x,topY,-10),Vector3.New(x,bottomY,-10),Color.blue)
+    if drawLine then
+        for i=0,rowMax,1 do
+            local x = leftX + lineSpace * i
+            UnityEngine.Debug.DrawLine(Vector3.New(x,topY,-10),Vector3.New(x,bottomY,-10),Color.blue)
+        end
+        for i=0,lineMax,1 do
+            local y = bottomY + lineSpace * i
+            UnityEngine.Debug.DrawLine(Vector3.New(leftX,y,-10),Vector3.New(rightX,y,-10),Color.blue)
+        end
     end
-    for i=0,lineMax,1 do
-        local y = bottomY + lineSpace * i
-        UnityEngine.Debug.DrawLine(Vector3.New(leftX,y,-10),Vector3.New(rightX,y,-10),Color.blue)
-    end
+
 
     for k,v in pairs(self.unitList) do
         local unit = v

@@ -2,7 +2,7 @@
 --- Created by luzhuqiu.
 --- DateTime: 2017/6/16 下午5:45
 ---
-require 'SystemModule/Network/TCPSendTask'
+require 'SystemModule/Network/TCP/TCPSendTask'
 
 TCPSendTaskManager = class()
 function TCPSendTaskManager:GetInstance()

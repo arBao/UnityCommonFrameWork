@@ -3,8 +3,8 @@
 --- DateTime: 2017/6/16 上午10:56
 ---
 require 'SystemModule/Timer/TimerManager'
-require 'SystemModule/Network/DataPacket'
-require 'SystemModule/Network/TCPSendTaskManager'
+require 'SystemModule/Network/TCP/DataPacket'
+require 'SystemModule/Network/TCP/TCPSendTaskManager'
 
 TCPNetwork = class()
 

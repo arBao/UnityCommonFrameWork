@@ -1,8 +1,9 @@
-require 'SystemModule/Network/UdpNetwork'
-require 'SystemModule/Network/LinkUDPPackets'
+require 'SystemModule/Network/UDP/UdpNetwork'
+require 'SystemModule/Network/UDP/LinkUDPPackets'
 require 'Proto/person_pb'
 require 'Proto/UdpPackage_pb'
-require 'SystemModule/Network/TCPNetwork'
+require 'SystemModule/Network/TCP/TCPNetwork'
+require 'SystemModule/Network/KCP/KCPNetwork'
 
 local ControllerLogin = class(Controller)
 function ControllerLogin:ctor()
@@ -56,10 +57,21 @@ function ControllerLogin:ShowUILogin()
         --UdpNetwork:GetInstance():Init()
         --UdpNetwork:GetInstance():ListenTo(1000,ReceiveCallback)
 
-        local kcpNetwork = KCPNetwork.New()
-        kcpNetwork:Init(1,'127.0.0.1',11110,11111)
+        --local kcpNetwork = KCPNetwork.New()
+        --kcpNetwork:Init(1,'127.0.0.1',11110,11111)
+        --
+        --kcpNetwork:SetReceiveAction(function(buffer)
+        --    --local udppackage = UdpPackage_pb.UdpPackage()
+        --    local luabuffer = buffer:ToLuaBuffer()
+        --    Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(luabuffer))
+        --    --udppackage:ParseFromString(luabuffer)
+        --
+        --    --Debugger.LogError('Receive  udppackage.posX  ' .. udppackage.posX)
+        --    --Debugger.LogError('Receive  udppackage.posY  ' .. udppackage.posY)
+        --end)
 
-        kcpNetwork:SetReceiveAction(function(buffer)
+        KCPNetwork:GetInstance():Init(1,'127.0.0.1',11110,11111,
+        function(buffer)
             --local udppackage = UdpPackage_pb.UdpPackage()
             local luabuffer = buffer:ToLuaBuffer()
             Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(luabuffer))
@@ -70,7 +82,8 @@ function ControllerLogin:ShowUILogin()
         end)
 
         UpdateBeat:Add(function (self)
-            kcpNetwork:Update()
+            --kcpNetwork:Update()
+            KCPNetwork:GetInstance():Update()
         end,self)
 
         self.loginView.OnClickButtonSendCallback = function ()
@@ -83,7 +96,8 @@ function ControllerLogin:ShowUILogin()
             local length = string.len(data)
             Debugger.LogError('origin data length  ' .. length)
             --local sendData = 'asdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjweasdfasdfasdfasdjfhajksdhfklasdjglkajsglkjalsgjdflagjldsfjblkjwe'
-            kcpNetwork:Send(data)
+            --kcpNetwork:Send(data)
+            KCPNetwork:GetInstance():Send(data)
         end
 
         self.loginView.OnClickButtonLinkTestCallback = function ()
@@ -130,11 +144,7 @@ function ControllerLogin:ShowUILogin()
             end
             SceneMgr.LoadASync('Battle',funcProgress,finishCallback,false)
         end
-        --TCPSocket.Instance:SetRecvCallback(
-        --function(bytebuffer)
-        --    local luabuffer = bytebuffer:ToLuaBuffer()
-        --    Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(luabuffer))
-        --end)
+
         TCPNetwork:GetInstance():Init()
         self.loginView.OnClickButtonTcpConnectCallback = function ()
             TCPNetwork:GetInstance():Connect('127.0.0.1',9999,

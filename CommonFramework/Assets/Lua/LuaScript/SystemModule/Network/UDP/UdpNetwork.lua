@@ -15,8 +15,8 @@
 ----    1002 服务端通知客户端开战
 
 
-require 'SystemModule/Network/UDPDataPacket'
-require 'SystemModule/Network/LinkUDPPackets'
+require 'SystemModule/Network/UDP/UDPDataPacket'
+require 'SystemModule/Network/UDP/LinkUDPPackets'
 require 'Proto/UdpLostPackage_pb'
 
 UdpNetwork = class()

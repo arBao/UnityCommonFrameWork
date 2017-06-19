@@ -11,7 +11,7 @@ public class KCPSocket
 	private SwitchQueue<byte[]> m_RecvQueue = new SwitchQueue<byte[]>(128);
 	private bool m_NeedUpdateFlag = false;
 	private static readonly DateTime utc_time = new DateTime(1970, 1, 1);
-	private Action<byte[]> m_actionReceive;
+	private Action<ByteBuffer> m_actionReceive;
 	private UInt32 m_NextUpdateTime;
 	private IPEndPoint m_RemoteEndPoint;
 	private bool m_isRunning = false;
@@ -41,7 +41,7 @@ public class KCPSocket
 		}
 	}
 
-	public void Init(uint kcpid, string remoteIP, int localPort, int remotePort, Action<byte[]> actionReceive)
+	public void Init(uint kcpid, string remoteIP, int localPort, int remotePort, Action<ByteBuffer> actionReceive)
 	{
 		m_actionReceive = actionReceive;
 
@@ -81,7 +81,9 @@ public class KCPSocket
 				byte[] data = new byte[size];
 				if (m_kcp.Recv(data) > 0 && m_actionReceive != null)
 				{
-					m_actionReceive(data);
+					ByteBuffer bytebuffer = new ByteBuffer();
+					bytebuffer.WriteBytesWithoutLength(data);
+					m_actionReceive(bytebuffer);
 				}
 			}
 		}

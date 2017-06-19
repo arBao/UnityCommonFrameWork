@@ -68,8 +68,9 @@ public static class CustomSettings
 		_GT(typeof(UnityEngine.EventSystems.PointerEventData)),
 		_GT(typeof(EventTriggerListener)),
 		_GT(typeof(Debug)),
-		_GT(typeof(KCPNetwork)),
+		//_GT(typeof(KCPNetwork)),
 		_GT(typeof(TCPSocket)),
+		_GT(typeof(KCPSocket)),
 		
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),
