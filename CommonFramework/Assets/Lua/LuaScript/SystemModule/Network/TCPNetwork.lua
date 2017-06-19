@@ -41,7 +41,7 @@ function TCPNetwork:Init()
 
     TCPSocket.Instance:SetSendCallback(
     function()
-        Debugger.LogError('send sucess')
+        --Debugger.LogError('send sucess')
     end,
     function(err)
         Debugger.LogError('send fail  ' .. err)
@@ -51,11 +51,16 @@ function TCPNetwork:Init()
     TCPSocket.Instance:SetServerDisconnectCallback(
     function ()
         Debugger.LogError('服务端主动断开连接  ')
-        
+
     end
     )
 
     self.seqCnt = 1
+end
+
+function TCPNetwork:ReConnect()
+    TCPSocket.Instance:Disconnect()
+    TCPSocket.Instance:Connect()
 end
 
 function TCPNetwork:Connect(ip,prot,funcSuccess,funcFail)

@@ -18,12 +18,16 @@ function TCPSendTask:Set(msgID,seq,dataSend,successCallback,failCallback)
     self.failCallback = failCallback
 
     local timeOutFunc = function()
-        if failCallback == nil then
+        if failCallback ~= nil then
             failCallback('发送信息超时')
         end
     end
 
     self.timerID = TimerManager:GetInstance():CallActionDelay(timeOutFunc,timeOut,dataSend,0)
+
+    --TimerManager:GetInstance():CallActionDelay(function(parm)
+    --    Debugger.LogError('calldelay  ' .. parm)
+    --end,3,'11',3)
 end
 
 function TCPSendTask:CancelTimer()

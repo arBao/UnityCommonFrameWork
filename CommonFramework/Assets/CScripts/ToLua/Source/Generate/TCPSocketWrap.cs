@@ -9,6 +9,7 @@ public class TCPSocketWrap
 		L.BeginClass(typeof(TCPSocket), typeof(System.Object));
 		L.RegFunction("SetTcpParms", SetTcpParms);
 		L.RegFunction("Connect", Connect);
+		L.RegFunction("Disconnect", Disconnect);
 		L.RegFunction("SetRecvCallback", SetRecvCallback);
 		L.RegFunction("SetSendCallback", SetSendCallback);
 		L.RegFunction("SetServerDisconnectCallback", SetServerDisconnectCallback);
@@ -101,6 +102,22 @@ public class TCPSocketWrap
 			}
 
 			obj.Connect(arg0, arg1, arg2, arg3);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Disconnect(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			TCPSocket obj = (TCPSocket)ToLua.CheckObject(L, 1, typeof(TCPSocket));
+			obj.Disconnect();
 			return 0;
 		}
 		catch(Exception e)

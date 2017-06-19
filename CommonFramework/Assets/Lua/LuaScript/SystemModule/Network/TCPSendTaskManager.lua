@@ -37,4 +37,5 @@ function TCPSendTaskManager:CancelTask(seq)
     if task ~= nil then
         task:CancelTimer()
     end
+    self.taskCache[seq] = nil
 end

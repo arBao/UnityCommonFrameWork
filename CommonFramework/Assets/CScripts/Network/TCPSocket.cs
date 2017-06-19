@@ -116,7 +116,7 @@ public class TCPSocket
 		}, m_connectTimeout, null, 0);
 	}
 
-	private void Disconnect()
+	public void Disconnect()
 	{
 		Debug.LogError("Disconnect");
 		m_isConnecting = false;
