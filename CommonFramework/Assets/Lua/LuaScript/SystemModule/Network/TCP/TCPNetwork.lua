@@ -29,14 +29,10 @@ function TCPNetwork:Init()
         if seq ~= 0 then
             local task = TCPSendTaskManager:GetInstance():GetTask(seq)
             if task.successCallback ~= nil then
-                task.successCallback()
+                task.successCallback(dataBytes)
             end
             TCPSendTaskManager:GetInstance():CancelTask(seq)
         end
-
-        Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(luabuffer))
-        Debugger.LogError('id  ' .. id .. '  length  ' .. length .. ' seq  ' .. seq .. '  dataBytes  ' .. dataBytes)
-
     end)
 
     TCPSocket.Instance:SetSendCallback(
@@ -44,6 +40,7 @@ function TCPNetwork:Init()
         --Debugger.LogError('send sucess')
     end,
     function(err)
+        ---todo 局域网无法模拟sendfail 以后待开发
         Debugger.LogError('send fail  ' .. err)
     end
     )
@@ -54,8 +51,6 @@ function TCPNetwork:Init()
 
     end
     )
-
-    self.seqCnt = 1
 end
 
 function TCPNetwork:ReConnect()
@@ -77,8 +72,8 @@ end
 
 ---单程发送，无返回消息
 function TCPNetwork:SendOneWay(msgID,data)
-    local seq = TCPSendTaskManager:GetInstance():GetSeq()
-    local dataSend = DataPacket.Packet(msgID,seq,data)
+    --local seq = TCPSendTaskManager:GetInstance():GetSeq()
+    local dataSend = DataPacket.Packet(msgID,0,data)
     TCPSocket.Instance:Send(dataSend)
 end
 

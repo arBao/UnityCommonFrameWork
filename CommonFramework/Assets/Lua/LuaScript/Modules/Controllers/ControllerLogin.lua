@@ -42,18 +42,18 @@ function ControllerLogin:ShowUILogin()
             self.seq = 0
         end
 
-        local SendSucess = function(pack)
-
-        end
-
-        local ReceiveCallback = function(pack)
-            --Debugger.LogError('ReceiveCallback')
-            local udppackage = UdpPackage_pb.UdpPackage()
-            udppackage:ParseFromString(pack.data)
-
-            Debugger.LogError('udppackage.posX  ' .. udppackage.posX)
-            Debugger.LogError('udppackage.posY  ' .. udppackage.posY)
-        end
+        --local SendSucess = function(pack)
+        --
+        --end
+        --
+        --local ReceiveCallback = function(pack)
+        --    --Debugger.LogError('ReceiveCallback')
+        --    local udppackage = UdpPackage_pb.UdpPackage()
+        --    udppackage:ParseFromString(pack.data)
+        --
+        --    Debugger.LogError('udppackage.posX  ' .. udppackage.posX)
+        --    Debugger.LogError('udppackage.posY  ' .. udppackage.posY)
+        --end
         --UdpNetwork:GetInstance():Init()
         --UdpNetwork:GetInstance():ListenTo(1000,ReceiveCallback)
 
@@ -162,8 +162,8 @@ function ControllerLogin:ShowUILogin()
 
         self.loginView.OnClickButtonTcpSendCallback = function ()
             TCPNetwork:GetInstance():Send(1,'11111',
-            function()
-                Debugger.LogError('Success send')
+            function(data)
+                Debugger.LogError('Success send call back ' .. data)
             end,
             function(err)
                 Debugger.LogError('fail send ' .. err)
