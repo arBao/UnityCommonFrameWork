@@ -4,4 +4,7 @@
 ---
 require 'Tools/LinkedList'
 PlayerLogicLink = class(LinkedList)
+function PlayerLogicLink:ctor()
+    self.items = {}
+end
 

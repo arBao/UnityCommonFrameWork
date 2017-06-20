@@ -1,7 +1,7 @@
 ---
 --- Created by luzhuqiu.
 --- DateTime: 2017/6/20 下午1:43
----
+--- 位置信息数据结构
 require 'Battle/Player/PositionArrayItem'
 
 PositionArray = class()
@@ -10,6 +10,8 @@ function PositionArray:ctor()
     self.head = nil
     self.tail = nil
     self.unuseItem = nil
+
+    self.posArray = {}
 end
 
 function PositionArray:GetSize()
@@ -26,11 +28,12 @@ function PositionArray:SetSize(size)
         for i = 1,delta,1 do
             local posItem = nil
             if self.unuseItem ~= nil then
-                Debugger.LogError('取员')
+                --Debugger.LogError('取员')
                 posItem = self.unuseItem
                 self.unuseItem = self.unuseItem.next
             else
                 posItem = PositionArrayItem.new()
+                --Debugger.LogError('增员')
             end
 
             if self.head == nil then
@@ -42,13 +45,20 @@ function PositionArray:SetSize(size)
                 self.tail.next = posItem
                 self.tail = posItem
             end
+            if posItem.last ~= nil then
+                local pos = posItem.last.pos
+                posItem.pos.x = pos.x
+                posItem.pos.y = pos.y
+                posItem.rotation = posItem.last.rotation
+            end
         end
     else
-        Debugger.LogError('减员')
+        --Debugger.LogError('减员')
         local p = self.head
         for i = 1,size,1 do
             p = p.next
         end
+        self.tail = p.last
         p.last.next = nil
         self.unuseItem = p
     end
@@ -67,7 +77,7 @@ function PositionArray:ForEach(func)
     end
 end
 
-function PositionArray:Push(position,rotation)
+function PositionArray:Push(posX,posY,rotation)
     local p = self.tail
     self.tail = p.last
     p.last.next = nil
@@ -77,6 +87,7 @@ function PositionArray:Push(position,rotation)
     self.head.last = p
     self.head = p
 
-    p.position = position
+    p.pos.x = posX
+    p.pos.y = posY
     p.rotation = rotation
 end

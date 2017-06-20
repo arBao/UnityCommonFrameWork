@@ -4,7 +4,7 @@
 ---
 PositionArrayItem = class()
 function PositionArrayItem:ctor()
-    self.pos = nil
+    self.pos = Vector3.zero
     self.rotation = nil
     self.next = nil
     self.last = nil

@@ -31,8 +31,18 @@ function ProcessFight:OnInit()
         local players = PlayerManager:GetInstance():GetPlayers()
         for id,player in pairs(players) do
             --Debugger.LogError('--------------------########### test ')
-            player.logicLink:ForEach(function(linkItem)
-                local inCameraArea = CameraManager:GetInstance():CameraAreaTest(linkItem.pos)
+            --player.logicHash:ForEach(function(hashKey,hashItem)
+            --    local inCameraArea = CameraManager:GetInstance():CameraAreaTest(hashItem.pos)
+            --    if inCameraArea then
+            --        --Debugger.LogError('-------------------- inCameraArea ')
+            --        BattleRenderObjectPool:GetInstance():Add(player.id)
+            --    end
+            --    return inCameraArea
+            --end)
+
+            player.positionLogicArray:ForEach(
+            function(p)
+                local inCameraArea = CameraManager:GetInstance():CameraAreaTest(p.pos)
                 if inCameraArea then
                     --Debugger.LogError('-------------------- inCameraArea ')
                     BattleRenderObjectPool:GetInstance():Add(player.id)

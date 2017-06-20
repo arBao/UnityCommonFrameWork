@@ -7,6 +7,7 @@ LinkedList = class(BattleLogicObject)
 function LinkedList:ctor()
     self.head = nil
     self.tail = nil
+    self.items = {}
 end
 
 function LinkedList:Init()
@@ -117,6 +118,14 @@ function LinkedList:ForEach(func,isReverse)
             p = p.next
         end
     end
+end
+
+function LinkedList:GetHead()
+    return self.head
+end
+
+function LinkedList:GetTail()
+    return self.tail
 end
 
 

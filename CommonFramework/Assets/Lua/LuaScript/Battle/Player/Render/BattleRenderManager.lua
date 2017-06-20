@@ -13,26 +13,41 @@ function BattleRenderManager:GetInstance()
 end
 
 function BattleRenderManager:ctor()
-    self.showObjs = {}
+    self.playerShow = {}
 end
 
 function BattleRenderManager:Update()
     local renderObjs = BattleRenderObjectPool:GetInstance():GetPool()
     for i = 1,#renderObjs do
-        local renderLink = PlayerManager:GetInstance():GetPlayer(renderObjs[i]).renderLink
-        if self.showObjs[renderObjs[i]] == nil then
-            self.showObjs[renderObjs[i]] = renderObjs[i]
+        local playerID = renderObjs[i]
+        local player = PlayerManager:GetInstance():GetPlayer(playerID)
+        local renderHash = player.renderHash
+        if self.playerShow[playerID] == nil then
+            self.playerShow[playerID] = player
             local zDepth = 0
-            renderLink:ForEach(function(renderLinkItem)
+            renderHash:ForEach(function(renderHashItem)
                 local obj = AssetsManager.Instance:GetAsset('Assets/Res/Model/Prefab/Head.prefab',typeof(UnityEngine.GameObject))
+                renderHashItem.gameObject = obj
                 local pos = Vector3.zero
-                pos.x = renderLinkItem.pos.x
-                pos.y = renderLinkItem.pos.y
                 pos.z = zDepth
                 obj.transform.position = pos
-                obj.transform.rotation = renderLinkItem.rotation
                 zDepth = zDepth + 0.05
             end)
+        else
+
         end
+
+        local itemID = 1
+        player.positionRenderArray:ForEach(
+        function(p)
+            local item = renderHash:Get(itemID)
+            local pos = item.gameObject.transform.position
+            pos.x = p.pos.x
+            pos.y = p.pos.y
+            item.gameObject.transform.position = pos
+            item.gameObject.transform.rotation = p.rotation
+        end)
     end
+
+
 end

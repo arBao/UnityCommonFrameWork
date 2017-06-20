@@ -2,110 +2,76 @@
 --- Created by luzhuqiu.
 --- DateTime: 2017/6/19 下午2:46
 ---
-require 'Battle/Player/Logic/PlayerLogicLink'
-require 'Battle/Player/Logic/PlayerLogicLinkItem'
-require 'Battle/Player/Render/PlayerRenderLink'
-require 'Battle/Player/Render/PlayerRenderLinkItem'
+
+require 'Battle/Player/Logic/PlayerLogicHash'
+require 'Battle/Player/Logic/PlayerLogicHashItem'
+require 'Battle/Player/Render/PlayerRenderHash'
+require 'Battle/Player/Render/PlayerRenderHashItem'
 require 'Battle/Player/PositionArray'
 
 Player = class(BattleLogicObject)
 
 function Player:Init(id,long,startPos)
     self.id = id
-    self.logicLink = PlayerLogicLink.new()
-    self.renderLink = PlayerRenderLink.new()
-    self.partSpace = 0.3---每一节的间隔距离
-    self.runSpeed = 0.1---行进速度
-    self.rotateSpeed = 0.1---旋转速度
+    self.logicHash = PlayerLogicHash.new()
+    self.renderHash = PlayerRenderHash.new()
+
+    ---每一节的间隔距离
+    self.partSpace = 0.3
+    ---行进速度
+    self.runSpeed = 0.1
+    ---旋转速度
+    self.rotateSpeed = 0.1
+    ---多少帧改变一次位置
+    self.refreshFramePos = 5
+    ---刷新位置帧数缓存
+    self.refreshFramePosCache = 0
+
+    local startRotation = nil
+
+    if startPos.x >= 0 then
+        startRotation = Quaternion.Euler(0,0,90)
+    else
+        startRotation = Quaternion.Euler(0,0,-90)
+    end
 
     for i = 1,long,1 do
-        local logicItem = PlayerLogicLinkItem.new()
-        local renderItem = PlayerRenderLinkItem.new()
 
-        self.logicLink:InsertAtTail(logicItem)
-        self.renderLink:InsertAtTail(renderItem)
+        local logicItem = PlayerLogicHashItem.new()
+        local renderItem = PlayerRenderHashItem.new()
 
-        local pos = Vector3.New(startPos.x,startPos.y,startPos.z)
+        self.logicHash:Add(i,logicItem)
+        self.renderHash:Add(i,renderItem)
 
-        logicItem.pos = pos
-        logicItem.id = self.id .. '_' .. i
-
-        renderItem.pos = pos
-        renderItem.id = self.id .. '_' .. i
-
-        if pos.x >= 0 then
-            renderItem.rotation = Quaternion.Euler(0,0,90)
-        else
-            renderItem.rotation = Quaternion.Euler(0,0,-90)
-        end
     end
 
-    local positionArray = PositionArray.new()
-    --------------------------------------------------------
-    positionArray:SetSize(10)
+    self.positionLogicArray = PositionArray.new()
+    self.positionLogicArray:SetSize(long)
 
-    for i = 1,10,1 do
-        positionArray:Push(Vector3.New(0,0,0))
+    for i = 1,long,1 do
+        self.positionLogicArray:Push(startPos,startRotation)
     end
 
-    local cnt = 1
-    positionArray:ForEach(function(item)
-        Debugger.LogError('item  item.position.x ' .. item.position.x .. '  item.position.y  ' .. item.position.y .. ' item.position.z ' .. item.position.z .. '  cnt  ' .. cnt)
-        cnt = cnt + 1
-    end)
+    self.positionRenderArray = PositionArray.new()
+    self.positionRenderArray:SetSize(long)
 
-    --------------------------------------------------------
-    positionArray:Push(Vector3.New(1,0,0))
+    for i = 1,long,1 do
+        self.positionRenderArray:Push(startPos,startRotation)
+    end
+end
 
-    Debugger.LogError('------------##############')
-
-    cnt = 1
-    positionArray:ForEach(function(item)
-        Debugger.LogError('item  item.position.x ' .. item.position.x .. '  item.position.y  ' .. item.position.y .. ' item.position.z ' .. item.position.z .. '  cnt  ' .. cnt)
-        cnt = cnt + 1
-    end)
-
-    --------------------------------------------------------
-    positionArray:Push(Vector3.New(2,0,0))
-
-    Debugger.LogError('------------##############')
-
-    cnt = 1
-    positionArray:ForEach(function(item)
-        Debugger.LogError('item  item.position.x ' .. item.position.x .. '  item.position.y  ' .. item.position.y .. ' item.position.z ' .. item.position.z .. '  cnt  ' .. cnt)
-        cnt = cnt + 1
-    end)
-
-    --------------------------------------------------------
-    positionArray:SetSize(5)
-
-    Debugger.LogError('------------##############')
-
-    cnt = 1
-    positionArray:ForEach(function(item)
-        Debugger.LogError('item  item.position.x ' .. item.position.x .. '  item.position.y  ' .. item.position.y .. ' item.position.z ' .. item.position.z .. '  cnt  ' .. cnt)
-        cnt = cnt + 1
-    end)
-
-    --------------------------------------------------------
-    positionArray:SetSize(8)
-
-    Debugger.LogError('------------##############')
-
-    cnt = 1
-    positionArray:ForEach(function(item)
-        Debugger.LogError('item  item.position.x ' .. item.position.x .. '  item.position.y  ' .. item.position.y .. ' item.position.z ' .. item.position.z .. '  cnt  ' .. cnt)
-        cnt = cnt + 1
-    end)
-
+function Player:SetSize(size)
+    self.positionLogicArray:SetSize(size)
+    self.positionRenderArray:SetSize(size)
 end
 
 function Player:Move(time)
-    local distance = self.runSpeed * time
-    self.logicLink:ForEach(
-    function(linkItem)
-        if linkItem == self.logicLink.head then
-            linkItem.pos.x = linkItem.pos.x + distance
-        end
-    end)
+
+    self.refreshFramePosCache = self.refreshFramePosCache + 1
+    if self.refreshFramePosCache > self.refreshFramePos then
+        self.refreshFramePosCache = 0
+        self.positionLogicArray:Push(headLogicItem.pos.x,headLogicItem.pos.y,headLogicItem.rotation)
+        self.positionRenderArray:Push(headLogicItem.pos.x,headLogicItem.pos.y,headLogicItem.rotation)
+    end
+
 end
