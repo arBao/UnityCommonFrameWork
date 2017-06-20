@@ -4,7 +4,7 @@ require 'Proto/person_pb'
 require 'Proto/UdpPackage_pb'
 require 'SystemModule/Network/TCP/TCPNetwork'
 require 'SystemModule/Network/KCP/KCPNetwork'
-require 'Battle/Player/Link/PlayerLinkedList'
+
 
 local ControllerLogin = class(Controller)
 function ControllerLogin:ctor()
@@ -71,6 +71,7 @@ function ControllerLogin:ShowUILogin()
         --    --Debugger.LogError('Receive  udppackage.posY  ' .. udppackage.posY)
         --end)
 
+
         KCPNetwork:GetInstance():Init(1,'192.168.0.149',8008,8007,
         function(buffer)
             local udppackage = UdpPackage_pb.UdpPackage()
@@ -99,25 +100,7 @@ function ControllerLogin:ShowUILogin()
         end
 
         self.loginView.OnClickButtonLinkTestCallback = function ()
-            local playerLink = PlayerLinkedList.new()
-            local item1 = PlayerLinkedListItem.new()
-            item1.data = '1'
 
-            local item2 = PlayerLinkedListItem.new()
-            item2.data = '2'
-
-            local item3 = PlayerLinkedListItem.new()
-            item3.data = '3'
-
-            local item4 = PlayerLinkedListItem.new()
-            item4.data = '4'
-
-            playerLink:InsertAtTail(item2)
-            playerLink:InsertAtTail(item3)
-            playerLink:InsertAtHead(item1)
-            playerLink:InsertAtTail(item4)
-
-            playerLink:PrintLink(false)
         end
 
         self.loginView.OnClickButtonBattleCallback = function ()

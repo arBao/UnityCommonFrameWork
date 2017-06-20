@@ -6,6 +6,7 @@ require 'Battle/Player/Logic/PlayerLogicLink'
 require 'Battle/Player/Logic/PlayerLogicLinkItem'
 require 'Battle/Player/Render/PlayerRenderLink'
 require 'Battle/Player/Render/PlayerRenderLinkItem'
+require 'Battle/Player/PositionArray'
 
 Player = class(BattleLogicObject)
 
@@ -38,10 +39,69 @@ function Player:Init(id,long,startPos)
             renderItem.rotation = Quaternion.Euler(0,0,-90)
         end
     end
+
+    local positionArray = PositionArray.new()
+    --------------------------------------------------------
+    positionArray:SetSize(10)
+
+    for i = 1,10,1 do
+        positionArray:Push(Vector3.New(0,0,0))
+    end
+
+    local cnt = 1
+    positionArray:ForEach(function(item)
+        Debugger.LogError('item  item.position.x ' .. item.position.x .. '  item.position.y  ' .. item.position.y .. ' item.position.z ' .. item.position.z .. '  cnt  ' .. cnt)
+        cnt = cnt + 1
+    end)
+
+    --------------------------------------------------------
+    positionArray:Push(Vector3.New(1,0,0))
+
+    Debugger.LogError('------------##############')
+
+    cnt = 1
+    positionArray:ForEach(function(item)
+        Debugger.LogError('item  item.position.x ' .. item.position.x .. '  item.position.y  ' .. item.position.y .. ' item.position.z ' .. item.position.z .. '  cnt  ' .. cnt)
+        cnt = cnt + 1
+    end)
+
+    --------------------------------------------------------
+    positionArray:Push(Vector3.New(2,0,0))
+
+    Debugger.LogError('------------##############')
+
+    cnt = 1
+    positionArray:ForEach(function(item)
+        Debugger.LogError('item  item.position.x ' .. item.position.x .. '  item.position.y  ' .. item.position.y .. ' item.position.z ' .. item.position.z .. '  cnt  ' .. cnt)
+        cnt = cnt + 1
+    end)
+
+    --------------------------------------------------------
+    positionArray:SetSize(5)
+
+    Debugger.LogError('------------##############')
+
+    cnt = 1
+    positionArray:ForEach(function(item)
+        Debugger.LogError('item  item.position.x ' .. item.position.x .. '  item.position.y  ' .. item.position.y .. ' item.position.z ' .. item.position.z .. '  cnt  ' .. cnt)
+        cnt = cnt + 1
+    end)
+
+    --------------------------------------------------------
+    positionArray:SetSize(8)
+
+    Debugger.LogError('------------##############')
+
+    cnt = 1
+    positionArray:ForEach(function(item)
+        Debugger.LogError('item  item.position.x ' .. item.position.x .. '  item.position.y  ' .. item.position.y .. ' item.position.z ' .. item.position.z .. '  cnt  ' .. cnt)
+        cnt = cnt + 1
+    end)
+
 end
 
 function Player:Move(time)
-    local distance = self.speed * time
+    local distance = self.runSpeed * time
     self.logicLink:ForEach(
     function(linkItem)
         if linkItem == self.logicLink.head then
