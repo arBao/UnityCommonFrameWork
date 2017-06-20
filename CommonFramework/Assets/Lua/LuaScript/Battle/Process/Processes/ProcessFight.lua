@@ -6,6 +6,7 @@
 require 'Battle/Player/PlayerManager'
 require 'Battle/FrameSyncSystem/FrameManager'
 require 'Battle/Collider/ColliderManager'
+require 'Battle/Player/Render/BattleRenderManager'
 
 ProcessFight = class(Process)
 
@@ -19,15 +20,23 @@ function ProcessFight:OnInit()
     --创建角色
     self.player1 = PlayerManager:GetInstance():Create(1,5,Vector3.New(0,0,0))
     local GameLogicUpdateFunc = function(deltaTime)
+        CameraManager:GetInstance():GetBattleCameraField()
         ColliderManager:GetInstance():Clean()
+        BattleRenderObjectPool:GetInstance():Clear()
         --ColliderManager:GetInstance():Stack(Vector2.New(pos1.x,pos1.y),1,1,111,1)
         --ColliderManager:GetInstance():Stack(Vector2.New(pos2.x,pos2.y),1,1,222,2)
         --ColliderManager:GetInstance():Stack(Vector2.New(pos3.x,pos3.y),1,1,333,3)
 
         local players = PlayerManager:GetInstance():GetPlayers()
         for id,player in pairs(players) do
-            player:ForEach(function()
-
+            Debugger.LogError('--------------------########### test ')
+            player.logicLink:ForEach(function(linkItem)
+                local inCameraArea = CameraManager:GetInstance():CameraAreaTest(linkItem.pos)
+                if inCameraArea then
+                    Debugger.LogError('-------------------- inCameraArea ')
+                    BattleRenderObjectPool:GetInstance():Add(player.id)
+                end
+                return inCameraArea
             end)
         end
 
@@ -43,12 +52,8 @@ function ProcessFight:OnInit()
             Debugger.LogError('pair.element2.id  ' .. pair.element2.id .. '  pair.element2.type  ' .. pair.element2.type )
         end
 
-        CameraManager:GetInstance():GetBattleCameraField()
+        BattleRenderManager:GetInstance():Update()
 
-        --local inCameraArea = CameraManager:GetInstance():CameraAreaTest(Vector2.New(pos1.x,pos1.y))
-        --if inCameraArea then
-        --    Debugger.LogError('-------------------- inCameraArea ')
-        --end
     end
     FrameManager:GetInstance():Init(GameLogicUpdateFunc)
     ColliderManager:GetInstance():Init()

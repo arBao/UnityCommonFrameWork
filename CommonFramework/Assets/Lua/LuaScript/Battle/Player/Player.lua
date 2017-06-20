@@ -23,4 +23,5 @@ function Player:Init(id,long,startPos)
         startPos.x = startPos.x + self.partSpace
     end
 
+
 end
