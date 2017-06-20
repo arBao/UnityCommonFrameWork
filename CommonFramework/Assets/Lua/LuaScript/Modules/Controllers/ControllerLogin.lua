@@ -71,9 +71,9 @@ function ControllerLogin:ShowUILogin()
         --    --Debugger.LogError('Receive  udppackage.posY  ' .. udppackage.posY)
         --end)
 
-        KCPNetwork:GetInstance():Init(1,'192.168.0.131',8008,8007,
+        KCPNetwork:GetInstance():Init(1,'192.168.0.149',8008,8007,
         function(buffer)
-            --local udppackage = UdpPackage_pb.UdpPackage()
+            local udppackage = UdpPackage_pb.UdpPackage()
             Debugger.LogError('Receive string.len(luabuffer)  ' .. string.len(buffer))
             udppackage:ParseFromString(buffer)
 
@@ -132,7 +132,7 @@ function ControllerLogin:ShowUILogin()
 
         TCPNetwork:GetInstance():Init()
         self.loginView.OnClickButtonTcpConnectCallback = function ()
-            TCPNetwork:GetInstance():Connect('192.168.0.131',8008,
+            TCPNetwork:GetInstance():Connect('192.168.0.149',8008,
             function ()
                 Debugger.LogError('Success connect')
             end,

@@ -7,4 +7,5 @@ PlayerLogicLinkItem = class(LinkedListItem)
 function PlayerLogicLinkItem:cotr()
     self.pos = nil
     self.id = nil
+    self.rotation = nil
 end

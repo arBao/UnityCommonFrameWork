@@ -7,6 +7,7 @@ require 'Battle/Player/PlayerManager'
 require 'Battle/FrameSyncSystem/FrameManager'
 require 'Battle/Collider/ColliderManager'
 require 'Battle/Player/Render/BattleRenderManager'
+require 'Battle/Player/Render/BattleRenderObjectPool'
 
 ProcessFight = class(Process)
 
@@ -29,15 +30,19 @@ function ProcessFight:OnInit()
 
         local players = PlayerManager:GetInstance():GetPlayers()
         for id,player in pairs(players) do
-            Debugger.LogError('--------------------########### test ')
+            --Debugger.LogError('--------------------########### test ')
             player.logicLink:ForEach(function(linkItem)
                 local inCameraArea = CameraManager:GetInstance():CameraAreaTest(linkItem.pos)
                 if inCameraArea then
-                    Debugger.LogError('-------------------- inCameraArea ')
+                    --Debugger.LogError('-------------------- inCameraArea ')
                     BattleRenderObjectPool:GetInstance():Add(player.id)
                 end
                 return inCameraArea
             end)
+        end
+
+        for id,player in pairs(players) do
+            player:Move(deltaTime)
         end
 
         local pairs = ColliderManager:GetInstance():ColliderDetect()

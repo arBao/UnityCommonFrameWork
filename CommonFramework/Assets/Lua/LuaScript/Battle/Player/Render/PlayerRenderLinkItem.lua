@@ -4,3 +4,8 @@
 ---
 require 'Tools/LinkedList'
 PlayerRenderLinkItem = class(LinkedListItem)
+function PlayerRenderLinkItem:ctor()
+    self.id = nil
+    self.pos = nil
+    self.rotation = nil
+end
