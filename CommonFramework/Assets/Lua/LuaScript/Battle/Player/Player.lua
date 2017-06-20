@@ -19,21 +19,24 @@ function Player:Init(id,long,startPos)
     ---每一节的间隔距离
     self.partSpace = 0.3
     ---行进速度
-    self.runSpeed = 0.1
+    self.runSpeed = 0.3
     ---旋转速度
     self.rotateSpeed = 0.1
     ---多少帧改变一次位置
-    self.refreshFramePos = 5
+    self.refreshFramePos = 85
     ---刷新位置帧数缓存
     self.refreshFramePosCache = 0
 
-    local startRotation = nil
+    self.rotation = nil
 
     if startPos.x >= 0 then
-        startRotation = Quaternion.Euler(0,0,90)
+        self.rotation = Quaternion.Euler(0,0,90)
     else
-        startRotation = Quaternion.Euler(0,0,-90)
+        self.rotation = Quaternion.Euler(0,0,-90)
     end
+
+    self.posX = startPos.x
+    self.posY = startPos.y
 
     for i = 1,long,1 do
 
@@ -43,20 +46,22 @@ function Player:Init(id,long,startPos)
         self.logicHash:Add(i,logicItem)
         self.renderHash:Add(i,renderItem)
 
+        renderItem.totalFrame = self.refreshFramePos
+
     end
 
     self.positionLogicArray = PositionArray.new()
     self.positionLogicArray:SetSize(long)
 
     for i = 1,long,1 do
-        self.positionLogicArray:Push(startPos,startRotation)
+        self.positionLogicArray:Push(self.posX,self.posY,self.rotation)
     end
 
     self.positionRenderArray = PositionArray.new()
     self.positionRenderArray:SetSize(long)
 
     for i = 1,long,1 do
-        self.positionRenderArray:Push(startPos,startRotation)
+        self.positionRenderArray:Push(self.posX,self.posY,self.rotation)
     end
 end
 
@@ -67,11 +72,12 @@ end
 
 function Player:Move(time)
 
+    self.posX = self.posX + time * self.runSpeed
     self.refreshFramePosCache = self.refreshFramePosCache + 1
     if self.refreshFramePosCache > self.refreshFramePos then
         self.refreshFramePosCache = 0
-        self.positionLogicArray:Push(headLogicItem.pos.x,headLogicItem.pos.y,headLogicItem.rotation)
-        self.positionRenderArray:Push(headLogicItem.pos.x,headLogicItem.pos.y,headLogicItem.rotation)
+        self.positionLogicArray:Push(self.posX,self.posY,self.rotation)
+        self.positionRenderArray:Push(self.posX,self.posY,self.rotation)
     end
 
 end

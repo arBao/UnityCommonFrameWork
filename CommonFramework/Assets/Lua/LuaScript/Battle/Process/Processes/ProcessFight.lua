@@ -19,7 +19,7 @@ function ProcessFight:OnInit()
     BattleEventsManager:GetInstance():Register('BattleReady',funcBattleReady)
 
     --创建角色
-    self.player1 = PlayerManager:GetInstance():Create(1,5,Vector3.New(0,0,0))
+    self.player1 = PlayerManager:GetInstance():Create(1,20,Vector3.New(0,0,0))
     local GameLogicUpdateFunc = function(deltaTime)
         CameraManager:GetInstance():GetBattleCameraField()
         ColliderManager:GetInstance():Clean()
@@ -31,17 +31,9 @@ function ProcessFight:OnInit()
         local players = PlayerManager:GetInstance():GetPlayers()
         for id,player in pairs(players) do
             --Debugger.LogError('--------------------########### test ')
-            --player.logicHash:ForEach(function(hashKey,hashItem)
-            --    local inCameraArea = CameraManager:GetInstance():CameraAreaTest(hashItem.pos)
-            --    if inCameraArea then
-            --        --Debugger.LogError('-------------------- inCameraArea ')
-            --        BattleRenderObjectPool:GetInstance():Add(player.id)
-            --    end
-            --    return inCameraArea
-            --end)
-
             player.positionLogicArray:ForEach(
             function(p)
+                --Debugger.LogError('p ' .. p.pos.x .. '  y  ' .. p.pos.y)
                 local inCameraArea = CameraManager:GetInstance():CameraAreaTest(p.pos)
                 if inCameraArea then
                     --Debugger.LogError('-------------------- inCameraArea ')
@@ -67,7 +59,7 @@ function ProcessFight:OnInit()
             Debugger.LogError('pair.element2.id  ' .. pair.element2.id .. '  pair.element2.type  ' .. pair.element2.type )
         end
 
-        BattleRenderManager:GetInstance():Update()
+        BattleRenderManager:GetInstance():Update(deltaTime)
 
     end
     FrameManager:GetInstance():Init(GameLogicUpdateFunc)

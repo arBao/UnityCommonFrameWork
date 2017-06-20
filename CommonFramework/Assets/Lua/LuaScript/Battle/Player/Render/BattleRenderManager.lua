@@ -16,7 +16,25 @@ function BattleRenderManager:ctor()
     self.playerShow = {}
 end
 
-function BattleRenderManager:Update()
+function BattleRenderManager:RefreshTarget(id)
+    local renderObjs = BattleRenderObjectPool:GetInstance():GetPool()
+    if renderObjs[id] ~= nil then
+        local player = PlayerManager:GetInstance():GetPlayer(id)
+        local renderHash = player.renderHash
+        local itemID = 1
+        player.positionRenderArray:ForEach(
+        function(p)
+            if itemID ~= 1 then
+                local item = renderHash:Get(itemID)
+                item.targetPosX = p.pos.x
+                item.targetPosY = p.pos.y
+            end
+            itemID = itemID + 1
+        end)
+    end
+end
+
+function BattleRenderManager:Update(deltaTime)
     local renderObjs = BattleRenderObjectPool:GetInstance():GetPool()
     for i = 1,#renderObjs do
         local playerID = renderObjs[i]
@@ -25,7 +43,7 @@ function BattleRenderManager:Update()
         if self.playerShow[playerID] == nil then
             self.playerShow[playerID] = player
             local zDepth = 0
-            renderHash:ForEach(function(renderHashItem)
+            renderHash:ForEach(function(renderID,renderHashItem)
                 local obj = AssetsManager.Instance:GetAsset('Assets/Res/Model/Prefab/Head.prefab',typeof(UnityEngine.GameObject))
                 renderHashItem.gameObject = obj
                 local pos = Vector3.zero
@@ -37,16 +55,13 @@ function BattleRenderManager:Update()
 
         end
 
-        local itemID = 1
-        player.positionRenderArray:ForEach(
-        function(p)
-            local item = renderHash:Get(itemID)
-            local pos = item.gameObject.transform.position
-            pos.x = p.pos.x
-            pos.y = p.pos.y
-            item.gameObject.transform.position = pos
-            item.gameObject.transform.rotation = p.rotation
-        end)
+        local headHashItem = renderHash:Get(1)
+        local pos = headHashItem.gameObject.transform.position
+        pos.x = player.posX
+        pos.y = player.posY
+        headHashItem.gameObject.transform.position = pos
+        headHashItem.gameObject.transform.rotation = player.rotation
+
     end
 
 
