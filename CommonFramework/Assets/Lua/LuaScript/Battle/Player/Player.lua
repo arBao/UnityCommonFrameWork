@@ -19,11 +19,11 @@ function Player:Init(id,long,startPos)
     ---每一节的间隔距离
     self.partSpace = 0.3
     ---行进速度
-    self.runSpeed = 0.3
+    self.runSpeed = 2
     ---旋转速度
     self.rotateSpeed = 0.1
     ---多长时间改变一次位置
-    self.refreshPosPerTime = 0.5
+    self.refreshPosPerTime = 0.2
     ---刷新位置时间缓存
     self.refreshPosTimeCache = 0
 
@@ -43,12 +43,25 @@ function Player:Init(id,long,startPos)
         local logicItem = PlayerLogicHashItem.new()
         local renderItem = PlayerRenderHashItem.new()
 
+        logicItem.lastPosX = self.posX
+        logicItem.lastPosY = self.posY
+        logicItem.rotation = self.rotation
+        logicItem.time = self.refreshPosPerTime
+
+        renderItem.lastPosX = self.posX
+        renderItem.lastPosY = self.posY
+        renderItem.rotation = self.rotation
+        renderItem.time = self.refreshPosPerTime
+
         self.logicHash:Add(i,logicItem)
         self.renderHash:Add(i,renderItem)
 
         renderItem.totalFrame = self.refreshPosPerTime
 
     end
+
+    self.logicHash:RefreshLength()
+    self.renderHash:RefreshLength()
 
     self.positionLogicArray = PositionArray.new()
     self.positionLogicArray:SetSize(long)
@@ -74,11 +87,12 @@ function Player:Move(time)
 
     self.posX = self.posX + time * self.runSpeed
     self.refreshPosTimeCache = self.refreshPosTimeCache + time
-    if self.refreshPosTimeCache >= self.refreshPosPerTime then
+
+    --- 减去time是为了平滑处理视觉效果 减去停掉的一帧
+    if self.refreshPosTimeCache > self.refreshPosPerTime - time then
         self.refreshPosTimeCache = 0
         self.positionLogicArray:Push(self.posX,self.posY,self.rotation)
         self.positionRenderArray:Push(self.posX,self.posY,self.rotation)
-
         BattleRenderManager:GetInstance():RefreshTarget(self.id)
     end
 

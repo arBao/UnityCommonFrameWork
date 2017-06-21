@@ -71,7 +71,10 @@ function PositionArray:ForEach(func)
     while(p ~= nil)
     do
         if func ~= nil then
-            func(p)
+            local ret = func(p)
+            if ret then
+                break
+            end
         end
         p = p.next
     end

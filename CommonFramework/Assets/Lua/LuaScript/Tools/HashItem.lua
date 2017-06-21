@@ -4,5 +4,5 @@
 ---
 HashItem = class()
 function HashItem:ctor()
-    self.id = nil
+    self.id = 1
 end

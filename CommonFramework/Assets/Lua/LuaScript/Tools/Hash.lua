@@ -7,6 +7,14 @@ function Hash:ctor()
     self.items = {}
 end
 
+function Hash:RefreshLength()
+    local length = 0
+    for k,v in pairs(self.items) do
+        length = length + 1
+    end
+    self.length = length
+end
+
 function Hash:Add(id,item)
     self.items[id] = item
 end
@@ -26,4 +34,8 @@ function Hash:ForEach(func)
             break
         end
     end
+end
+
+function Hash:GetLength()
+    return self.length
 end
