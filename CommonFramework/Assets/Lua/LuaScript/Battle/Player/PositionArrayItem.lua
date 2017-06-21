@@ -5,7 +5,8 @@
 PositionArrayItem = class()
 function PositionArrayItem:ctor()
     self.pos = Vector3.zero
-    self.rotation = nil
+    self.rotation = Quaternion.identity
     self.next = nil
     self.last = nil
+    self.time = 0
 end

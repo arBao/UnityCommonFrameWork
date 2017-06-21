@@ -26,8 +26,21 @@ function BattleRenderManager:RefreshTarget(id)
         function(p)
             if itemID ~= 1 then
                 local item = renderHash:Get(itemID)
+                item.lastPosX = item.targetPosX
+                item.lastPosY = item.targetPosY
+
                 item.targetPosX = p.pos.x
                 item.targetPosY = p.pos.y
+                item.time = player.refreshPosPerTime
+
+                item.speedX = (item.targetPosX - item.lastPosX)/ item.time
+                item.speedY = (item.targetPosY - item.lastPosY) / item.time
+
+                item.rotation = item.rotation
+
+                item.timeCache = 0
+
+                --Debugger.LogError('item.lastPosX  ' .. item.lastPosX .. ' item.targetPosX  ' .. item.targetPosX .. '  item.speedX   ' .. item.speedX )
             end
             itemID = itemID + 1
         end)
@@ -62,7 +75,18 @@ function BattleRenderManager:Update(deltaTime)
         headHashItem.gameObject.transform.position = pos
         headHashItem.gameObject.transform.rotation = player.rotation
 
+        renderHash:ForEach(function(renderID,renderHashItem)
+            if renderID ~= 1 then
+                local pos = renderHashItem.gameObject.transform.position
+                renderHashItem.timeCache = renderHashItem.timeCache + deltaTime
+                if renderHashItem.timeCache > renderHashItem.time then
+                    renderHashItem.timeCache = renderHashItem.time
+                end
+                pos.x = renderHashItem.lastPosX + renderHashItem.speedX * renderHashItem.timeCache
+                pos.y = renderHashItem.lastPosY + renderHashItem.speedY * renderHashItem.timeCache
+                renderHashItem.gameObject.transform.position = pos
+                renderHashItem.gameObject.transform.rotation = renderHashItem.rotation
+            end
+        end)
     end
-
-
 end

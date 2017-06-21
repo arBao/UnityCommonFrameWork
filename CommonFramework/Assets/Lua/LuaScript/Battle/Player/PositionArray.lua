@@ -10,7 +10,7 @@ function PositionArray:ctor()
     self.head = nil
     self.tail = nil
     self.unuseItem = nil
-
+    self.time = nil
     self.posArray = {}
 end
 
@@ -90,4 +90,5 @@ function PositionArray:Push(posX,posY,rotation)
     p.pos.x = posX
     p.pos.y = posY
     p.rotation = rotation
+
 end

@@ -7,8 +7,17 @@ PlayerRenderHashItem = class(HashItem)
 
 function PlayerRenderHashItem:ctor()
     self.gameObject = nil
-    self.currentFrame = 0
-    self.totalFrame = 0
+    self.lastPosX = 0
+    self.lastPosY = 0
+
     self.targetPosX = 0
     self.targetPosY = 0
+    self.time = 0
+
+    self.speedX = 0
+    self.speedY = 0
+
+    self.rotation = Quaternion.identity
+
+    self.timeCache = 0
 end

@@ -22,10 +22,10 @@ function Player:Init(id,long,startPos)
     self.runSpeed = 0.3
     ---旋转速度
     self.rotateSpeed = 0.1
-    ---多少帧改变一次位置
-    self.refreshFramePos = 85
-    ---刷新位置帧数缓存
-    self.refreshFramePosCache = 0
+    ---多长时间改变一次位置
+    self.refreshPosPerTime = 0.5
+    ---刷新位置时间缓存
+    self.refreshPosTimeCache = 0
 
     self.rotation = nil
 
@@ -46,7 +46,7 @@ function Player:Init(id,long,startPos)
         self.logicHash:Add(i,logicItem)
         self.renderHash:Add(i,renderItem)
 
-        renderItem.totalFrame = self.refreshFramePos
+        renderItem.totalFrame = self.refreshPosPerTime
 
     end
 
@@ -73,11 +73,13 @@ end
 function Player:Move(time)
 
     self.posX = self.posX + time * self.runSpeed
-    self.refreshFramePosCache = self.refreshFramePosCache + 1
-    if self.refreshFramePosCache > self.refreshFramePos then
-        self.refreshFramePosCache = 0
+    self.refreshPosTimeCache = self.refreshPosTimeCache + time
+    if self.refreshPosTimeCache >= self.refreshPosPerTime then
+        self.refreshPosTimeCache = 0
         self.positionLogicArray:Push(self.posX,self.posY,self.rotation)
         self.positionRenderArray:Push(self.posX,self.posY,self.rotation)
+
+        BattleRenderManager:GetInstance():RefreshTarget(self.id)
     end
 
 end
