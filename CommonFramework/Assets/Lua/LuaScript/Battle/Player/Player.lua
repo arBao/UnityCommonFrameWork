@@ -27,12 +27,10 @@ function Player:Init(id,long,startPos)
     ---刷新位置时间缓存
     self.refreshPosTimeCache = 0
 
-    self.rotation = nil
-
     if startPos.x >= 0 then
-        self.rotation = Quaternion.Euler(0,0,90)
+        self.rotationZ = -90
     else
-        self.rotation = Quaternion.Euler(0,0,-90)
+        self.rotationZ = 90
     end
 
     self.posX = startPos.x
@@ -45,12 +43,14 @@ function Player:Init(id,long,startPos)
 
         logicItem.lastPosX = self.posX
         logicItem.lastPosY = self.posY
-        logicItem.rotation = self.rotation
+        logicItem.rotationZ = self.rotationZ
         logicItem.time = self.refreshPosPerTime
 
         renderItem.lastPosX = self.posX
         renderItem.lastPosY = self.posY
-        renderItem.rotation = self.rotation
+        renderItem.targetPosX = self.posX
+        renderItem.targetPosY = self.posY
+        renderItem.rotationZ = self.rotationZ
         renderItem.time = self.refreshPosPerTime
 
         self.logicHash:Add(i,logicItem)
@@ -67,14 +67,14 @@ function Player:Init(id,long,startPos)
     self.positionLogicArray:SetSize(long)
 
     for i = 1,long,1 do
-        self.positionLogicArray:Push(self.posX,self.posY,self.rotation)
+        self.positionLogicArray:Push(self.posX,self.posY,self.rotationZ)
     end
 
     self.positionRenderArray = PositionArray.new()
     self.positionRenderArray:SetSize(long)
 
     for i = 1,long,1 do
-        self.positionRenderArray:Push(self.posX,self.posY,self.rotation)
+        self.positionRenderArray:Push(self.posX,self.posY,self.rotationZ)
     end
 end
 
@@ -84,15 +84,28 @@ function Player:SetSize(size)
 end
 
 function Player:Move(time)
+    local direction = BattleManager:GetInstance().direction
 
-    self.posX = self.posX + time * self.runSpeed
+    local rotationZ = Mathf.Rad2Deg * Mathf.Asin(direction.y)
+
+    local anchorAdd = 0
+    if direction.x > 0 then
+        rotationZ = rotationZ - 90
+    else
+        rotationZ = -270 - rotationZ
+    end
+
+    --Debugger.LogError('direction.x  ' .. direction.x .. '  direction.y  ' .. direction.y .. ' rotationZ ' .. Mathf.Rad2Deg * Mathf.Asin(direction.y))
+    self.posX = self.posX + time * self.runSpeed * direction.x
+    self.posY = self.posY + time * self.runSpeed * direction.y
     self.refreshPosTimeCache = self.refreshPosTimeCache + time
+    self.rotationZ = rotationZ
 
     --- 减去time是为了平滑处理视觉效果 减去停掉的一帧
     if self.refreshPosTimeCache > self.refreshPosPerTime - time then
         self.refreshPosTimeCache = 0
-        self.positionLogicArray:Push(self.posX,self.posY,self.rotation)
-        self.positionRenderArray:Push(self.posX,self.posY,self.rotation)
+        self.positionLogicArray:Push(self.posX,self.posY,self.rotationZ)
+        self.positionRenderArray:Push(self.posX,self.posY,self.rotationZ)
         BattleRenderManager:GetInstance():RefreshTarget(self.id)
     end
 

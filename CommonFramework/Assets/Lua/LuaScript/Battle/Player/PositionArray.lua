@@ -46,10 +46,10 @@ function PositionArray:SetSize(size)
                 self.tail = posItem
             end
             if posItem.last ~= nil then
-                local pos = posItem.last.pos
-                posItem.pos.x = pos.x
-                posItem.pos.y = pos.y
-                posItem.rotation = posItem.last.rotation
+                --local pos = posItem.last.pos
+                posItem.posX = posItem.last.posX
+                posItem.posY = posItem.last.posY
+                posItem.rotationZ = posItem.last.rotationZ
             end
         end
     else
@@ -80,7 +80,7 @@ function PositionArray:ForEach(func)
     end
 end
 
-function PositionArray:Push(posX,posY,rotation)
+function PositionArray:Push(posX,posY,rotationZ)
     local p = self.tail
     self.tail = p.last
     p.last.next = nil
@@ -90,8 +90,8 @@ function PositionArray:Push(posX,posY,rotation)
     self.head.last = p
     self.head = p
 
-    p.pos.x = posX
-    p.pos.y = posY
-    p.rotation = rotation
+    p.posX = posX
+    p.posY = posY
+    p.rotationZ = rotationZ
 
 end

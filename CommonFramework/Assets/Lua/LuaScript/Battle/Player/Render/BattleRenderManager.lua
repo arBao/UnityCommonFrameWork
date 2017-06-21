@@ -14,6 +14,7 @@ end
 
 function BattleRenderManager:ctor()
     self.playerShow = {}
+    self.rotationCache = Quaternion.Euler(0,0,0)
 end
 
 function BattleRenderManager:RefreshTarget(id)
@@ -32,18 +33,29 @@ function BattleRenderManager:RefreshTarget(id)
             local item = renderHash:Get(itemID)
             item.lastPosX = item.targetPosX
             item.lastPosY = item.targetPosY
+            item.lastRotationZ = item.targetRotationZ
 
-            item.targetPosX = p.pos.x
-            item.targetPosY = p.pos.y
+            item.targetPosX = p.posX
+            item.targetPosY = p.posY
+            item.targetRotationZ = p.rotationZ
+
             item.time = player.refreshPosPerTime
 
             item.speedX = (item.targetPosX - item.lastPosX)/ item.time
             item.speedY = (item.targetPosY - item.lastPosY) / item.time
 
-            item.rotation = p.rotation
+            ---如果是由第四象限转到第一象限以及由第一象限转到第四象限，要分情况讨论避免产生突变
+            if item.lastRotationZ > -360 and item.lastRotationZ < -270 and item.targetRotationZ > -90 then
+                item.lastRotationZ = 360 + item.lastRotationZ
+
+            elseif item.lastRotationZ > -90 and item.targetRotationZ > -360 and item.targetRotationZ < -270 then
+                item.lastRotationZ = -360 + item.lastRotationZ
+            end
+            item.speedRotationZ = (item.targetRotationZ - item.lastRotationZ)/ item.time
 
             item.timeCache = 0
             itemID = itemID + 1
+
         end)
     end
 end
@@ -66,7 +78,7 @@ function BattleRenderManager:Update(deltaTime)
                 pos.y = renderHashItem.lastPosY
                 pos.z = zDepth
                 obj.transform.position = pos
-                obj.transform.rotation = renderHashItem.rotation
+                obj.transform.rotation = self.rotationCache:SetEuler(0,0,renderHashItem.lastRotationZ)--Quaternion.Euler(0,0,renderHashItem.lastRotationZ)
                 zDepth = zDepth + 0.05
             end)
         else
@@ -78,31 +90,28 @@ function BattleRenderManager:Update(deltaTime)
         pos.x = player.posX
         pos.y = player.posY
         headHashItem.gameObject.transform.position = pos
-        headHashItem.gameObject.transform.rotation = player.rotation
+        headHashItem.gameObject.transform.rotation = self.rotationCache:SetEuler(0,0,player.rotationZ)--Quaternion.Euler(0,0,player.rotationZ)--player.rotation
 
         renderHash:ForEach(function(renderID,renderHashItem)
             if renderID ~= 1 then
                 local pos = renderHashItem.gameObject.transform.position
                 renderHashItem.timeCache = renderHashItem.timeCache + deltaTime
 
-                if renderID == 2 then
-                    --Debugger.LogError('renderHashItem.timeCache  ' .. renderHashItem.timeCache .. ' renderHashItem.time  ' .. renderHashItem.time
-                    --.. ' renderHashItem.targetPosX ' .. renderHashItem.targetPosX .. '  deltaTime  ' .. deltaTime)
-                end
-
                 if renderHashItem.timeCache > renderHashItem.time then
                     --if renderID == 2 then
                     --    Debugger.LogError('renderHashItem.timeCache > renderHashItem.time  renderHashItem.timeCache  ' .. renderHashItem.timeCache
                     --    .. ' renderHashItem.targetPosX ' .. renderHashItem.targetPosX .. '  deltaTime  ' .. deltaTime)
                     --end
-                    --renderHashItem.timeCache = renderHashItem.time
+                    renderHashItem.timeCache = renderHashItem.time
                 end
 
                 pos.x = renderHashItem.lastPosX + renderHashItem.speedX * renderHashItem.timeCache
                 pos.y = renderHashItem.lastPosY + renderHashItem.speedY * renderHashItem.timeCache
 
+                local rotationZ = renderHashItem.lastRotationZ + renderHashItem.speedRotationZ * renderHashItem.timeCache
+
                 renderHashItem.gameObject.transform.position = pos
-                renderHashItem.gameObject.transform.rotation = renderHashItem.rotation
+                renderHashItem.gameObject.transform.rotation = self.rotationCache:SetEuler(0,0,rotationZ)--Quaternion.Euler(0,0,rotationZ)
             end
         end)
     end

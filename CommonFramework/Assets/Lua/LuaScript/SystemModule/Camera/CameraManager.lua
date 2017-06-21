@@ -18,8 +18,8 @@ function CameraManager:GetUICamera()
     return self.uiCamera
 end
 
-function CameraManager:CameraAreaTest(pos)
-    return pos.x > self.xLeft and pos.x < self.xRight and pos.y > self.yBottom and pos.y < self.yTop
+function CameraManager:CameraAreaTest(posX,posY)
+    return posX > self.xLeft and posX < self.xRight and posY > self.yBottom and posY < self.yTop
 end
 
 ---获取摄像机视野

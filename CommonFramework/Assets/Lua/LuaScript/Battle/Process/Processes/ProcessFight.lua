@@ -33,7 +33,7 @@ function ProcessFight:OnInit()
             player.positionLogicArray:ForEach(
             function(p)
                 --Debugger.LogError('p ' .. p.pos.x .. '  y  ' .. p.pos.y)
-                local inCameraArea = CameraManager:GetInstance():CameraAreaTest(p.pos)
+                local inCameraArea = CameraManager:GetInstance():CameraAreaTest(p.posX,p.posY)
                 if inCameraArea then
                     --Debugger.LogError('-------------------- inCameraArea ')
                     BattleRenderObjectPool:GetInstance():Add(player.id)

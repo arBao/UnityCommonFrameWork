@@ -10,14 +10,19 @@ function PlayerRenderHashItem:ctor()
     self.lastPosX = 0
     self.lastPosY = 0
 
+    self.lastRotationZ = 0
+
     self.targetPosX = 0
     self.targetPosY = 0
+
+    self.targetRotationZ = 0
+
     self.time = 0
 
     self.speedX = 0
     self.speedY = 0
 
-    self.rotation = Quaternion.identity
+    self.speedRotationZ = 0
 
     self.timeCache = 0
 end

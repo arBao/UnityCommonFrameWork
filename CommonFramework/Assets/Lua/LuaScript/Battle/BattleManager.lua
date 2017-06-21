@@ -12,6 +12,7 @@ function BattleManager:GetInstance()
 end
 
 function BattleManager:Init()
+    self.direction = Vector2.New(1,0)
     ProcessManager:GetInstance():Init('ProcessModeNormal')
 end
 
