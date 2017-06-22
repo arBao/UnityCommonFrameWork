@@ -45,7 +45,7 @@ function ProcessFight:OnInit()
         BattleRenderManager:GetInstance():Update(deltaTime)
 
         for id,player in pairs(players) do
-            player:Move(deltaTime)
+            player:Update(deltaTime)
         end
 
         --ColliderManager:GetInstance():Stack(Vector2.New(pos1.x,pos1.y),1,1,111,1)

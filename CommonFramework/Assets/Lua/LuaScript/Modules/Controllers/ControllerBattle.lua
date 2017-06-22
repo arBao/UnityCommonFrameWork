@@ -26,7 +26,16 @@ function ControllerBattle:ShowUIBattle()
         self.playingPlot = false
         self.battleview = self:GetView('ViewUIBattle')
         self.battleview.onClickButtonSpeedCallback = function ()
+            Debugger.LogError('onClickButtonSpeedCallback')
 
+        end
+
+        self.battleview.onClickBtnAddScoreCallback = function ()
+            Debugger.LogError('onClickBtnAddScoreCallback')
+        end
+
+        self.battleview.onClickBtnMinusScoreCallback = function ()
+            Debugger.LogError('onClickBtnMinusScoreCallback')
         end
 
         self.battleview.onClickBtnTestProcessModeCallback = function ()

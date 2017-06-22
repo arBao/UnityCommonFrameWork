@@ -35,6 +35,8 @@ function Player:Init(id,score,startPos)
 
     ---分数
     self.score = score
+    ---最小分值
+    self.scoreMin = 100
 
     ---长度
     self.length = 0
@@ -129,7 +131,7 @@ function Player:SetSize(size)
     self.positionRenderArray:SetSize(size)
 end
 
-function Player:Move(time)
+function Player:Update(time)
     local direction = BattleManager:GetInstance().direction
 
     local rotationZ = Mathf.Rad2Deg * Mathf.Asin(direction.y)
