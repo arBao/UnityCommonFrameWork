@@ -93,6 +93,10 @@ function BattleRenderManager:Update(deltaTime)
         headHashItem.gameObject.transform.position = pos
         headHashItem.gameObject.transform.rotation = self.rotationCache:SetEuler(0,0,player.rotationZ)--Quaternion.Euler(0,0,player.rotationZ)--player.rotation
 
+        if playerID == 1 then
+            CameraManager:GetInstance():SetCameraPos(player.posX,player.posY)
+        end
+
         renderHash:ForEach(function(renderID,renderHashItem)
             if renderID ~= 1 then
                 local pos = renderHashItem.gameObject.transform.position
@@ -105,16 +109,10 @@ function BattleRenderManager:Update(deltaTime)
                 pos.x = renderHashItem.lastPosX + renderHashItem.speedX * renderHashItem.timeCache
                 pos.y = renderHashItem.lastPosY + renderHashItem.speedY * renderHashItem.timeCache
 
-                --if renderID == 2 then
-                --    Debugger.LogError('renderHashItem.timeCache  ' .. renderHashItem.timeCache ..
-                --    '  renderHashItem.time  ' .. renderHashItem.time .. '  pos.x  ' .. pos.x .. '  renderHashItem.targetPosX  ' .. renderHashItem.targetPosX .. '  deltaTime  ' .. deltaTime)
-                --end
-
                 local rotationZ = renderHashItem.lastRotationZ + renderHashItem.speedRotationZ * renderHashItem.timeCache
 
                 renderHashItem.gameObject.transform.position = pos
                 renderHashItem.gameObject.transform.rotation = self.rotationCache:SetEuler(0,0,rotationZ)
-                --renderHashItem.lastPosX = pos.x
             end
         end)
     end

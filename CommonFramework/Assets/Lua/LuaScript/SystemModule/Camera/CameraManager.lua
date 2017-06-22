@@ -11,6 +11,10 @@ function CameraManager:GetInstance()
     return self.m_instance
 end
 
+function CameraManager:ctor()
+    self.posCahe = Vector3.zero
+end
+
 function CameraManager:GetUICamera()
     if self.uiCamera == nil then
         self.uiCamera = UnityEngine.GameObject.Find('UICamera'):GetComponent('Camera')
@@ -22,6 +26,11 @@ function CameraManager:CameraAreaTest(posX,posY)
     return posX > self.xLeft and posX < self.xRight and posY > self.yBottom and posY < self.yTop
 end
 
+function CameraManager:SetCameraPos(posX,posY)
+    self.posX = posX
+    self.posY = posY
+end
+
 ---获取摄像机视野
 function CameraManager:GetBattleCameraField()
     if self.BattleCamera == nil then
@@ -29,6 +38,7 @@ function CameraManager:GetBattleCameraField()
         self.BattleCameraTransform = self.BattleCamera.transform
         self.scale = UnityEngine.Screen.width / UnityEngine.Screen.height
         self.orthographicSize = self.BattleCamera.orthographicSize
+        self.posCahe = self.BattleCameraTransform.position
     end
 
     local cameraPos = self.BattleCameraTransform.position
@@ -47,4 +57,10 @@ function CameraManager:GetBattleCameraField()
         UnityEngine.Debug.DrawLine(Vector3.New(self.xRight,self.yTop,-10),Vector3.New(self.xRight,self.yBottom,-10),Color.red)
         UnityEngine.Debug.DrawLine(Vector3.New(self.xLeft,self.yBottom,-10),Vector3.New(self.xRight,self.yBottom,-10),Color.red)
     end
+end
+
+function CameraManager:UpdateCameraPos()
+    self.posCahe.x = self.posX
+    self.posCahe.y = self.posY
+    self.BattleCameraTransform.position = self.posCahe
 end

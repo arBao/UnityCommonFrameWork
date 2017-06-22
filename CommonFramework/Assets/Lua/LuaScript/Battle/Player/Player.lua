@@ -53,7 +53,7 @@ function Player:Init(id,score,startPos)
     ---最大转弯角度
     self.rotateMax = 0
     ---最大转弯角度乘法因子,读表
-    self.rotateMaxA3 = 1.2
+    self.rotateMaxA3 = 1.5
 
     ---节间距等于多少半径,读表
     self.spaceRadiusScale = 0.4

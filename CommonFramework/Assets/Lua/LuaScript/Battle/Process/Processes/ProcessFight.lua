@@ -64,6 +64,7 @@ function ProcessFight:OnInit()
             Debugger.LogError('pair.element2.id  ' .. pair.element2.id .. '  pair.element2.type  ' .. pair.element2.type )
         end
 
+        CameraManager:GetInstance():UpdateCameraPos()
     end
 
     FrameManager:GetInstance():Init(GameLogicUpdateFunc)
