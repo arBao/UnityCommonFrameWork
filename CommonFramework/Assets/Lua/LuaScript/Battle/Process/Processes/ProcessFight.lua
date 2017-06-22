@@ -19,7 +19,7 @@ function ProcessFight:OnInit()
     BattleEventsManager:GetInstance():Register('BattleReady',funcBattleReady)
 
     --创建角色
-    self.player1 = PlayerManager:GetInstance():Create(1,20,Vector3.New(3,0,0))
+    self.player1 = PlayerManager:GetInstance():Create(1,30,Vector3.New(-1,0,0))
 
     local GameLogicUpdateFunc = function(deltaTime)
         CameraManager:GetInstance():GetBattleCameraField()
