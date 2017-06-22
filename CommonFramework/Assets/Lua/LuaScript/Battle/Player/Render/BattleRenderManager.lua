@@ -39,7 +39,7 @@ function BattleRenderManager:RefreshTarget(id)
             item.targetPosY = p.posY
             item.targetRotationZ = p.rotationZ
 
-            item.time = player.refreshPosPerTime
+            item.time = p.time
 
             item.speedX = (item.targetPosX - item.lastPosX)/ item.time
             item.speedY = (item.targetPosY - item.lastPosY) / item.time
@@ -79,6 +79,7 @@ function BattleRenderManager:Update(deltaTime)
                 pos.z = zDepth
                 obj.transform.position = pos
                 obj.transform.rotation = self.rotationCache:SetEuler(0,0,renderHashItem.lastRotationZ)--Quaternion.Euler(0,0,renderHashItem.lastRotationZ)
+                obj.transform.localScale = Vector3.New(player.radius,player.radius,0)
                 zDepth = zDepth + 0.05
             end)
         else
@@ -98,20 +99,22 @@ function BattleRenderManager:Update(deltaTime)
                 renderHashItem.timeCache = renderHashItem.timeCache + deltaTime
 
                 if renderHashItem.timeCache > renderHashItem.time then
-                    --if renderID == 2 then
-                    --    Debugger.LogError('renderHashItem.timeCache > renderHashItem.time  renderHashItem.timeCache  ' .. renderHashItem.timeCache
-                    --    .. ' renderHashItem.targetPosX ' .. renderHashItem.targetPosX .. '  deltaTime  ' .. deltaTime)
-                    --end
                     renderHashItem.timeCache = renderHashItem.time
                 end
 
                 pos.x = renderHashItem.lastPosX + renderHashItem.speedX * renderHashItem.timeCache
                 pos.y = renderHashItem.lastPosY + renderHashItem.speedY * renderHashItem.timeCache
 
+                --if renderID == 2 then
+                --    Debugger.LogError('renderHashItem.timeCache  ' .. renderHashItem.timeCache ..
+                --    '  renderHashItem.time  ' .. renderHashItem.time .. '  pos.x  ' .. pos.x .. '  renderHashItem.targetPosX  ' .. renderHashItem.targetPosX .. '  deltaTime  ' .. deltaTime)
+                --end
+
                 local rotationZ = renderHashItem.lastRotationZ + renderHashItem.speedRotationZ * renderHashItem.timeCache
 
                 renderHashItem.gameObject.transform.position = pos
-                renderHashItem.gameObject.transform.rotation = self.rotationCache:SetEuler(0,0,rotationZ)--Quaternion.Euler(0,0,rotationZ)
+                renderHashItem.gameObject.transform.rotation = self.rotationCache:SetEuler(0,0,rotationZ)
+                --renderHashItem.lastPosX = pos.x
             end
         end)
     end

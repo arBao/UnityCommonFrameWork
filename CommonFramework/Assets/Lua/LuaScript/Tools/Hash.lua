@@ -39,3 +39,11 @@ end
 function Hash:GetLength()
     return self.length
 end
+
+function Hash:RemoveAtTail()
+    self:Delete(self.length)
+    self.length = self.length - 1
+    if self.length < 0 then
+        self.length = 0
+    end
+end

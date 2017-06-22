@@ -25,10 +25,10 @@ function PlayerManager:GetPlayers()
     return self.players
 end
 
-function PlayerManager:Create(id,long,pos)
+function PlayerManager:Create(id,score,pos)
 
     local player = Player.new()
-    player:Init(id,long,pos)
+    player:Init(id,score,pos)
     self.players[id] = player
 
     return player

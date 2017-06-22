@@ -10,7 +10,6 @@ function PositionArray:ctor()
     self.head = nil
     self.tail = nil
     self.unuseItem = nil
-    self.time = nil
     self.posArray = {}
 end
 
@@ -80,7 +79,7 @@ function PositionArray:ForEach(func)
     end
 end
 
-function PositionArray:Push(posX,posY,rotationZ)
+function PositionArray:Push(posX,posY,rotationZ,time)
     local p = self.tail
     self.tail = p.last
     p.last.next = nil
@@ -93,5 +92,6 @@ function PositionArray:Push(posX,posY,rotationZ)
     p.posX = posX
     p.posY = posY
     p.rotationZ = rotationZ
+    p.time = time
 
 end

@@ -9,5 +9,5 @@ function PositionArrayItem:ctor()
     self.rotationZ = 0
     self.next = nil
     self.last = nil
-    --self.time = 0
+    self.time = 0
 end

@@ -11,21 +11,65 @@ require 'Battle/Player/PositionArray'
 
 Player = class(BattleLogicObject)
 
-function Player:Init(id,long,startPos)
+---分数驱动，分数改变的时候都要重算
+function Player:CalPlayerValue(score)
+    --self.length = score * self.lengthFactor
+    --self.radius = score * self.radiusFactor
+    --self.amout = self.length / (self.radius * self.spaceRadiusScale)
+    --self.rotateMax = self.runSpeed * self.runSpeedFactor * self.refreshPosPerTime * 180 / (math.pi * score * self.radiusFactor)
+
+    self.length = self.lengthA1 * math.pow(score,self.lengthB1)
+    self.radius = self.radiusA2 * math.pow(score,self.radiusB2)
+    self.rotateMax = self.radius * self.rotateMaxA3 * self.runBaseSpeed * self.runSpeedFactor
+    self.amount = math.floor(self.length / self.radius / self.spaceRadiusScale)
+    self.refreshPosPerTime = self.radius * self.spaceRadiusScale / self.runBaseSpeed / self.runSpeedFactor
+
+    Debugger.LogError('self.length  ' .. self.length .. '  self.radius  ' .. self.radius .. '  self.rotateMax  '
+    .. self.rotateMax .. '  self.amount  ' .. self.amount .. ' self.refreshPosPerTime  ' .. self.refreshPosPerTime)
+end
+
+function Player:Init(id,score,startPos)
     self.id = id
     self.logicHash = PlayerLogicHash.new()
     self.renderHash = PlayerRenderHash.new()
 
-    ---每一节的间隔距离
-    self.partSpace = 0.3
-    ---行进速度
-    self.runSpeed = 2
+    ---分数
+    self.score = score
+
+    ---长度
+    self.length = 0
+    ---长度乘法因子,读表
+    self.lengthA1 = 0.598
+    ---长度求幂因子,读表
+    self.lengthB1 = 0.8
+
+    ---半径
+    self.radius = 0
+    ---半径乘法因子,读表
+    self.radiusA2 = 0.11
+    ---半径求幂因子,读表
+    self.radiusB2 = 0.485
+
     ---最大转弯角度
-    self.rotateMax = 2
-    ---多长时间改变一次位置
-    self.refreshPosPerTime = 0.2
+    self.rotateMax = 0
+    ---最大转弯角度乘法因子,读表
+    self.rotateMaxA3 = 1.2
+
+    ---节间距等于多少半径,读表
+    self.spaceRadiusScale = 0.4
+    ---行进基础速度
+    self.runBaseSpeed = 5
+    ---行进速度倍率,会受加速影响而变化
+    self.runSpeedFactor = 1
+
+    ---多长时间刷新一次位置，单位为秒
+    self.refreshPosPerTime = 0
     ---刷新位置时间缓存
     self.refreshPosTimeCache = 0
+    ---节数:由长度以及半径还有节间距决定
+    self.amount = 0
+
+    self:CalPlayerValue(score)
 
     if startPos.x >= 0 then
         self.rotationZ = -270
@@ -38,7 +82,7 @@ function Player:Init(id,long,startPos)
     self.posX = startPos.x
     self.posY = startPos.y
 
-    for i = 1,long,1 do
+    for i = 1,self.amount,1 do
 
         local logicItem = PlayerLogicHashItem.new()
         local renderItem = PlayerRenderHashItem.new()
@@ -60,25 +104,23 @@ function Player:Init(id,long,startPos)
         self.logicHash:Add(i,logicItem)
         self.renderHash:Add(i,renderItem)
 
-        renderItem.totalFrame = self.refreshPosPerTime
-
     end
 
     self.logicHash:RefreshLength()
     self.renderHash:RefreshLength()
 
     self.positionLogicArray = PositionArray.new()
-    self.positionLogicArray:SetSize(long)
+    self.positionLogicArray:SetSize(self.amount)
 
-    for i = 1,long,1 do
-        self.positionLogicArray:Push(self.posX,self.posY,self.rotationZ)
+    for i = 1,self.amount,1 do
+        self.positionLogicArray:Push(self.posX,self.posY,self.rotationZ,self.refreshPosPerTime)
     end
 
     self.positionRenderArray = PositionArray.new()
-    self.positionRenderArray:SetSize(long)
+    self.positionRenderArray:SetSize(self.amount)
 
-    for i = 1,long,1 do
-        self.positionRenderArray:Push(self.posX,self.posY,self.rotationZ)
+    for i = 1,self.amount,1 do
+        self.positionRenderArray:Push(self.posX,self.posY,self.rotationZ,self.refreshPosPerTime)
     end
 end
 
@@ -147,15 +189,22 @@ function Player:Move(time)
     end
 
     --Debugger.LogError('direction.x  ' .. direction.x .. '  direction.y  ' .. direction.y .. ' rotationZ ' .. Mathf.Rad2Deg * Mathf.Asin(direction.y))
-    self.posX = self.posX + time * self.runSpeed * xDirection
-    self.posY = self.posY + time * self.runSpeed * yDirection
+
     self.refreshPosTimeCache = self.refreshPosTimeCache + time
 
-    --- 减去time是为了平滑处理视觉效果 减去停掉的一帧
-    if self.refreshPosTimeCache > self.refreshPosPerTime - time then
-        self.refreshPosTimeCache = 0
-        self.positionLogicArray:Push(self.posX,self.posY,self.rotationZ)
-        self.positionRenderArray:Push(self.posX,self.posY,self.rotationZ)
+    if self.refreshPosTimeCache > (self.refreshPosPerTime) then
+        local delta = self.refreshPosTimeCache - self.refreshPosPerTime
+        self.posX = self.posX + (time - delta) * self.runBaseSpeed * self.runSpeedFactor * xDirection
+        self.posY = self.posY + (time - delta) * self.runBaseSpeed * self.runSpeedFactor * yDirection
+    else
+        self.posX = self.posX + time * self.runBaseSpeed * self.runSpeedFactor * xDirection
+        self.posY = self.posY + time * self.runBaseSpeed * self.runSpeedFactor * yDirection
+    end
+
+    if self.refreshPosTimeCache > (self.refreshPosPerTime) then
+        self.refreshPosTimeCache = 0--self.refreshPosTimeCache - self.refreshPosPerTime
+        self.positionLogicArray:Push(self.posX,self.posY,self.rotationZ,self.refreshPosPerTime)
+        self.positionRenderArray:Push(self.posX,self.posY,self.rotationZ,self.refreshPosPerTime)
         BattleRenderManager:GetInstance():RefreshTarget(self.id)
     end
 

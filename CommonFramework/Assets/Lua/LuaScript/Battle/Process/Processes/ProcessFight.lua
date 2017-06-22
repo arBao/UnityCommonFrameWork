@@ -19,7 +19,7 @@ function ProcessFight:OnInit()
     BattleEventsManager:GetInstance():Register('BattleReady',funcBattleReady)
 
     --创建角色
-    self.player1 = PlayerManager:GetInstance():Create(1,30,Vector3.New(-1,0,0))
+    self.player1 = PlayerManager:GetInstance():Create(1,100,Vector3.New(-1,0,0))
 
     local GameLogicUpdateFunc = function(deltaTime)
         CameraManager:GetInstance():GetBattleCameraField()
@@ -42,11 +42,11 @@ function ProcessFight:OnInit()
             end)
         end
 
+        BattleRenderManager:GetInstance():Update(deltaTime)
+
         for id,player in pairs(players) do
             player:Move(deltaTime)
         end
-
-        BattleRenderManager:GetInstance():Update(deltaTime)
 
         --ColliderManager:GetInstance():Stack(Vector2.New(pos1.x,pos1.y),1,1,111,1)
         --ColliderManager:GetInstance():Stack(Vector2.New(pos2.x,pos2.y),1,1,222,2)
@@ -63,8 +63,6 @@ function ProcessFight:OnInit()
             Debugger.LogError('pair.element1.id  ' .. pair.element1.id .. '  pair.element1.type  ' .. pair.element1.type )
             Debugger.LogError('pair.element2.id  ' .. pair.element2.id .. '  pair.element2.type  ' .. pair.element2.type )
         end
-
-
 
     end
 
