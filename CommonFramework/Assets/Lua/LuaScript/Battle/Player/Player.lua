@@ -8,18 +8,19 @@ require 'Battle/Player/Logic/PlayerLogicHashItem'
 require 'Battle/Player/Render/PlayerRenderHash'
 require 'Battle/Player/Render/PlayerRenderHashItem'
 require 'Battle/Player/PositionArray'
+require 'Battle/Player/BattleData/BattleDataManager'
 
 Player = class(BattleLogicObject)
 
----分数驱动，分数改变的时候都要重算
-function Player:CalPlayerValue(score)
+---分数驱动，分数改变,速度改变的时候都要重算
+function Player:CalPlayerValue()
     --self.length = score * self.lengthFactor
     --self.radius = score * self.radiusFactor
     --self.amout = self.length / (self.radius * self.spaceRadiusScale)
     --self.rotateMax = self.runSpeed * self.runSpeedFactor * self.refreshPosPerTime * 180 / (math.pi * score * self.radiusFactor)
 
-    self.length = self.lengthA1 * math.pow(score,self.lengthB1)
-    self.radius = self.radiusA2 * math.pow(score,self.radiusB2)
+    self.length = self.lengthA1 * math.pow(self.score,self.lengthB1)
+    self.radius = self.radiusA2 * math.pow(self.score,self.radiusB2)
     self.rotateMax = self.radius * self.rotateMaxA3 * self.runBaseSpeed * self.runSpeedFactor
     self.amount = math.floor(self.length / self.radius / self.spaceRadiusScale)
     self.refreshPosPerTime = self.radius * self.spaceRadiusScale / self.runBaseSpeed / self.runSpeedFactor
@@ -28,10 +29,7 @@ function Player:CalPlayerValue(score)
     .. self.rotateMax .. '  self.amount  ' .. self.amount .. ' self.refreshPosPerTime  ' .. self.refreshPosPerTime)
 end
 
-function Player:Init(id,score,startPos)
-    self.id = id
-    self.logicHash = PlayerLogicHash.new()
-    self.renderHash = PlayerRenderHash.new()
+function Player:ctor()
 
     ---分数
     self.score = score
@@ -63,6 +61,8 @@ function Player:Init(id,score,startPos)
     self.runBaseSpeed = 5
     ---行进速度倍率,会受加速影响而变化
     self.runSpeedFactor = 1
+    ---是否加速
+    self.isSpeeding = false
 
     ---多长时间刷新一次位置，单位为秒
     self.refreshPosPerTime = 0
@@ -71,14 +71,53 @@ function Player:Init(id,score,startPos)
     ---节数:由长度以及半径还有节间距决定
     self.amount = 0
 
+    ---当前X方向，由玩家数据和当前值共同得出
+    self.directionX = 0
+    ---当前Y方向，由玩家数据和当前值共同得出
+    self.directionY = 0
+
+end
+
+function Player:Init(id,score,startPos)
+    self.id = id
+    self.logicHash = PlayerLogicHash.new()
+    self.renderHash = PlayerRenderHash.new()
+
+    local funcDirectionChange = function()
+        local playerData = BattleDataManager:GetInstance():GetPlayerData(id)
+
+    end
+    self.funcDirectionChangeID = BattleDataManager:GetInstance():AddObserver(id,PlayerDataObType.Direction,funcDirectionChange)
+
+    local funcIsSpeedingChange = function()
+        local playerData = BattleDataManager:GetInstance():GetPlayerData(id)
+        self.isSpeeding = playerData.isSpeeding
+        if self.isSpeeding then
+            self.runSpeedFactor = 2
+        else
+            self.runSpeedFactor = 1
+        end
+        self:CalPlayerValue()
+    end
+    self.funcIsSpeedingChangeID =  BattleDataManager:GetInstance():AddObserver(id,PlayerDataObType.IsSpeeding,funcIsSpeedingChange)
+
+    local funcScoreChange = function()
+        local playerData = BattleDataManager:GetInstance():GetPlayerData(id)
+        self.score = playerData.score
+        self:CalPlayerValue()
+    end
+    self.funcScoreChangeID = BattleDataManager:GetInstance():AddObserver(id,PlayerDataObType.Score,funcScoreChange)
+
     self:CalPlayerValue(score)
 
     if startPos.x >= 0 then
         self.rotationZ = -270
-        BattleManager:GetInstance().direction = Vector2.New(-1,0)
+        self.directionX = -1
+        self.directionY = 0
     else
         self.rotationZ = -90
-        BattleManager:GetInstance().direction = Vector2.New(1,0)
+        self.directionX = 1
+        self.directionY = 0
     end
 
     self.posX = startPos.x
@@ -132,12 +171,10 @@ function Player:SetSize(size)
 end
 
 function Player:Update(time)
-    local direction = BattleManager:GetInstance().direction
-
-    local rotationZ = Mathf.Rad2Deg * Mathf.Asin(direction.y)
+    local rotationZ = Mathf.Rad2Deg * Mathf.Asin(self.directionY)
 
     ---象限变换
-    if direction.x > 0 then
+    if self.directionX > 0 then
         rotationZ = rotationZ - 90
     else
         rotationZ = -270 - rotationZ
@@ -153,7 +190,6 @@ function Player:Update(time)
 
     ---转弯幅度限制在最大转弯内
     local deltaRotationZ = rotationZ - self.rotationZ
-
     if math.abs(deltaRotationZ) > self.rotateMax then
         if deltaRotationZ > 0 then
             self.rotationZ = self.rotationZ + self.rotateMax
@@ -210,4 +246,10 @@ function Player:Update(time)
         BattleRenderManager:GetInstance():RefreshTarget(self.id)
     end
 
+end
+
+function Player:OnDestroy()
+    BattleDataManager:GetInstance():RemoveObserver(self.id,PlayerDataObType.Direction,self.funcDirectionChangeID)
+    BattleDataManager:GetInstance():RemoveObserver(self.id,PlayerDataObType.IsSpeeding,self.funcIsSpeedingChangeID)
+    BattleDataManager:GetInstance():RemoveObserver(self.id,PlayerDataObType.Score,self.funcScoreChangeID)
 end

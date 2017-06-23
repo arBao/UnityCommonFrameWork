@@ -50,7 +50,8 @@ function ControllerBattle:ShowUIBattle()
 
         self.battleview.JoyStickOnDragCallback = function(direction)
             --Debugger.LogError("direction.x   " .. direction.x .. '  direction.y  ' .. direction.y)
-            BattleManager:GetInstance().direction = direction
+            --BattleManager:GetInstance().direction = direction
+            BattleDataManager:GetInstance():SetDirection(1,direction.x,direction.y)
         end
         self.battleview.JoyStickEndDragCallback = function()
             Debugger.LogError('EndDragCallback')

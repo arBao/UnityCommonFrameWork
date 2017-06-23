@@ -5,7 +5,7 @@
 BattleData = class()
 function BattleData:ctor()
     self.score = 100
-    self.isFastSpeeding = true
+    self.isSpeeding = false
     self.directionX = 1
     self.directionY = 1
 end
